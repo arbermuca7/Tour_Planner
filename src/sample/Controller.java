@@ -1,49 +1,40 @@
 package sample;
-import javafx.fxml.Initializable;
-import javafx.beans.binding.Bindings;
+import sample.viewModels.LogViewModel;
+import sample.viewModels.TourViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.beans.binding.Bindings;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 public class Controller implements Initializable{
+    public TourViewModel viewModel = new TourViewModel();
+    public LogViewModel logViewModel = new LogViewModel();
+    public MenuModel menuModel = new MenuModel();
+    public ReportGeneration reportGeneration = new ReportGeneration();
+
     public int count = 0;
     public TextField InputTextField;
     public Label OutputLabel;
-
-    private final StringProperty input = new SimpleStringProperty("");
-    private final StringProperty output = new SimpleStringProperty("Norbert is the 0 who clicked");
 
     public Controller()
     {
         System.out.println("Controller created");
     }
-    String name;
+
     @FXML
     public void calculateOutput(ActionEvent actionEvent) {
-        count++;
-        this.output.set(this.input.get().concat(" is the "+count+" who clicked"));
-        this.input.set("");
+        viewModel.calculateOutputStr();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Controller init");
-        InputTextField.textProperty().bindBidirectional(inputProperty());
-        Bindings.bindBidirectional(OutputLabel.textProperty(), outputProperty());
+        InputTextField.textProperty().bindBidirectional(viewModel.inputProperty());
+        Bindings.bindBidirectional(OutputLabel.textProperty(), viewModel.outputProperty());
     }
-    public StringProperty inputProperty() {
-        return input;
-    }
-
-    public StringProperty outputProperty() {
-        return output;
-    }
-
 }
