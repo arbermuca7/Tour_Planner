@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" hgap="3.0" maxHeight="800.0" minHeight="500.0" minWidth="600.0" vgap="4.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane alignment="center" hgap="3.0" maxHeight="800.0" minHeight="500.0" minWidth="600.0" vgap="4.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.views.MainWindowController">
     <children>
       <MenuBar GridPane.columnSpan="2147483647">
         <menus>
@@ -33,11 +33,12 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TextField fx:id="InputTextField" GridPane.columnSpan="4" GridPane.rowIndex="1">
+      <TextField fx:id="InputTextField" GridPane.columnSpan="3" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin></TextField>
-      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#calculateOutput" text="Search" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clearInput" text="Clear" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="10.0" />
          </GridPane.margin></Button>
@@ -80,10 +81,11 @@
       <GridPane hgap="3.0" vgap="4.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="3">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="30.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="10.0" prefWidth="15.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="10.0" prefWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="55.0" minWidth="10.0" prefWidth="15.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="120.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="20.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="20.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="20.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="30.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="30.0" minHeight="10.0" percentHeight="0.0" prefHeight="22.0" />
@@ -91,8 +93,11 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="-" GridPane.columnIndex="3" />
-            <TableView prefHeight="222.0" prefWidth="389.0" GridPane.columnSpan="5" GridPane.rowIndex="1" GridPane.rowSpan="2">
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="Report" GridPane.columnIndex="5">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin></Button>
+            <TableView prefHeight="190.0" prefWidth="393.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2">
               <columns>
                 <TableColumn prefWidth="75.0" text="Date" />
                 <TableColumn prefWidth="75.0" text="Duration" />
@@ -113,11 +118,9 @@
                   <Insets left="5.0" />
                </GridPane.margin></Label>
             <Button layoutX="285.0" layoutY="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="+" GridPane.columnIndex="2" />
-            <Button layoutX="240.0" layoutY="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="[]" GridPane.columnIndex="4">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin></Button>
             <TextField GridPane.columnIndex="1" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="-" GridPane.columnIndex="3" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="[]" GridPane.columnIndex="4" />
          </children>
       </GridPane>
       <GridPane hgap="2.0" vgap="2.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
@@ -139,11 +142,25 @@
                </GridPane.margin>
             </Label>
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="+" GridPane.columnIndex="1" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="-" GridPane.columnIndex="2" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="[]" GridPane.columnIndex="3" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Report" GridPane.columnIndex="2" GridPane.columnSpan="2" />
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
                <children>
-                  <Label maxWidth="100.0" text="Example...." />
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <Label maxWidth="100.0" text="Bsp.........." />
+                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="33.0" text="-">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="39.0" text="[]">
+                           <HBox.margin>
+                              <Insets left="2.0" right="2.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" text="Show" />
+                     </children>
+                  </HBox>
                </children>
                <GridPane.margin>
                   <Insets left="10.0" />

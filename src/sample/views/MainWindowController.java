@@ -1,4 +1,6 @@
-package sample;
+package sample.views;
+import sample.MenuModel;
+import sample.ReportGeneration;
 import sample.viewModels.LogViewModel;
 import sample.viewModels.TourViewModel;
 import javafx.event.ActionEvent;
@@ -11,17 +13,16 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable{
+public class MainWindowController implements Initializable{
     public TourViewModel viewModel = new TourViewModel();
     public LogViewModel logViewModel = new LogViewModel();
     public MenuModel menuModel = new MenuModel();
     public ReportGeneration reportGeneration = new ReportGeneration();
-
     public int count = 0;
     public TextField InputTextField;
     public Label OutputLabel;
 
-    public Controller()
+    public MainWindowController()
     {
         System.out.println("Controller created");
     }
@@ -30,6 +31,12 @@ public class Controller implements Initializable{
     public void calculateOutput(ActionEvent actionEvent) {
         viewModel.calculateOutputStr();
     }
+
+    @FXML
+    public void clearInput(ActionEvent actionEvent) {
+        InputTextField.textProperty().setValue("");
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
