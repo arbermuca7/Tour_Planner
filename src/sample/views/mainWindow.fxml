@@ -105,7 +105,7 @@
                   <TableColumn prefWidth="75.0" text="Avg. speed" />
                   <TableColumn prefWidth="69.19998168945312" text="Fuel cost" />
                   <TableColumn prefWidth="81.20001220703125" text="Route type" />
-                  <TableColumn prefWidth="75.0" text="Ranking" />
+                  <TableColumn prefWidth="75.0" text="Rating" />
                   <TableColumn maxWidth="90.0" prefWidth="90.0" text="Travel Mode" />
                   <TableColumn prefWidth="75.0" text="Toll Roads" />
               </columns>
