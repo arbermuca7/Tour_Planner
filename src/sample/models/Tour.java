@@ -10,7 +10,25 @@ public class Tour {
     @Getter @Setter private String destination;
     @Getter @Setter private String description;
 
-    Tour(){}
+    /**
+     * The standard constructor takes
+     * some random placeholders
+     * */
+    Tour(){
+        t_Name = "TourExp";
+        description = "this is my muster tour";
+        startPoint = "Street 1";
+        destination = "Street 3";
+        t_Distance = 10.4;
+    }
+    /**
+     * The parameter constructor takes as parameters
+     * @param name as the name of a tour
+     * @param desc as the description
+     * @param start as the starting point of the tour
+     * @param dest as the ending point of the tour
+     * @param distance as the distance in km of this tour
+     * */
     Tour(String name, String desc, String start, String dest, double distance){
 
         t_Name = name;
