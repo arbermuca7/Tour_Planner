@@ -91,12 +91,12 @@
                         <Insets />
                     </GridPane.margin>
                 </Label>
-            <TextArea fx:id="DescriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="7">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextArea>
-                <Button fx:id="addBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add the Tour" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                <TextArea fx:id="DescriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="7">
+                    <GridPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </GridPane.margin>
+                </TextArea>
+                <Button fx:id="AddBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addTour" text="Add the Tour" GridPane.columnSpan="2" GridPane.rowIndex="9">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
