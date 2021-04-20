@@ -48,10 +48,16 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Report" GridPane.columnIndex="2">
-                    <GridPane.margin>
-                        <Insets right="10.0" />
-                    </GridPane.margin></Button>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+               <children>
+                  <Button fx:id="DBLoadBtm" mnemonicParsing="false" prefHeight="26.0" prefWidth="65.0" text="DB-Load">
+                     <HBox.margin>
+                        <Insets right="2.0" />
+                     </HBox.margin>
+                  </Button>
+                      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Report" />
+               </children>
+            </HBox>
 
                 <Label fx:id="OutputNameLabel" prefHeight="26.0" prefWidth="412.0" text="Titel: " GridPane.columnSpan="2">
                     <GridPane.margin>

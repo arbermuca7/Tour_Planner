@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sample.viewModels.AddTourViewModel;
 
@@ -40,5 +41,12 @@ public class AddTourController implements Initializable {
         DestinationTextField.textProperty().bindBidirectional(addTourViewModel.getInputDestination());
         DistanceTextField.textProperty().bindBidirectional(addTourViewModel.getInputDistance());
         DescriptionTextField.textProperty().bindBidirectional(addTourViewModel.getInputDescription());
+        //validate the input fields
+        addTourViewModel.validate_WordsTextFields(NameTextField);
+        addTourViewModel.validate_WordsTextFields(StartingPointTextField);
+        addTourViewModel.validate_WordsTextFields(DestinationTextField);
+        addTourViewModel.validate_NumbersTextFields(DistanceTextField);
     }
+
+
 }

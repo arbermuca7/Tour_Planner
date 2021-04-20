@@ -4,13 +4,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import sample.MenuModel;
-import sample.ReportGeneration;
 import sample.models.Log;
 import sample.models.Tour;
 import sample.viewModels.HomeWindowViewModel;
-import sample.viewModels.LogViewModel;
-import sample.viewModels.TourViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -59,6 +55,11 @@ public class MainWindowController implements Initializable{
         LogSearchTextField.textProperty().bindBidirectional(mainViewModel.getSearchInputLogs());
         Bindings.bindBidirectional(OutputNameLabel.textProperty(), mainViewModel.getOutputNameTour());
     }
+    /**
+     * this method makes it possible to clear the content
+     * which can be in the TextField
+     * through a button
+     * */
     @FXML
     public void clearInput(ActionEvent actionEvent) {
         InputTextField.textProperty().setValue("");

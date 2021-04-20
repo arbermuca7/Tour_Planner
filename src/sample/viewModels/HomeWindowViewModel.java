@@ -32,11 +32,21 @@ public class HomeWindowViewModel {
 
 
     //set the tour items into the ListView
+    /**
+     * the following method takes
+     * @param listView as the ListView Panel where all the tour will be shown
+     * and inserts all of the created tour in this List
+     * */
     public void setToursToList(ListView<Tour> listView){
         tourListItems = FXCollections.observableArrayList();
         tourListItems.addAll();
         listView.setItems(tourListItems);
     }
+    /**
+     * the method which formats the cells to show the name
+     * and has as a parameter the
+     * @param listView  the list of all tours
+     * */
     //format cells to show name
     public void setFormatCells(ListView<Tour> listView){
         listView.setCellFactory((param -> new ListCell<Tour>(){
@@ -52,6 +62,11 @@ public class HomeWindowViewModel {
             }
         }));
     }
+    /**
+     * this method sets the listener to the tour
+     * and take as parameter
+     * @param listView the list of all tours
+     * */
     //set the listener to the tour
     public void setTourListener(ListView<Tour> listView){
         listView.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldValue, newValue) -> {
