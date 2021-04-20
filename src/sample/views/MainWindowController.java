@@ -2,9 +2,12 @@ package sample.views;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import sample.MenuModel;
 import sample.ReportGeneration;
+import sample.models.Log;
+import sample.models.Tour;
 import sample.viewModels.HomeWindowViewModel;
 import sample.viewModels.LogViewModel;
 import sample.viewModels.TourViewModel;
@@ -12,17 +15,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.beans.binding.Bindings;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable{
-    public HomeWindowViewModel viewModel = new HomeWindowViewModel();
+    public HomeWindowViewModel mainViewModel = new HomeWindowViewModel();
     public TextField InputTextField;
-    public Label OutputLabel;
+    public TextField LogSearchTextField;
+    public Label OutputNameLabel;
+    public MenuItem CloseAppMenuItem;
+    public ListView<Tour> TourListView;
+    public TableView<Log> LogTableView;
+    public Tab DescriptionTab;
+    public Tab RouteTab;
 
     public MainWindowController()
     {
@@ -31,20 +38,41 @@ public class MainWindowController implements Initializable{
 
     @FXML
     public void calculateOutput(ActionEvent actionEvent) {
-        viewModel.calculateOutputStr();
-    }
-
-    @FXML
-    public void clearInput(ActionEvent actionEvent) {
-        InputTextField.textProperty().setValue("");
+        mainViewModel.calculateOutputStr();
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Controller init");
-        InputTextField.textProperty().bindBidirectional(viewModel.inputProperty());
-        Bindings.bindBidirectional(OutputLabel.textProperty(), viewModel.outputProperty());
+        //------------------The init of the tours---------------------------
+        //set the tour items into the ListView
+        mainViewModel.setToursToList(TourListView);
+        //format cells to show name
+        mainViewModel.setFormatCells(TourListView);
+        // set the listener to the tour
+        mainViewModel.setTourListener(TourListView);
+
+
+        InputTextField.textProperty().bindBidirectional(mainViewModel.getSearchInputTours());
+        //------------------------------------------------------------------
+        LogSearchTextField.textProperty().bindBidirectional(mainViewModel.getSearchInputLogs());
+        Bindings.bindBidirectional(OutputNameLabel.textProperty(), mainViewModel.getOutputNameTour());
+    }
+    @FXML
+    public void clearInput(ActionEvent actionEvent) {
+        InputTextField.textProperty().setValue("");
+    }
+
+    /**
+     * you can close the application by clicking
+     * in the Menu item "Exit"
+     * */
+    @FXML
+    public void closeProgram(ActionEvent actionEvent) {
+        CloseAppMenuItem.setOnAction(e -> {
+            System.exit(0);
+        });
     }
 
     /**
