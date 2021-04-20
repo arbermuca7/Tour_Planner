@@ -29,7 +29,7 @@ public class Tour {
      * @param dest as the ending point of the tour
      * @param distance as the distance in km of this tour
      * */
-    Tour(String name, String desc, String start, String dest, double distance){
+    public Tour(String name, String desc, String start, String dest, double distance){
 
         t_Name = name;
         description = desc;
