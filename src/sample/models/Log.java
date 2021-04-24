@@ -18,7 +18,7 @@ public class Log {
      * The standard constructor takes
      * some random placeholders
      * */
-    Log(){
+    public Log(){
         date = "2021-01-01";
         duration = "02:40:56";
         distance = 120.5;
@@ -41,7 +41,7 @@ public class Log {
      * @param travel_mode with what type of vehicle you drove
      * @param toll_roads should you pay for the road
      * and in that way the logs can be saved*/
-    Log(String date, String duration, double distance, int avg_speed, float fuel_cost,
+    public Log(String date, String duration, double distance, int avg_speed, float fuel_cost,
         String route_type, int rating, String travel_mode,boolean toll_roads){
         this.date = date;
         this.duration = duration;

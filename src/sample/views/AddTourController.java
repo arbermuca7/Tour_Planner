@@ -35,7 +35,7 @@ public class AddTourController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Controller init");
+        System.out.println("Controller AddTour init");
         NameTextField.textProperty().bindBidirectional(addTourViewModel.getInputName());
         StartingPointTextField.textProperty().bindBidirectional(addTourViewModel.getInputStart());
         DestinationTextField.textProperty().bindBidirectional(addTourViewModel.getInputDestination());

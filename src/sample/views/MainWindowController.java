@@ -40,7 +40,7 @@ public class MainWindowController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Controller init");
+        System.out.println("Controller MainWindow init");
         //------------------The init of the tours---------------------------
         //set the tour items into the ListView
         mainViewModel.setToursToList(TourListView);

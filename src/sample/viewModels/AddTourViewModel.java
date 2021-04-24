@@ -32,36 +32,36 @@ public class AddTourViewModel {
         String desc = this.inputDescription.get();
 
         double distance = 0;
-        if (!dist.equals(""))
+        if (!dist.isEmpty())
             distance = Double.parseDouble(dist);
 
-        //System.out.println("N:"+name+", S:"+start+", De:"+dest+", Di:"+distance+", Desc:"+desc);
+        System.out.println("N:"+name+", S:"+start+", De:"+dest+", Di:"+distance+", Desc:"+desc);
 
         Tour tour = new Tour(name,desc,start,dest,distance);
-        //System.out.println("Objekt--> N:"+tour.getT_Name()+", S:"+tour.getStartPoint()+", De:"
-        // +tour.getDestination()+", Di:"+tour.getT_Distance()+", Desc:"+tour.getDescription());
+        System.out.println("Objekt--> N:"+tour.getT_Name()+", S:"+tour.getStartPoint()+", De:"
+         +tour.getDestination()+", Di:"+tour.getT_Distance()+", Desc:"+tour.getDescription());
 
         //database access
-        //database.addToDatabase(tour);
+        //database.addTourData(tour);
     }
     /**
      * a method to validate the input of
-     * a text field with a certain regex
+     * a text field where can be set only letters, space and number between 1 and 9
      * @param textField the field which will be validated
      * */
     public void validate_WordsTextFields(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("[a-zA-Z1-9]*")) ? change : null));
+                (change.getControlNewText().matches("[a-zA-Z1-9 ]*")) ? change : null));
 
     }
     /**
      * a method to validate the numbers input of
-     * a text field with a certain regex
+     * a text field where we set maximal 2 digits after the "."
      * @param textField the field which will be validated
      * */
     public void validate_NumbersTextFields(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([1-9][0-9]*)?")) ? change : null));
+                (change.getControlNewText().matches("([1-9][0-9]*)?([.])?([1-9][0-9]{0,1})?")) ? change : null));
     }
 }
 

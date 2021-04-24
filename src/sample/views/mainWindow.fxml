@@ -157,7 +157,7 @@
                         <Insets left="10.0" />
                     </GridPane.margin>
                 </VBox>
-                <Button layoutX="113.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="33.0" text="[]" GridPane.columnIndex="3" />
+                <Button layoutX="113.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editTourWindow" prefHeight="26.0" prefWidth="33.0" text="[]" GridPane.columnIndex="3" />
             </children>
         </GridPane>
     </children>

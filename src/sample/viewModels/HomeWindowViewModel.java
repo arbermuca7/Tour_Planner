@@ -11,12 +11,12 @@ import sample.models.Tour;
 
 public class HomeWindowViewModel {
 
-    @Getter
-    private final StringProperty searchInputTours = new SimpleStringProperty("");
+    @Getter private final StringProperty searchInputTours = new SimpleStringProperty("");
     @Getter private final StringProperty searchInputLogs = new SimpleStringProperty("");
     @Getter private final StringProperty outputNameTour = new SimpleStringProperty("Tour: ");
 
-    private ObservableList<Tour> tourListItems;
+    @Getter private ObservableList<Tour> tourListItems;
+
     private Tour currentTour;
 
     private int count = 0;
@@ -30,7 +30,6 @@ public class HomeWindowViewModel {
         this.input.set("");
     }
 
-
     //set the tour items into the ListView
     /**
      * the following method takes
@@ -40,7 +39,7 @@ public class HomeWindowViewModel {
     public void setToursToList(ListView<Tour> listView){
         tourListItems = FXCollections.observableArrayList();
         tourListItems.addAll();
-        listView.setItems(tourListItems);
+        listView.setItems(getTourListItems());
     }
     /**
      * the method which formats the cells to show the name

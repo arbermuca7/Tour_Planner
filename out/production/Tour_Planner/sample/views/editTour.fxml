@@ -36,7 +36,7 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField GridPane.rowIndex="1">
+                <TextField fx:id="NameTextField" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
@@ -49,7 +49,7 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField layoutX="20.0" layoutY="76.0" GridPane.rowIndex="3">
+                <TextField fx:id="StartingPointTextField" layoutX="20.0" layoutY="76.0" GridPane.rowIndex="3">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
@@ -62,7 +62,7 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField layoutX="20.0" layoutY="188.0" GridPane.rowIndex="5">
+                <TextField fx:id="DestinationTextField" layoutX="20.0" layoutY="188.0" GridPane.rowIndex="5">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
@@ -75,7 +75,7 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField layoutX="20.0" layoutY="246.0" GridPane.rowIndex="7">
+                <TextField fx:id="DistanceTextField" layoutX="20.0" layoutY="246.0" GridPane.rowIndex="7">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
@@ -91,12 +91,12 @@
                         <Insets />
                     </GridPane.margin>
                 </Label>
-                <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="7">
+                <TextArea fx:id="DescriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="7">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </TextArea>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Save the changes " GridPane.columnSpan="2" GridPane.rowIndex="9">
+                <Button fx:id="EditBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editTour" text="Save the changes " GridPane.columnSpan="2" GridPane.rowIndex="9">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
