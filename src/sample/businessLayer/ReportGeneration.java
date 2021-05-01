@@ -1,4 +1,4 @@
-package sample;
+package sample.businessLayer;
 
 public class ReportGeneration {
 }
