@@ -1,11 +1,10 @@
-package sample.viewModels;
+package sample.viewModels.LogsVM;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
-import sample.models.Log;
 
 public class AddLogViewModel {
 

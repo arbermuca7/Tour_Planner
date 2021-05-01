@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.views.AddTourController">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.views.LogViews.EditLogController">
     <children>
         <GridPane maxHeight="310.0" maxWidth="400.0" minHeight="280.0" minWidth="400.0" prefHeight="300.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
@@ -25,7 +25,7 @@
                 <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="Name:">
+                <Label text="Date:">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
@@ -36,12 +36,12 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="NameTextField" GridPane.rowIndex="1">
+                <TextField fx:id="DateTextField" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </TextField>
-                <Label layoutX="10.0" layoutY="53.0" text="Starting Point:" GridPane.rowIndex="2">
+                <Label layoutX="10.0" layoutY="53.0" text="Duration:" GridPane.rowIndex="2">
                     <padding>
                         <Insets left="10.0" />
                     </padding>
@@ -49,12 +49,12 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="StartingPointTextField" layoutX="20.0" layoutY="76.0" GridPane.rowIndex="3">
+                <TextField fx:id="DurationTextField" layoutX="20.0" layoutY="76.0" GridPane.rowIndex="3">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </TextField>
-                <Label layoutX="10.0" layoutY="162.0" text="Destination:" GridPane.rowIndex="4">
+                <Label layoutX="10.0" layoutY="162.0" text="Distance:" GridPane.rowIndex="4">
                     <padding>
                         <Insets left="10.0" />
                     </padding>
@@ -62,12 +62,12 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="DestinationTextField" layoutX="20.0" layoutY="188.0" GridPane.rowIndex="5">
+                <TextField fx:id="DistanceTextField" layoutX="20.0" layoutY="188.0" GridPane.rowIndex="5">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </TextField>
-                <Label layoutX="10.0" layoutY="220.0" text="Distance:" GridPane.rowIndex="6">
+                <Label layoutX="10.0" layoutY="220.0" text="Average Speed:" GridPane.rowIndex="6">
                     <padding>
                         <Insets left="10.0" />
                     </padding>
@@ -75,12 +75,25 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="DistanceTextField" layoutX="20.0" layoutY="246.0" GridPane.rowIndex="7">
+                <TextField fx:id="AverageSpeedTextFIeld" layoutX="20.0" layoutY="246.0" GridPane.rowIndex="7">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </TextField>
-                <Label layoutX="10.0" layoutY="335.0" text="Description:" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label layoutX="10.0" layoutY="277.0" text="Fuel Costs:" GridPane.rowIndex="8">
+                    <padding>
+                        <Insets left="10.0" />
+                    </padding>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="FuelCostsTextField" layoutX="20.0" layoutY="303.0" GridPane.rowIndex="9">
+                    <GridPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </GridPane.margin>
+                </TextField>
+                <Label layoutX="10.0" layoutY="335.0" text="Toll Roads (t/f):" GridPane.columnIndex="1">
                     <padding>
                         <Insets left="10.0" top="5.0" />
                     </padding>
@@ -91,31 +104,58 @@
                         <Insets />
                     </GridPane.margin>
                 </Label>
-                <TextArea fx:id="DescriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="5">
+                <TextField fx:id="TollRoadsTextField" layoutX="20.0" layoutY="360.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
-                </TextArea>
-                <Button fx:id="AddBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addTour" text="Add the Tour" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                </TextField>
+                <Label layoutX="210.0" layoutY="106.0" text="Travel Mode:" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <padding>
+                        <Insets left="10.0" />
+                    </padding>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="TravelModeTextField" layoutX="220.0" layoutY="131.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <GridPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </GridPane.margin>
+                </TextField>
+                <Label layoutX="210.0" layoutY="162.0" text="Route Type:" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <padding>
+                        <Insets left="10.0" />
+                    </padding>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="RouteTypeTextField" layoutX="220.0" layoutY="188.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <GridPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </GridPane.margin>
+                </TextField>
+                <Label layoutX="210.0" layoutY="220.0" text="Rating (1-5):" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <padding>
+                        <Insets left="10.0" />
+                    </padding>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="RatingTextField" layoutX="220.0" layoutY="246.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <GridPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </GridPane.margin>
+                </TextField>
+                <Button fx:id="EditBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editTour" text="Save the changes" GridPane.columnIndex="1" GridPane.rowIndex="9">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </Button>
-            <Label layoutX="10.0" layoutY="11.0" text="Identification:" GridPane.columnIndex="1">
-               <padding>
-                  <Insets left="10.0" top="5.0" />
-               </padding>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="IDTextField" layoutX="20.0" layoutY="43.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
             </children>
         </GridPane>
     </children>
+
 
 </AnchorPane>

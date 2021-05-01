@@ -1,11 +1,11 @@
-package sample.views;
+package sample.views.LogViews;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import sample.viewModels.AddLogViewModel;
+import sample.viewModels.LogsVM.AddLogViewModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;

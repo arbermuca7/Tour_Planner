@@ -1,4 +1,4 @@
-package sample.viewModels;
+package sample.viewModels.LogsVM;
 
 public class EditLogViewModel {
 }

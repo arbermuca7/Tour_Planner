@@ -1,4 +1,4 @@
-package sample.views;
+package sample.views.LogViews;
 
 public class EditLogController {
 }

@@ -24,7 +24,7 @@ public class HomeWindowViewModel {
     @Getter private final StringProperty searchInputLogs = new SimpleStringProperty("");
     @Getter private final StringProperty outputNameTour = new SimpleStringProperty("Titel: ");
     @Getter private final StringProperty outputTourLogs = new SimpleStringProperty("Logs for Tour: ");
-    @Getter private ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
+    @Getter private final ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
 
     IDataAccess dataAccess = new DatabaseAccess();
 
@@ -33,8 +33,12 @@ public class HomeWindowViewModel {
     // display the selected tour to these Labels
     public void diplaySelect(ListView<Tour> listView){
         String movie = listView.getSelectionModel().getSelectedItem().getT_Name();
-        this.outputNameTour.set("Titel: "+movie);
-        this.outputTourLogs.set("Logs for "+movie+": ");
+        if(movie != null || !movie.isEmpty()){
+            this.outputNameTour.set("Titel: "+movie);
+            this.outputTourLogs.set("Logs for "+movie+": ");
+        }else{
+            System.out.println("nothing selected");
+        }
     }
 
     /**
@@ -58,11 +62,13 @@ public class HomeWindowViewModel {
      * and inserts all of the created tour in this List
      * */
     public void setToursToList(ListView<Tour> listView){
-        //tourListItems = FXCollections.observableArrayList();
-        //tourListItems.addAll();
-        listView.getItems().addAll(tourListItems);
+        listView.setItems(tourListItems);
+        if(!listView.getItems().isEmpty()){
+            System.out.println("List view: "+listView.getItems().get(0).getT_Name());
+        }else{
+            System.out.println("nothing..................");
+        }
         //listView.setItems(addTourViewModel.getTourListItems());
-
     }
     /**
      * the method which formats the cells to show the name

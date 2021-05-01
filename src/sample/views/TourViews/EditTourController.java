@@ -1,4 +1,4 @@
-package sample.views;
+package sample.views.TourViews;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -7,7 +7,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sample.models.Tour;
-import sample.viewModels.*;
+import sample.viewModels.TourVM.EditTourViewModel;
+import sample.views.MainWindowController;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -47,7 +48,7 @@ public class EditTourController implements Initializable {
         //remove the selected Tour
         mainWindowController.TourListView.getItems().remove(index);
         //get the edited data
-        String data = editTourViewModel.editTourD();
+        String data = editTourViewModel.tourData();
         String[] content = data.split(",");
         String name = content[0];
         String start= content[1];

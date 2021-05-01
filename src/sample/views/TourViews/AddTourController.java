@@ -1,4 +1,4 @@
-package sample.views;
+package sample.views.TourViews;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,10 +7,8 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import sample.viewModels.AddTourViewModel;
+import sample.viewModels.TourVM.AddTourViewModel;
 
 public class AddTourController implements Initializable {
 
@@ -30,7 +28,7 @@ public class AddTourController implements Initializable {
      * */
     @FXML
     public void addTour(ActionEvent actionEvent) {
-        addTourViewModel.addTour();
+        addTourViewModel.tourData();
         //close the window
         Stage stage = (Stage) AddBtn.getScene().getWindow();
         stage.close();

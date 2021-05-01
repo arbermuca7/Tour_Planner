@@ -5,7 +5,7 @@ import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import sample.models.Log;
 import sample.models.Tour;
-import sample.viewModels.EditTourViewModel;
+import sample.viewModels.TourVM.EditTourViewModel;
 import sample.viewModels.HomeWindowViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -71,7 +71,7 @@ public class MainWindowController implements Initializable{
      * the addTour window, when you click the add button
      * */
     public void addTourWindow(ActionEvent actionEvent) {
-        mainViewModel.newWindow("addTour","Add Tour");
+        mainViewModel.newWindow("TourViews/addTour","Add Tour");
     }
     /**
      * The method is used to connect the main window with
@@ -79,14 +79,14 @@ public class MainWindowController implements Initializable{
      * */
     public void editTourWindow(ActionEvent actionEvent) {
         identification = TourListView.getSelectionModel().getSelectedItem().getIdentification();
-        mainViewModel.newWindow("editTour","Edit Tour");
+        mainViewModel.newWindow("TourViews/editTour","Edit Tour");
     }
     /**
      * The method is used to open the addLog window,
      * when you click at the edit button
      **/
     public void addLogWindow(ActionEvent actionEvent) {
-        mainViewModel.newWindow("addLog","Add Log");
+        mainViewModel.newWindow("LogViews/addLog","Add Log");
     }
 
     /**
@@ -94,7 +94,7 @@ public class MainWindowController implements Initializable{
      * when you click at the edit button
      **/
     public void editLogWindow(ActionEvent actionEvent) {
-        mainViewModel.newWindow("editLog","Edit Log");
+        mainViewModel.newWindow("LogViews/editLog","Edit Log");
     }
     /**
      * this method makes it possible to clear the content

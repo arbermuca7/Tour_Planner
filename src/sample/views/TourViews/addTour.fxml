@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.views.EditTourController">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.views.TourViews.AddTourController">
     <children>
         <GridPane maxHeight="310.0" maxWidth="400.0" minHeight="280.0" minWidth="400.0" prefHeight="300.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
@@ -80,7 +80,7 @@
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </TextField>
-                <Label layoutX="10.0" layoutY="335.0" text="Description:" GridPane.columnIndex="1">
+                <Label layoutX="10.0" layoutY="335.0" text="Description:" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <padding>
                         <Insets left="10.0" top="5.0" />
                     </padding>
@@ -91,16 +91,29 @@
                         <Insets />
                     </GridPane.margin>
                 </Label>
-                <TextArea fx:id="DescriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="7">
+                <TextArea fx:id="DescriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="5">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </TextArea>
-                <Button fx:id="EditBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editTourD" text="Save the changes " GridPane.columnSpan="2" GridPane.rowIndex="9">
+                <Button fx:id="AddBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addTour" text="Add the Tour" GridPane.columnSpan="2" GridPane.rowIndex="9">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </Button>
+            <Label layoutX="10.0" layoutY="11.0" text="Identification:" GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="10.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="IDTextField" layoutX="20.0" layoutY="43.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
             </children>
         </GridPane>
     </children>
