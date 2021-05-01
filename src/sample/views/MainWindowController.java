@@ -1,19 +1,16 @@
 package sample.views;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
+import lombok.Getter;
 import sample.models.Log;
 import sample.models.Tour;
+import sample.viewModels.EditTourViewModel;
 import sample.viewModels.HomeWindowViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.beans.binding.Bindings;
-
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -28,6 +25,10 @@ public class MainWindowController implements Initializable{
     public TableView<Log> LogTableView;
     public Tab DescriptionTab;
     public Tab RouteTab;
+
+    @Getter private String identification = "";
+
+    EditTourViewModel editTourViewModel = new EditTourViewModel();
 
     public MainWindowController()
     {
@@ -63,6 +64,9 @@ public class MainWindowController implements Initializable{
         mainViewModel.deleteSelectedTour(TourListView);
     }
     /**
+     * you can edit a certain Tour
+     * */
+    /**
      * the method which connects the main window with
      * the addTour window, when you click the add button
      * */
@@ -74,6 +78,7 @@ public class MainWindowController implements Initializable{
      * the editTour window, when you click the edit button
      * */
     public void editTourWindow(ActionEvent actionEvent) {
+        identification = TourListView.getSelectionModel().getSelectedItem().getIdentification();
         mainViewModel.newWindow("editTour","Edit Tour");
     }
     /**
@@ -111,4 +116,5 @@ public class MainWindowController implements Initializable{
             System.exit(0);
         });
     }
+
 }

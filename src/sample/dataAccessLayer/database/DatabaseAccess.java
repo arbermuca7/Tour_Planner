@@ -34,7 +34,7 @@ public class DatabaseAccess implements IDataAccess {
     }
     //edit a certain Tour
     @Override
-    public void editTourData(Tour tour) {
+    public void editTourData(Tour tour, String id) {
         String distance = Double.toString(tour.getT_Distance());
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE tour SET bezeichnung=?, description=?, distance=?, startpoint=?, destination=? WHERE identification=?;\n");
@@ -43,7 +43,7 @@ public class DatabaseAccess implements IDataAccess {
             statement.setString(3,distance);
             statement.setString(4, tour.getStartPoint());
             statement.setString(5, tour.getDestination());
-            statement.setString(4, tour.getIdentification());
+            statement.setString(4, id);
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

@@ -2,10 +2,11 @@ package sample.viewModels;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
+import sample.dataAccessLayer.database.DatabaseAccess;
+import sample.dataAccessLayer.database.IDataAccess;
 import sample.models.Tour;
 
 public class AddTourViewModel {
@@ -21,6 +22,7 @@ public class AddTourViewModel {
     @Getter private final StringProperty inputDescription = new SimpleStringProperty("");
 
     HomeWindowViewModel homeWindowViewModel = new HomeWindowViewModel();
+    IDataAccess dataAccess = new DatabaseAccess();
 
     /**
      * this method takes the input values from the textFields
@@ -46,7 +48,7 @@ public class AddTourViewModel {
         homeWindowViewModel.getTourListItems().addAll(tour);
 
         //add the tour to database
-        //database.addTourData(tour);
+        //dataAccess.addTourData(tour);
     }
     /**
      * a method to validate the input of

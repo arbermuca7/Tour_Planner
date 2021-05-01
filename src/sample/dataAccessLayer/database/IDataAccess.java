@@ -10,7 +10,7 @@ public interface IDataAccess {
     void closeConnection() throws SQLException;
 
     void addTourData(Tour tour);
-    void editTourData(Tour tour);
+    void editTourData(Tour tour, String id);
     void deleteTourData(String id) throws SQLException;
 
     void addLogData(Log logs,Tour tour);

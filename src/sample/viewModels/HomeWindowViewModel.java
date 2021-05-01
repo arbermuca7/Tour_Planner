@@ -14,9 +14,7 @@ import lombok.Getter;
 import sample.dataAccessLayer.database.DatabaseAccess;
 import sample.dataAccessLayer.database.IDataAccess;
 import sample.models.Tour;
-import sample.views.AddTourController;
 import sample.views.MainWindowController;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -27,16 +25,18 @@ public class HomeWindowViewModel {
     @Getter private final StringProperty outputNameTour = new SimpleStringProperty("Titel: ");
     @Getter private final StringProperty outputTourLogs = new SimpleStringProperty("Logs for Tour: ");
     @Getter private ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
+
     IDataAccess dataAccess = new DatabaseAccess();
 
     public Tour currentTour;
-    int selectedID = 0;
+    public int selectedIndex = -1;
     // display the selected tour to these Labels
     public void diplaySelect(ListView<Tour> listView){
         String movie = listView.getSelectionModel().getSelectedItem().getT_Name();
         this.outputNameTour.set("Titel: "+movie);
         this.outputTourLogs.set("Logs for "+movie+": ");
     }
+
     /**
      * the following method takes
      * @param listView as the ListView Panel where all the tour will be shown
@@ -44,13 +44,13 @@ public class HomeWindowViewModel {
      * */
     //delete the selected tour
     public void deleteSelectedTour(ListView<Tour> listView) throws SQLException {
-        selectedID = listView.getSelectionModel().getSelectedIndex();
-        listView.getItems().remove(selectedID);
+        selectedIndex = listView.getSelectionModel().getSelectedIndex();
+        listView.getItems().remove(selectedIndex);
         //remove also from database
         //String ident = listView.getSelectionModel().getSelectedItem().getIdentification();
         //dataAccess.deleteTourData(ident);
-
     }
+
     //set the tour items into the ListView
     /**
      * the following method takes
