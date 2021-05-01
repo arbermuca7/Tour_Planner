@@ -4,13 +4,20 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 import lombok.Getter;
 import sample.dataAccessLayer.database.DatabaseAccess;
 import sample.dataAccessLayer.database.IDataAccess;
 import sample.models.Tour;
+import sample.views.AddTourController;
+import sample.views.MainWindowController;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class HomeWindowViewModel {
@@ -19,9 +26,7 @@ public class HomeWindowViewModel {
     @Getter private final StringProperty searchInputLogs = new SimpleStringProperty("");
     @Getter private final StringProperty outputNameTour = new SimpleStringProperty("Titel: ");
     @Getter private final StringProperty outputTourLogs = new SimpleStringProperty("Logs for Tour: ");
-
     @Getter private ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
-    //AddTourViewModel addTourViewModel = new AddTourViewModel();
     IDataAccess dataAccess = new DatabaseAccess();
 
     public Tour currentTour;
@@ -92,4 +97,19 @@ public class HomeWindowViewModel {
         }));
     }
 
+    public void newWindow(String windowName,String windowTitle){
+        Parent root=null;
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(MainWindowController.class.getResource(windowName+".fxml"));
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle(windowTitle);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 }
