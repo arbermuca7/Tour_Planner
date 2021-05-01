@@ -38,6 +38,7 @@ public class AddTourViewModel {
         double distance = 0;
         if (!dist.isEmpty())
             distance = Double.parseDouble(dist);
+
         //create the tour
         Tour tour = new Tour(ident,name,desc,start,dest,distance);
 
