@@ -36,7 +36,7 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="NameTextField"  GridPane.rowIndex="1">
+                <TextField fx:id="NameTextField" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
@@ -80,7 +80,7 @@
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </TextField>
-                <Label layoutX="10.0" layoutY="335.0" text="Description:" GridPane.columnIndex="1">
+                <Label layoutX="10.0" layoutY="335.0" text="Description:" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <padding>
                         <Insets left="10.0" top="5.0" />
                     </padding>
@@ -91,7 +91,7 @@
                         <Insets />
                     </GridPane.margin>
                 </Label>
-                <TextArea fx:id="DescriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="7">
+                <TextArea fx:id="DescriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="5">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
@@ -101,6 +101,19 @@
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </Button>
+            <Label layoutX="10.0" layoutY="11.0" text="Identification:" GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="10.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="IDTextField" layoutX="20.0" layoutY="43.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
             </children>
         </GridPane>
     </children>
