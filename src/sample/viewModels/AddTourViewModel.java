@@ -2,10 +2,10 @@ package sample.viewModels;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
-import lombok.Setter;
 import sample.models.Tour;
 
 public class AddTourViewModel {
@@ -13,11 +13,14 @@ public class AddTourViewModel {
     public AddTourViewModel(){
         System.out.println("AddTourViewModel");
     }
-     @Getter private final StringProperty inputName = new SimpleStringProperty("");
-     @Getter private final StringProperty inputStart = new SimpleStringProperty("");
-     @Getter private final StringProperty inputDestination = new SimpleStringProperty("");
-     @Getter private final StringProperty inputDistance = new SimpleStringProperty("");
-     @Getter private final StringProperty inputDescription = new SimpleStringProperty("");
+    @Getter private final StringProperty inputIdentific = new SimpleStringProperty("");
+    @Getter private final StringProperty inputName = new SimpleStringProperty("");
+    @Getter private final StringProperty inputStart = new SimpleStringProperty("");
+    @Getter private final StringProperty inputDestination = new SimpleStringProperty("");
+    @Getter private final StringProperty inputDistance = new SimpleStringProperty("");
+    @Getter private final StringProperty inputDescription = new SimpleStringProperty("");
+
+    HomeWindowViewModel homeWindowViewModel = new HomeWindowViewModel();
 
     /**
      * this method takes the input values from the textFields
@@ -25,6 +28,7 @@ public class AddTourViewModel {
      * and the tour will be saved also in the database
      * */
     public void addTour(){
+        String ident = this.inputIdentific.get();
         String name = this.inputName.get();
         String start =  this.inputStart.get();
         String dest = this.inputDestination.get();
@@ -34,14 +38,13 @@ public class AddTourViewModel {
         double distance = 0;
         if (!dist.isEmpty())
             distance = Double.parseDouble(dist);
+        //create the tour
+        Tour tour = new Tour(ident,name,desc,start,dest,distance);
 
-        System.out.println("N:"+name+", S:"+start+", De:"+dest+", Di:"+distance+", Desc:"+desc);
+        //add tour to Observeable list in HomeWindowViewModel
+        homeWindowViewModel.getTourListItems().addAll(tour);
 
-        Tour tour = new Tour(name,desc,start,dest,distance);
-        System.out.println("Objekt--> N:"+tour.getT_Name()+", S:"+tour.getStartPoint()+", De:"
-         +tour.getDestination()+", Di:"+tour.getT_Distance()+", Desc:"+tour.getDescription());
-
-        //database access
+        //add the tour to database
         //database.addTourData(tour);
     }
     /**

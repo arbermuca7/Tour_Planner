@@ -12,6 +12,7 @@ public class AddLogViewModel {
     public AddLogViewModel(){
         System.out.println("AddLogViewModel");
     }
+    @Getter private final StringProperty inputName = new SimpleStringProperty("");
     @Getter private final StringProperty inputDate = new SimpleStringProperty("");
     @Getter private final StringProperty inputDuration = new SimpleStringProperty("");
     @Getter private final StringProperty inputDistance = new SimpleStringProperty("");
@@ -28,6 +29,7 @@ public class AddLogViewModel {
      * and the Logs will be saved also in the database
      * */
     public void addLog() {
+        String name     = this.inputName.get();
         String date     = this.inputDate.get();
         String duration = this.inputDuration.get();
         String distance = this.inputDistance.get();
@@ -65,7 +67,7 @@ public class AddLogViewModel {
         }
 
         //Add the Log
-        Log log = new Log(date,duration,dist,speed,fuel,routeType,rate,travelMode,hasTollRoads);
+        //Log log = new Log(name,date,duration,dist,speed,fuel,routeType,rate,travelMode,hasTollRoads);
 
         //database access
         //database.addLogData(log);

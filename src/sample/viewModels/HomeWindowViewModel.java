@@ -7,29 +7,45 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import lombok.Getter;
+import sample.dataAccessLayer.database.DatabaseAccess;
+import sample.dataAccessLayer.database.IDataAccess;
 import sample.models.Tour;
+
+import java.sql.SQLException;
 
 public class HomeWindowViewModel {
 
     @Getter private final StringProperty searchInputTours = new SimpleStringProperty("");
     @Getter private final StringProperty searchInputLogs = new SimpleStringProperty("");
-    @Getter private final StringProperty outputNameTour = new SimpleStringProperty("Tour: ");
+    @Getter private final StringProperty outputNameTour = new SimpleStringProperty("Titel: ");
+    @Getter private final StringProperty outputTourLogs = new SimpleStringProperty("Logs for Tour: ");
 
-    @Getter private ObservableList<Tour> tourListItems;
+    @Getter private ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
+    //AddTourViewModel addTourViewModel = new AddTourViewModel();
+    IDataAccess dataAccess = new DatabaseAccess();
 
-    private Tour currentTour;
-
-    private int count = 0;
-    private final StringProperty input = new SimpleStringProperty("");
-    private final StringProperty output = new SimpleStringProperty("Norbert clicked 0 times.");
-    //public StringProperty inputProperty() { return input; }
-    //public StringProperty outputProperty() { return output; }
-    public void calculateOutputStr() {
-        count++;
-        this.output.set(this.input.get().concat(" is the "+count+" who clicked"));
-        this.input.set("");
+    public Tour currentTour;
+    int selectedID = 0;
+    // display the selected tour to these Labels
+    public void diplaySelect(ListView<Tour> listView){
+        String movie = listView.getSelectionModel().getSelectedItem().getT_Name();
+        this.outputNameTour.set("Titel: "+movie);
+        this.outputTourLogs.set("Logs for "+movie+": ");
     }
+    /**
+     * the following method takes
+     * @param listView as the ListView Panel where all the tour will be shown
+     * and delete the selected tour
+     * */
+    //delete the selected tour
+    public void deleteSelectedTour(ListView<Tour> listView) throws SQLException {
+        selectedID = listView.getSelectionModel().getSelectedIndex();
+        listView.getItems().remove(selectedID);
+        //remove also from database
+        //String ident = listView.getSelectionModel().getSelectedItem().getIdentification();
+        //dataAccess.deleteTourData(ident);
 
+    }
     //set the tour items into the ListView
     /**
      * the following method takes
@@ -37,9 +53,11 @@ public class HomeWindowViewModel {
      * and inserts all of the created tour in this List
      * */
     public void setToursToList(ListView<Tour> listView){
-        tourListItems = FXCollections.observableArrayList();
-        tourListItems.addAll();
-        listView.setItems(getTourListItems());
+        //tourListItems = FXCollections.observableArrayList();
+        //tourListItems.addAll();
+        listView.getItems().addAll(tourListItems);
+        //listView.setItems(addTourViewModel.getTourListItems());
+
     }
     /**
      * the method which formats the cells to show the name
@@ -52,7 +70,6 @@ public class HomeWindowViewModel {
             @Override
             protected void updateItem(Tour tourItem, boolean empty){
                 super.updateItem(tourItem, empty);
-
                 if(empty || (tourItem == null) || (tourItem.getT_Name() == null)){
                     setText(null);
                 }else{
