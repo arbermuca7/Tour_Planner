@@ -26,7 +26,7 @@
             <GridPane.margin>
                 <Insets left="10.0" />
             </GridPane.margin></TextField>
-        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#calculateOutput" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="1" />
         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clearInput" text="Clear" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets right="10.0" />
@@ -48,27 +48,17 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
-               <children>
-                  <Button fx:id="DBLoadBtm" mnemonicParsing="false" prefHeight="26.0" prefWidth="65.0" text="DB-Load">
-                     <HBox.margin>
-                        <Insets right="2.0" />
-                     </HBox.margin>
-                  </Button>
-                      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Report" />
-               </children>
-            </HBox>
+                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Report" GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Button>
 
                 <Label fx:id="OutputNameLabel" prefHeight="26.0" prefWidth="412.0" text="Titel: " GridPane.columnSpan="2">
                     <GridPane.margin>
                         <Insets left="5.0" />
                     </GridPane.margin></Label>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Route" GridPane.rowIndex="1">
-                    <GridPane.margin>
-                        <Insets left="5.0" />
-                    </GridPane.margin></Button>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Description" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
                     <tabs>
                         <Tab fx:id="RouteTab" text="        Route        ">
                             <content>
@@ -81,6 +71,9 @@
                             </content>
                         </Tab>
                     </tabs>
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
                 </TabPane>
             </children>
         </GridPane>
@@ -115,13 +108,11 @@
                         <Insets right="10.0" />
                     </padding>
                 </TableView>
-                <Label text="Logs:" GridPane.columnSpan="2">
+                <Label fx:id="tourLogs" text="Logs for Tour1:" GridPane.columnSpan="2">
                     <GridPane.margin>
                         <Insets left="5.0" />
                     </GridPane.margin></Label>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" GridPane.columnIndex="2" />
                 <Button fx:id="addLog" layoutX="285.0" layoutY="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addLogWindow" text="+" GridPane.columnIndex="3" />
-                <TextField fx:id="LogSearchTextField" GridPane.columnIndex="1" />
                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="58.0" text="-" GridPane.columnIndex="4" />
                 <Button fx:id="editLog" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editLogWindow" prefHeight="26.0" prefWidth="73.0" text="[]" GridPane.columnIndex="5">
                     <GridPane.margin>
@@ -148,10 +139,10 @@
                     </GridPane.margin>
                 </Label>
                 <Button fx:id="addTour" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addTourWindow" text="+" GridPane.columnIndex="1" />
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="33.0" text="-" GridPane.columnIndex="2" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#deleteTour" prefHeight="26.0" prefWidth="33.0" text="-" GridPane.columnIndex="2" />
                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
                     <children>
-                        <ListView fx:id="TourListView" prefHeight="409.0" prefWidth="173.0" />
+                        <ListView fx:id="TourListView" onMouseClicked="#displaySelect" prefHeight="409.0" prefWidth="173.0" />
                     </children>
                     <GridPane.margin>
                         <Insets left="10.0" />
