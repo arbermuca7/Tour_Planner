@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 public class AddLogController implements Initializable {
 
     AddLogViewModel addLogViewModel = new AddLogViewModel();
+    public TextField NameTextField;
     public TextField DateTextField;
     public TextField DurationTextField;
     public TextField DistanceTextField;
@@ -35,6 +36,7 @@ public class AddLogController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Controller AddLog init");
+        NameTextField.textProperty().bindBidirectional(addLogViewModel.getInputName());
         DateTextField.textProperty().bindBidirectional(addLogViewModel.getInputDate());
         DurationTextField.textProperty().bindBidirectional(addLogViewModel.getInputDuration());
         DistanceTextField.textProperty().bindBidirectional(addLogViewModel.getInputDistance());
@@ -54,7 +56,5 @@ public class AddLogController implements Initializable {
         addLogViewModel.validate_rate(RatingTextField);
         addLogViewModel.validate_WordsTextFields(RouteTypeTextField);
         addLogViewModel.validate_WordsTextFields(TravelModeTextField);
-
-
     }
 }

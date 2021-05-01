@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.models.Log;
 import sample.models.Tour;
@@ -14,15 +15,16 @@ import javafx.beans.binding.Bindings;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable{
     public HomeWindowViewModel mainViewModel = new HomeWindowViewModel();
     public TextField InputTextField;
-    public TextField LogSearchTextField;
+    public Label tourLogs;
     public Label OutputNameLabel;
     public MenuItem CloseAppMenuItem;
-    public ListView<Tour> TourListView;
+    public ListView<Tour> TourListView = new ListView<>();
     public TableView<Log> LogTableView;
     public Tab DescriptionTab;
     public Tab RouteTab;
@@ -32,11 +34,7 @@ public class MainWindowController implements Initializable{
         System.out.println("Main Controller");
     }
 
-    @FXML
-    public void calculateOutput(ActionEvent actionEvent) {
-        mainViewModel.calculateOutputStr();
-    }
-
+    //public void calculateOutput(ActionEvent actionEvent) {mainViewModel.calculateOutputStr();}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -52,8 +50,12 @@ public class MainWindowController implements Initializable{
 
         InputTextField.textProperty().bindBidirectional(mainViewModel.getSearchInputTours());
         //------------------------------------------------------------------
-        LogSearchTextField.textProperty().bindBidirectional(mainViewModel.getSearchInputLogs());
         Bindings.bindBidirectional(OutputNameLabel.textProperty(), mainViewModel.getOutputNameTour());
+        Bindings.bindBidirectional(tourLogs.textProperty(), mainViewModel.getOutputTourLogs());
+    }
+    @FXML
+    public void displaySelect(MouseEvent mouseEvent) {
+        mainViewModel.diplaySelect(TourListView);
     }
     /**
      * this method makes it possible to clear the content
@@ -75,7 +77,13 @@ public class MainWindowController implements Initializable{
             System.exit(0);
         });
     }
-
+    /**
+     * you can delete a certain Tour
+     * */
+    @FXML
+    public void deleteTour(MouseEvent mouseEvent) throws SQLException {
+        mainViewModel.deleteSelectedTour(TourListView);
+    }
     /**
      * the method which connects the main window with
      * the addTour window, when you click the add button
@@ -96,6 +104,8 @@ public class MainWindowController implements Initializable{
         stage.setScene(new Scene(root));
         stage.show();
     }
+
+
     /**
      * The method is used to connect the main window with
      * the editTour window, when you click the edit button
@@ -156,5 +166,6 @@ public class MainWindowController implements Initializable{
         stage.setScene(new Scene(root));
         stage.show();
     }
+
 
 }
