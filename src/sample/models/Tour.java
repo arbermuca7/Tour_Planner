@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Tour {
+    @Getter @Setter private String identification;
     @Getter @Setter private String t_Name;
     @Getter @Setter private double t_Distance;
     @Getter @Setter private String startPoint;
@@ -29,8 +30,8 @@ public class Tour {
      * @param dest as the ending point of the tour
      * @param distance as the distance in km of this tour
      * */
-    public Tour(String name, String desc, String start, String dest, double distance){
-
+    public Tour(String identification, String name, String desc, String start, String dest, double distance){
+        this.identification = identification;
         t_Name = name;
         description = desc;
         startPoint = start;

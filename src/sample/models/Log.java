@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Log {
+    @Getter @Setter private String name;
     @Getter @Setter private String date;
     @Getter @Setter private String duration;
     @Getter @Setter private double distance;
@@ -41,8 +42,9 @@ public class Log {
      * @param travel_mode with what type of vehicle you drove
      * @param toll_roads should you pay for the road
      * and in that way the logs can be saved*/
-    public Log(String date, String duration, double distance, int avg_speed, float fuel_cost,
+    public Log(String name, String date, String duration, double distance, int avg_speed, float fuel_cost,
         String route_type, int rating, String travel_mode,boolean toll_roads){
+        this.name = name;
         this.date = date;
         this.duration = duration;
         this.distance = distance;
