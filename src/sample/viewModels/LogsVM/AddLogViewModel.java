@@ -6,7 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 
-public class AddLogViewModel {
+public class AddLogViewModel implements LogViewModel{
 
     public AddLogViewModel(){
         System.out.println("AddLogViewModel");
@@ -27,7 +27,8 @@ public class AddLogViewModel {
      * and saves then in the Log
      * and the Logs will be saved also in the database
      * */
-    public void addLog() {
+    @Override
+    public void logData() {
         String name     = this.inputName.get();
         String date     = this.inputDate.get();
         String duration = this.inputDuration.get();
@@ -76,6 +77,7 @@ public class AddLogViewModel {
      * in a format dd.mm.yyyy
      * @param textField the field which will be validated
      * */
+    @Override
     public void validate_date(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([0-9.]{0,10})?")) ? change : null));
@@ -86,6 +88,7 @@ public class AddLogViewModel {
      * in a format hh:mm:ss
      * @param textField the field which will be validated
      * */
+    @Override
     public void validate_duration(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([0-9:]{0,8})?")) ? change : null));
@@ -96,6 +99,7 @@ public class AddLogViewModel {
      * a text field  where we set maximal 2 digits after the "."
      * @param textField the field which will be validated
      * */
+    @Override
     public void validate_distance_fuel(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([1-9][0-9]*)?([.])?([1-9][0-9]?)?")) ? change : null));
@@ -105,6 +109,7 @@ public class AddLogViewModel {
      * a text field  where we set between 2 and 5 digits
      * @param textField the field which will be validated
      * */
+    @Override
     public void validate_speed(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([0-9]{0,5})")) ? change : null));
@@ -114,6 +119,7 @@ public class AddLogViewModel {
      * between 1 and 5 with a certain regex
      * @param textField the field which will be validated
      * */
+    @Override
     public void validate_rate(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([1-5]?)")) ? change : null));
@@ -123,6 +129,7 @@ public class AddLogViewModel {
      * the format of just being possible to write true or false
      * @param textField the field which will be validated
      * */
+    @Override
     public void validate_toll(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("[tf]?")) ? change : null));
@@ -132,6 +139,7 @@ public class AddLogViewModel {
      * a text field where can be set only letters, space and number between 1 and 9
      * @param textField the field which will be validated
      * */
+    @Override
     public void validate_WordsTextFields(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("[a-zA-Z]*")) ? change : null));

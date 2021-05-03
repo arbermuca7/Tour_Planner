@@ -2,9 +2,7 @@ package sample.views.TourViews;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import sample.models.Tour;
 import sample.viewModels.TourVM.EditTourViewModel;
@@ -15,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class EditTourController implements Initializable {
-    EditTourViewModel editTourViewModel = new EditTourViewModel();
     MainWindowController mainWindowController = new MainWindowController();
     public TextField NameTextField;
     public TextField StartingPointTextField;
@@ -26,18 +23,21 @@ public class EditTourController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NameTextField.textProperty().bindBidirectional(editTourViewModel.getInputName());
-        StartingPointTextField.textProperty().bindBidirectional(editTourViewModel.getInputStart());
-        DestinationTextField.textProperty().bindBidirectional(editTourViewModel.getInputDestination());
-        DistanceTextField.textProperty().bindBidirectional(editTourViewModel.getInputDistance());
-        DescriptionTextField.textProperty().bindBidirectional(editTourViewModel.getInputDescription());
+        /*
+            NameTextField.textProperty().bindBidirectional(editTourViewModel.getInputName());
+            StartingPointTextField.textProperty().bindBidirectional(editTourViewModel.getInputStart());
+            DestinationTextField.textProperty().bindBidirectional(editTourViewModel.getInputDestination());
+            DistanceTextField.textProperty().bindBidirectional(editTourViewModel.getInputDistance());
+            DescriptionTextField.textProperty().bindBidirectional(editTourViewModel.getInputDescription());
+        */
+
         //set the value of the tour we want to edit
-        editTourViewModel.setTourDataToEdit(mainWindowController.TourListView);
+        setTourDataToEdit(mainWindowController.TourListView);
         //validate the input fields
-        editTourViewModel.validate_WordsTextFields(NameTextField);
-        editTourViewModel.validate_WordsTextFields(StartingPointTextField);
-        editTourViewModel.validate_WordsTextFields(DestinationTextField);
-        editTourViewModel.validate_NumbersTextFields(DistanceTextField);
+        validate_WordsTextFields(NameTextField);
+        validate_WordsTextFields(StartingPointTextField);
+        validate_WordsTextFields(DestinationTextField);
+        validate_NumbersTextFields(DistanceTextField);
 
     }
 
@@ -48,7 +48,7 @@ public class EditTourController implements Initializable {
         //remove the selected Tour
         mainWindowController.TourListView.getItems().remove(index);
         //get the edited data
-        String data = editTourViewModel.tourData();
+        String data = tourData();
         String[] content = data.split(",");
         String name = content[0];
         String start= content[1];
@@ -67,5 +67,57 @@ public class EditTourController implements Initializable {
         //close the window
         Stage stage = (Stage) EditBtn.getScene().getWindow();
         stage.close();
+    }
+    public void setTourDataToEdit(ListView<Tour> listView){
+        String name = listView.getSelectionModel().getSelectedItem().getT_Name();
+        String start =  listView.getSelectionModel().getSelectedItem().getStartPoint();
+        String dest = listView.getSelectionModel().getSelectedItem().getDestination();
+        Double dist = listView.getSelectionModel().getSelectedItem().getT_Distance();
+        String desc = listView.getSelectionModel().getSelectedItem().getDescription();
+
+        NameTextField.setText(name);
+        StartingPointTextField.setText(start);
+        DestinationTextField.setText(dest);
+        DescriptionTextField.setText(desc);
+        String distance = "";
+        if (!dist.equals(""))
+            distance = Double.toString(dist);
+        DistanceTextField.setText(distance);
+    }
+
+    public String tourData(){
+        String name = this.NameTextField.getText();
+        String start = this.StartingPointTextField.getText();
+        String dest = this.DescriptionTextField.getText();
+        String dist = this.DistanceTextField.getText();
+        String desc = this.DescriptionTextField.getText();
+
+        //double distance = 0;
+        //if (!dist.isEmpty())
+        //    distance = Double.parseDouble(dist);
+
+        return name+","+start+","+dest+","+dist+","+desc;
+        //create the tour
+        //Tour tour = new Tour(ident,name,desc,start,dest,distance);
+
+    }
+    /**
+     * a method to validate the input of
+     * a text field where can be set only letters, space and number between 1 and 9
+     * @param textField the field which will be validated
+     * */
+    public void validate_WordsTextFields(TextField textField){
+        textField.setTextFormatter(new TextFormatter<>(change ->
+                (change.getControlNewText().matches("[a-zA-Z1-9 ]*")) ? change : null));
+
+    }
+    /**
+     * a method to validate the numbers input of
+     * a text field where we set maximal 2 digits after the "."
+     * @param textField the field which will be validated
+     * */
+    public void validate_NumbersTextFields(TextField textField){
+        textField.setTextFormatter(new TextFormatter<>(change ->
+                (change.getControlNewText().matches("([1-9][0-9]*)?([.])?([1-9][0-9]{0,1})?")) ? change : null));
     }
 }

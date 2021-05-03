@@ -8,11 +8,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import sample.viewModels.TourVM.AddTourViewModel;
+import lombok.Getter;
+import sample.models.Tour;
+import sample.views.MainWindowController;
 
 public class AddTourController implements Initializable {
 
-    AddTourViewModel addTourViewModel = new AddTourViewModel();
+    MainWindowController mainWindowController = new MainWindowController();
 
     public TextField IDTextField;
     public TextField NameTextField;
@@ -22,13 +24,19 @@ public class AddTourController implements Initializable {
     public TextArea DescriptionTextField;
     public Button AddBtn;
 
+    @Getter private Tour tour;
+
     /**
      * this method inserts the tour into the database or file
      * and closes the window.
      * */
     @FXML
     public void addTour(ActionEvent actionEvent) {
-        addTourViewModel.tourData();
+        tour = tourData();
+        //add tour to Observeable list in HomeWindowViewModel
+        mainWindowController.getTourListItems().add(tour);
+        //Save tour to listview
+        mainWindowController.setToursToList();
         //close the window
         Stage stage = (Stage) AddBtn.getScene().getWindow();
         stage.close();
@@ -37,16 +45,51 @@ public class AddTourController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Controller AddTour init");
-        IDTextField.textProperty().bindBidirectional(addTourViewModel.getInputIdentific());
-        NameTextField.textProperty().bindBidirectional(addTourViewModel.getInputName());
-        StartingPointTextField.textProperty().bindBidirectional(addTourViewModel.getInputStart());
-        DestinationTextField.textProperty().bindBidirectional(addTourViewModel.getInputDestination());
-        DistanceTextField.textProperty().bindBidirectional(addTourViewModel.getInputDistance());
-        DescriptionTextField.textProperty().bindBidirectional(addTourViewModel.getInputDescription());
         //validate the input fields
-        addTourViewModel.validate_WordsTextFields(NameTextField);
-        addTourViewModel.validate_WordsTextFields(StartingPointTextField);
-        addTourViewModel.validate_WordsTextFields(DestinationTextField);
-        addTourViewModel.validate_NumbersTextFields(DistanceTextField);
+        validate_WordsTextFields(NameTextField);
+        validate_WordsTextFields(StartingPointTextField);
+        validate_WordsTextFields(DestinationTextField);
+        validate_NumbersTextFields(DistanceTextField);
+    }
+    /**
+     * this method takes the input values from the textFields
+     * and saves then in the Tour
+     * and the tour will be saved also in the database
+     */
+    public Tour tourData() {
+        String ident = this.IDTextField.getText();
+        String name = this.NameTextField.getText();
+        String start = this.StartingPointTextField.getText();
+        String dest = this.DescriptionTextField.getText();
+        String dist = this.DistanceTextField.getText();
+        String desc = this.DescriptionTextField.getText();
+        double distance = 0;
+        if (!dist.isEmpty())
+            distance = Double.parseDouble(dist);
+        //create the tour
+        Tour tour = new Tour(ident, name, desc, start, dest, distance);
+        //add the tour to database
+        //dataAccess.addTourData(tour);
+        return tour;
+    }
+    /**
+     * a method to validate the input of
+     * a text field where can be set only letters, space and number between 1 and 9
+     * @param textField the field which will be validated
+     * */
+    public void validate_WordsTextFields(TextField textField){
+        textField.setTextFormatter(new TextFormatter<>(change ->
+                (change.getControlNewText().matches("[a-zA-Z1-9 ]*")) ? change : null));
+
+    }
+    /**
+     * a method to validate the numbers input of
+     * a text field where we set maximal 2 digits after the "."
+     * @param textField the field which will be validated
+     * */
+    public void validate_NumbersTextFields(TextField textField){
+        textField.setTextFormatter(new TextFormatter<>(change ->
+                (change.getControlNewText().matches("([1-9][0-9]*)?([.])?([1-9][0-9]{0,1})?")) ? change : null));
     }
 }
+

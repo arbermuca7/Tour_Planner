@@ -19,11 +19,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class HomeWindowViewModel {
-
+/*
     @Getter private final StringProperty searchInputTours = new SimpleStringProperty("");
     @Getter private final StringProperty searchInputLogs = new SimpleStringProperty("");
     @Getter private final StringProperty outputNameTour = new SimpleStringProperty("Titel: ");
     @Getter private final StringProperty outputTourLogs = new SimpleStringProperty("Logs for Tour: ");
+    @Getter private final StringProperty outputDescription = new SimpleStringProperty("..");
     @Getter private final ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
 
     IDataAccess dataAccess = new DatabaseAccess();
@@ -41,11 +42,21 @@ public class HomeWindowViewModel {
         }
     }
 
-    /**
-     * the following method takes
-     * @param listView as the ListView Panel where all the tour will be shown
-     * and delete the selected tour
-     * */
+    public void readDescription(ListView<Tour> list){
+        String id = list.getSelectionModel().getSelectedItem().getIdentification();
+        String name = list.getSelectionModel().getSelectedItem().getT_Name();
+        String start = list.getSelectionModel().getSelectedItem().getStartPoint();
+        String destination = list.getSelectionModel().getSelectedItem().getDestination();
+        double distance = list.getSelectionModel().getSelectedItem().getT_Distance();
+        String description = list.getSelectionModel().getSelectedItem().getDescription();
+        if(!start.isEmpty() && !destination.isEmpty() && distance!=0){
+            this.outputDescription.set(
+                    "The Trip "+name+" started in "+start+" and finished in "+destination+"\n"
+                            +"The road length was "+distance+" km \n"
+                            +"The Trip description: "+description);
+        }
+    }
+
     //delete the selected tour
     public void deleteSelectedTour(ListView<Tour> listView) throws SQLException {
         selectedIndex = listView.getSelectionModel().getSelectedIndex();
@@ -56,13 +67,8 @@ public class HomeWindowViewModel {
     }
 
     //set the tour items into the ListView
-    /**
-     * the following method takes
-     * @param listView as the ListView Panel where all the tour will be shown
-     * and inserts all of the created tour in this List
-     * */
     public void setToursToList(ListView<Tour> listView){
-        listView.setItems(tourListItems);
+        //listView.setItems(tourListItems);
         if(!listView.getItems().isEmpty()){
             System.out.println("List view: "+listView.getItems().get(0).getT_Name());
         }else{
@@ -70,11 +76,8 @@ public class HomeWindowViewModel {
         }
         //listView.setItems(addTourViewModel.getTourListItems());
     }
-    /**
-     * the method which formats the cells to show the name
-     * and has as a parameter the
-     * @param listView  the list of all tours
-     * */
+
+
     //format cells to show name
     public void setFormatCells(ListView<Tour> listView){
         listView.setCellFactory((param -> new ListCell<Tour>(){
@@ -89,11 +92,7 @@ public class HomeWindowViewModel {
             }
         }));
     }
-    /**
-     * this method sets the listener to the tour
-     * and take as parameter
-     * @param listView the list of all tours
-     * */
+
     //set the listener to the tour
     public void setTourListener(ListView<Tour> listView){
         listView.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldValue, newValue) -> {
@@ -118,4 +117,5 @@ public class HomeWindowViewModel {
         stage.setScene(new Scene(root));
         stage.show();
     }
+    */
 }

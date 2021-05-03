@@ -26,7 +26,7 @@ public class AddLogController implements Initializable {
     public Button addBtn;
 
     public void addLog(ActionEvent actionEvent) {
-        addLogViewModel.addLog();
+        addLogViewModel.logData();
         //close the window after adding the log into the table
         Stage stage = (Stage) addBtn.getScene().getWindow();
         stage.close();
