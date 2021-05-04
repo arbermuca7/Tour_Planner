@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.Getter;
+import sample.businessLayer.javaApp.JavaAppManager;
+import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Tour;
 import sample.views.MainWindowController;
 
@@ -25,7 +27,7 @@ public class AddTourController implements Initializable {
     public Button AddBtn;
 
     @Getter private Tour tour;
-
+    @Getter private JavaAppManager manager;
     /**
      * this method inserts the tour into the database or file
      * and closes the window.
@@ -34,7 +36,8 @@ public class AddTourController implements Initializable {
     public void addTour(ActionEvent actionEvent) {
         tour = tourData();
         //add tour to Observeable list in HomeWindowViewModel
-        mainWindowController.getTourListItems().add(tour);
+        manager.SetTourItems(tour);
+        mainWindowController.getTourListItems().addAll(manager.GetTourItems());
         //Save tour to listview
         mainWindowController.setToursToList();
         //close the window
@@ -45,6 +48,7 @@ public class AddTourController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Controller AddTour init");
+        manager = JavaAppManagerFactory.GetManager();
         //validate the input fields
         validate_WordsTextFields(NameTextField);
         validate_WordsTextFields(StartingPointTextField);
