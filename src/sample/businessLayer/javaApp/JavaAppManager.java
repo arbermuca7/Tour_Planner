@@ -8,8 +8,10 @@ import java.util.List;
 
 public interface JavaAppManager {
 
-    void SetTourItems(Tour tour) throws SQLException;
-    void GetTour(ObservableList<Tour> tour) throws SQLException;
+    void SetDataItems(Tour tour) throws SQLException;
+    void GetData(ObservableList<Tour> tour) throws SQLException;
+    void delData(String id) throws SQLException;
+    void editData(Tour tour, String id);
     List<Tour> GetTourItems();
     List<Tour> searchTourItem(String tourName, boolean caseSensitive) throws SQLException;
 

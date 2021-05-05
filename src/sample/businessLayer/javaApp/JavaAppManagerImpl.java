@@ -1,43 +1,45 @@
 package sample.businessLayer.javaApp;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import sample.dataAccessLayer.DAOs.TourDAO;
 import sample.models.Tour;
 import sample.views.MainWindowController;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class JavaAppManagerImpl implements JavaAppManager{
 
-    List<Tour> tourItems = new ArrayList<>();
     TourDAO tourDAO = new TourDAO();
-    MainWindowController mainWindowController;
 
     @Override
-    public void SetTourItems(Tour tour) throws SQLException {
+    public void SetDataItems(Tour tour) throws SQLException {
         tourDAO.addTourToDB(tour);
-        //tourItems.add(tour);
     }
+
     @Override
     public List<Tour> GetTourItems() {
-        //tourDAO.GetTours(ObservableList);
-        return tourItems;
+        return tourDAO.GetTourWithoutSaving();
     }
+
     @Override
-    public void GetTour(ObservableList<Tour> tour) throws SQLException {
+    public void GetData(ObservableList<Tour> tour) throws SQLException {
         tourDAO.GetTours(tour);
     }
+
+    public void delData(String id) throws SQLException {
+        tourDAO.deleteTourFromDB(id);
+    }
+
+    @Override
+    public void editData(Tour tour, String id) {
+        tourDAO.editTourInDB(tour, id);
+    }
+
     @Override
     public List<Tour> searchTourItem(String tourName, boolean caseSensitive) throws SQLException {
-        ObservableList<Tour> list = FXCollections.observableArrayList();
-        list.addAll(mainWindowController.getTourListItems());
-        for (Tour tour : list) {
-            SetTourItems(tour);
-        }
+        //get TourList from DB but not saving in the ObservableList, but in a normal List
         List<Tour> tourList = GetTourItems();
         if(caseSensitive){
             return tourList
