@@ -10,6 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import lombok.Getter;
+import sample.businessLayer.javaApp.JavaAppManager;
+import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Log;
 import sample.models.Tour;
 import sample.viewModels.TourVM.AddTourViewModel;
@@ -24,6 +26,7 @@ import sample.views.TourViews.AddTourController;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable{
@@ -38,7 +41,7 @@ public class MainWindowController implements Initializable{
     public Label DescriptionLabel;
 
     @Getter private final ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
-
+    private JavaAppManager manager;
     @Getter private String identification = "";
     public Tour currentTour;
     public int selectedIndex = -1;
@@ -59,7 +62,7 @@ public class MainWindowController implements Initializable{
         //tourListItems.addAll(tour,tour1,tour2);
         //tourListItems.addAll(tour);
         //tourListItems.addAll(addTourController.getTour());
-
+        manager = JavaAppManagerFactory.GetManager();
         //set the tour items into the ListView
         setToursToList();
         //format cells to show name
@@ -99,7 +102,6 @@ public class MainWindowController implements Initializable{
      * and when we select a tour it shows us all the tour description in the Tab
      * */
     public void readDescription(ListView<Tour> list){
-        String id = list.getSelectionModel().getSelectedItem().getIdentification();
         String name = list.getSelectionModel().getSelectedItem().getT_Name();
         String start = list.getSelectionModel().getSelectedItem().getStartPoint();
         String destination = list.getSelectionModel().getSelectedItem().getDestination();
@@ -189,7 +191,8 @@ public class MainWindowController implements Initializable{
      * the addTour window, when you click the add button
      * */
     public void addTourWindow(ActionEvent actionEvent) {
-        newWindow("TourViews/addTour","Add Tour");
+        AddTourController addTourController = (AddTourController) newWindow("TourViews/addTour","Add Tour");
+        addTourController.mainWindowController = this;
     }
     /**
      * The method is used to connect the main window with
@@ -218,7 +221,7 @@ public class MainWindowController implements Initializable{
      * @param windowName as String which contains the url to the new window
      * @param windowTitle as String whicht contains the title of the window
      * */
-    public void newWindow(String windowName,String windowTitle){
+    public Initializable newWindow(String windowName,String windowTitle){
         Parent root=null;
         FXMLLoader loader = new FXMLLoader();
 
@@ -228,10 +231,12 @@ public class MainWindowController implements Initializable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         Stage stage = new Stage();
         stage.setTitle(windowTitle);
         stage.setScene(new Scene(root));
         stage.show();
+        return loader.getController();
     }
 
     /**
@@ -241,7 +246,15 @@ public class MainWindowController implements Initializable{
      * */
     @FXML
     public void clearInput(ActionEvent actionEvent) {
+        //ObservableList<Tour> list = FXCollections.observableArrayList();
+        //list.addAll(tourListItems);
+        //tourListItems.clear();
         InputTextField.textProperty().setValue("");
+        /*for (Tour tour : list) {
+            manager.SetTourItems(tour);
+        }*/
+        //List<Tour> touritems = manager.GetTourItems();
+        //tourListItems.addAll(touritems);
     }
     /**
      * you can close the application by clicking
@@ -254,4 +267,9 @@ public class MainWindowController implements Initializable{
         });
     }
 
+    public void searchItems(ActionEvent actionEvent) {
+        //tourListItems.clear();
+        //List<Tour> touritems = manager.searchTourItem(InputTextField.textProperty().getValue(),false);
+        //tourListItems.addAll(touritems);
+    }
 }

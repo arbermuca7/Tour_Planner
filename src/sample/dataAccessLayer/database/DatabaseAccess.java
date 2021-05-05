@@ -3,18 +3,26 @@ import sample.models.Log;
 import sample.models.Tour;
 
 import java.sql.*;
+import java.util.List;
 
 public class DatabaseAccess implements IDataAccess {
 
     Connection connection;
+    @Override
     public void openConnection() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/swe1db","postgres","admin");
+        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres","admin");
     }
-
+    @Override
     public void closeConnection() throws SQLException {
         connection.close();
         connection = null;
     }
+
+
+    public List<Tour> GetTours() {
+        return null;
+    }
+
     //add the tour to the databaseTable
     @Override
     public void addTourData(Tour tour) {

@@ -16,7 +16,7 @@ import sample.views.MainWindowController;
 
 public class AddTourController implements Initializable {
 
-    MainWindowController mainWindowController = new MainWindowController();
+    public MainWindowController mainWindowController;
 
     public TextField IDTextField;
     public TextField NameTextField;
@@ -43,6 +43,7 @@ public class AddTourController implements Initializable {
         //close the window
         Stage stage = (Stage) AddBtn.getScene().getWindow();
         stage.close();
+        manager.GetTourItems().clear();
     }
 
     @Override
@@ -64,7 +65,7 @@ public class AddTourController implements Initializable {
         String ident = this.IDTextField.getText();
         String name = this.NameTextField.getText();
         String start = this.StartingPointTextField.getText();
-        String dest = this.DescriptionTextField.getText();
+        String dest = this.DestinationTextField.getText();
         String dist = this.DistanceTextField.getText();
         String desc = this.DescriptionTextField.getText();
         double distance = 0;

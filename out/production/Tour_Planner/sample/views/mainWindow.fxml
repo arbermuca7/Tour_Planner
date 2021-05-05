@@ -26,7 +26,7 @@
             <GridPane.margin>
                 <Insets left="10.0" />
             </GridPane.margin></TextField>
-        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#searchItems" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="1" />
         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clearInput" text="Clear" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets right="10.0" />
