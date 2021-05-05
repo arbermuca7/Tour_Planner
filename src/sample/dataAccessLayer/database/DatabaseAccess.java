@@ -1,9 +1,12 @@
 package sample.dataAccessLayer.database;
+
 import javafx.collections.ObservableList;
 import sample.models.Log;
 import sample.models.Tour;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseAccess implements IDataAccess {
 
@@ -18,34 +21,11 @@ public class DatabaseAccess implements IDataAccess {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url, user, pwd);
-            System.out.println("-->Connection Successful");
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return connection;
     }
-
-    @Override
-    public void openConnection(String url, String user, String pass) {
-        /*try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(url,user,pass);
-            System.out.println("-->Connection Successfully Opened");
-        }catch (ClassNotFoundException | SQLException e){
-            e.getStackTrace();
-        }*/
-    }
-    @Override
-    public void closeConnection(){
-        /*try {
-            connection.close();
-            System.out.println("-->Connection Successfully Closed");
-        }catch (SQLException e){
-            e.getStackTrace();
-        }*/
-
-    }
-
 
     public void GetTours(ObservableList<Tour> tourObservableList){
         String query = "SELECT * FROM tour";
@@ -73,6 +53,36 @@ public class DatabaseAccess implements IDataAccess {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+    @Override
+    public List<Tour> GetToursWithoutSaving(){
+        String query = "SELECT * FROM tour";
+        List<Tour> tourList = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            Statement stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while(res.next()){
+                String ident = res.getString("identification");
+                String name = res.getString("bezeichnung");
+                String desc = res.getString("description");
+                double dist = res.getDouble("distance");
+                String start = res.getString("startpoint");
+                String dest = res.getString("destination");
+                //System.out.println("ID: "+ident+", Name: "+name+", Description: "+desc+", Distance: "+dist+", Start: "+start+", Destin: "+dest);
+
+                Tour tour = new Tour(ident,name,desc,start,dest,dist);
+
+                /*System.out.println("-->Tour-->ID: "+tour.getIdentification()+", Name: "+tour.getT_Name()+", Description: "+tour.getDescription()
+                        +", Distance: "+tour.getT_Distance()+", Start: "+tour.getStartPoint()+", Destin: "+tour.getDestination());*/
+
+                //add the database tours to a List
+                tourList.add(tour);
+            }
+            stmt.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return tourList;
     }
 
     //add the tour to the databaseTable

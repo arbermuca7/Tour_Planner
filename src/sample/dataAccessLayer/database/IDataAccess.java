@@ -6,13 +6,13 @@ import sample.models.Tour;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface IDataAccess {
     Connection getConnection();
-    void openConnection(String url, String user, String pass);
-    void closeConnection() throws SQLException;
 
-    public void GetTours(ObservableList<Tour> tourObservableList);
+    void GetTours(ObservableList<Tour> tourObservableList);
+    List<Tour> GetToursWithoutSaving();
 
     void addTourData(Tour tour);
     void editTourData(Tour tour, String id);

@@ -5,6 +5,7 @@ import sample.dataAccessLayer.database.DatabaseAccess;
 import sample.dataAccessLayer.database.IDataAccess;
 import sample.models.Tour;
 import java.sql.SQLException;
+import java.util.List;
 
 public class TourDAO {
     IDataAccess dataAccess;
@@ -15,6 +16,9 @@ public class TourDAO {
 
     public void GetTours(ObservableList<Tour> list) throws SQLException {
         dataAccess.GetTours(list);
+    }
+    public List<Tour> GetTourWithoutSaving(){
+        return dataAccess.GetToursWithoutSaving();
     }
 
     public void addTourToDB(Tour tour) throws SQLException {
