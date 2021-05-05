@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.beans.binding.Bindings;
 import sample.views.TourViews.AddTourController;
+import sample.views.TourViews.EditTourController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,6 +46,7 @@ public class MainWindowController implements Initializable{
 
     @Getter private JavaAppManager manager;
     @Getter private String identification = "";
+
     public Tour currentTour;
     public int selectedIndex = -1;
 
@@ -64,7 +66,7 @@ public class MainWindowController implements Initializable{
         //tourListItems.addAll(addTourController.getTour());
         manager = JavaAppManagerFactory.GetManager();
         //set the tour items into the ListView and take them from DB
-        manager.GetTour(tourListItems);
+        manager.GetData(tourListItems);
         setToursToList();
         //format cells to show name
         setFormatCells();
@@ -75,6 +77,7 @@ public class MainWindowController implements Initializable{
     @FXML
     public void displaySelect(MouseEvent mouseEvent) {
         diplaySelect(TourListView);
+        readDescription(TourListView);
     }
 
     // display the selected tour to these Labels
@@ -88,12 +91,6 @@ public class MainWindowController implements Initializable{
         }
     }
 
-    /** you can read the trip description */
-    @FXML
-    public void showDescription(Event event) {
-        readDescription(TourListView);
-    }
-
     //it is a method that shows us what is the description of a certain tour
     /**
      * the following method takes
@@ -101,16 +98,12 @@ public class MainWindowController implements Initializable{
      * and when we select a tour it shows us all the tour description in the Tab
      * */
     public void readDescription(ListView<Tour> list){
-        String name = list.getSelectionModel().getSelectedItem().getT_Name();
-        String start = list.getSelectionModel().getSelectedItem().getStartPoint();
-        String destination = list.getSelectionModel().getSelectedItem().getDestination();
-        double distance = list.getSelectionModel().getSelectedItem().getT_Distance();
-        String description = list.getSelectionModel().getSelectedItem().getDescription();
-        if(!start.isEmpty() && !destination.isEmpty() && distance!=0){
-            this.DescriptionLabel.textProperty().set(
-                    "The Trip "+name+" started in "+start+" and finished in "+destination+"\n"
-                            +"The road length was "+distance+" km \n"
-                            +"The Trip description: "+description);
+        Tour tour = list.getSelectionModel().getSelectedItem();
+        if(!tour.getStartPoint().isEmpty() && !tour.getDestination().isEmpty() && tour.getT_Distance()!=0){
+            this.DescriptionLabel.setText(
+                    "The Trip \""+tour.getT_Name()+"\" started in "+tour.getStartPoint()+" and finished in "+tour.getDestination()+"\n"
+                            +"The road length was "+tour.getT_Distance()+" km \n"
+                            +"The Trip description: "+tour.getDescription());
         }
     }
 
@@ -130,8 +123,8 @@ public class MainWindowController implements Initializable{
         selectedIndex = listView.getSelectionModel().getSelectedIndex();
         listView.getItems().remove(selectedIndex);
         //remove also from database
-        //String ident = listView.getSelectionModel().getSelectedItem().getIdentification();
-        //dataAccess.deleteTourData(ident);
+        String ident = listView.getSelectionModel().getSelectedItem().getIdentification();
+        manager.delData(ident);
     }
 
     //-----------------------------------Format and set the tours to list----------------------------------------------
@@ -196,7 +189,9 @@ public class MainWindowController implements Initializable{
      * */
     public void editTourWindow(ActionEvent actionEvent) {
         identification = TourListView.getSelectionModel().getSelectedItem().getIdentification();
-        newWindow("TourViews/editTour","Edit Tour");
+        System.out.println("*****EditTourWindow*****\n-->idOfSelItem: "+ identification);
+        EditTourController editTourController = (EditTourController) newWindow("TourViews/editTour","Edit Tour");
+        editTourController.mainWindowController = this;
     }
 
     /**
@@ -218,7 +213,7 @@ public class MainWindowController implements Initializable{
      * @param windowName as String which contains the url to the new window
      * @param windowTitle as String whicht contains the title of the window
      * */
-    public Initializable newWindow(String windowName,String windowTitle){
+    public Initializable newWindow(String windowName, String windowTitle){
         Parent root=null;
         FXMLLoader loader = new FXMLLoader();
 
@@ -242,16 +237,13 @@ public class MainWindowController implements Initializable{
      * through a button
      * */
     @FXML
-    public void clearInput(ActionEvent actionEvent) {
-        //ObservableList<Tour> list = FXCollections.observableArrayList();
-        //list.addAll(tourListItems);
-        //tourListItems.clear();
+    public void clearInput(ActionEvent actionEvent) throws SQLException {
+        //clear the list with the searched Items
+        tourListItems.clear();
+        //clear the input field
         InputTextField.textProperty().setValue("");
-        /*for (Tour tour : list) {
-            manager.SetTourItems(tour);
-        }*/
-        //List<Tour> touritems = manager.GetTourItems();
-        //tourListItems.addAll(touritems);
+        //get tours form db and save them in ObservableList
+        manager.GetData(tourListItems);
     }
     /**
      * you can close the application by clicking
@@ -264,10 +256,13 @@ public class MainWindowController implements Initializable{
         });
     }
 
-
-    public void searchItems(ActionEvent actionEvent) {
-        //tourListItems.clear();
-        //List<Tour> touritems = manager.searchTourItem(InputTextField.textProperty().getValue(),false);
-        //tourListItems.addAll(touritems);
+    @FXML
+    public void searchItems(ActionEvent actionEvent) throws SQLException {
+        //clear the ObservableList
+        tourListItems.clear();
+        // add to a list all the searched tours
+        List<Tour> tours = manager.searchTourItem(InputTextField.textProperty().getValue(),false);
+        //insert these searched tours to the ObservableList
+        tourListItems.addAll(tours);
     }
 }

@@ -36,10 +36,8 @@ public class AddTourController implements Initializable {
     @FXML
     public void addTour(ActionEvent actionEvent) throws SQLException {
         tour = tourData();
-        //add tour to Observeable list in MainCOntroller and database
-        manager.SetTourItems(tour);
-        /**!!Problem is here*/
-        //manager.GetTour(mainWindowController.getTourListItems());
+        //add tour to ObservableList in MainController and database
+        manager.SetDataItems(tour);
         mainWindowController.getTourListItems().add(tour);
         //Save tour to listview
         mainWindowController.setToursToList();
@@ -51,6 +49,7 @@ public class AddTourController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("-->AddTourController init");
+        //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
         //validate the input fields
         validate_WordsTextFields(NameTextField);
