@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Log;
@@ -41,19 +42,18 @@ public class MainWindowController implements Initializable{
     public Label DescriptionLabel;
 
     @Getter private final ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
-    private JavaAppManager manager;
+
+    @Getter private JavaAppManager manager;
     @Getter private String identification = "";
     public Tour currentTour;
     public int selectedIndex = -1;
 
-    public MainWindowController()
-    {
-        System.out.println("Main Controller");
-    }
+    public MainWindowController(){}
 
+    @SneakyThrows
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Controller MainWindow init");
+        System.out.println("-->MainWindowController init");
         //Tour tour = new Tour("ha12sh","Sample","hey whats up","vienna","graz",220.5);
         //Tour tour1 = new Tour("ha12sh","Tour2","hey whats up","vienna","shkodra",1200.5);
         //Tour tour2 = new Tour("ha12sh","Tour3","hey whats up","shkodra","tirana",120);
@@ -63,7 +63,8 @@ public class MainWindowController implements Initializable{
         //tourListItems.addAll(tour);
         //tourListItems.addAll(addTourController.getTour());
         manager = JavaAppManagerFactory.GetManager();
-        //set the tour items into the ListView
+        //set the tour items into the ListView and take them from DB
+        manager.GetTour(tourListItems);
         setToursToList();
         //format cells to show name
         setFormatCells();
@@ -87,9 +88,7 @@ public class MainWindowController implements Initializable{
         }
     }
 
-    /**
-     * you can read the trip description
-     * */
+    /** you can read the trip description */
     @FXML
     public void showDescription(Event event) {
         readDescription(TourListView);
@@ -116,9 +115,7 @@ public class MainWindowController implements Initializable{
     }
 
     //---------------------------------------delete a tour from the list-----------------------------------------------
-    /**
-     * you can delete a certain Tour
-     * */
+    /** you can delete a certain Tour */
     @FXML
     public void deleteTour(MouseEvent mouseEvent) throws SQLException {
         deleteSelectedTour(TourListView);
@@ -147,11 +144,10 @@ public class MainWindowController implements Initializable{
     public void setToursToList(){
         TourListView.setItems(tourListItems);
         if(!TourListView.getItems().isEmpty()){
-            System.out.println("List view: "+TourListView.getItems().get(0).getT_Name());
+            //System.out.println("List view: "+TourListView.getItems().get(0).getT_Name());
         }else{
-            System.out.println("nothing..................");
+            //System.out.println("nothing..................");
         }
-        //listView.setItems(addTourViewModel.getTourListItems());
     }
 
     /**
@@ -173,9 +169,7 @@ public class MainWindowController implements Initializable{
         }));
     }
 
-    /**
-     * this method sets the listener to the tour
-     * */
+    /** this method sets the listener to the tour */
     //set the listener to the tour
     public void setTourListener(){
         TourListView.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldValue, newValue) -> {
@@ -186,6 +180,7 @@ public class MainWindowController implements Initializable{
     }
 
     //----------------------------------------Connect different Windows-------------------------------------------------
+
     /**
      * the method which connects the main window with
      * the addTour window, when you click the add button
@@ -194,6 +189,7 @@ public class MainWindowController implements Initializable{
         AddTourController addTourController = (AddTourController) newWindow("TourViews/addTour","Add Tour");
         addTourController.mainWindowController = this;
     }
+
     /**
      * The method is used to connect the main window with
      * the editTour window, when you click the edit button
@@ -202,6 +198,7 @@ public class MainWindowController implements Initializable{
         identification = TourListView.getSelectionModel().getSelectedItem().getIdentification();
         newWindow("TourViews/editTour","Edit Tour");
     }
+
     /**
      * The method is used to open the addLog window,
      * when you click at the edit button
@@ -266,6 +263,7 @@ public class MainWindowController implements Initializable{
             System.exit(0);
         });
     }
+
 
     public void searchItems(ActionEvent actionEvent) {
         //tourListItems.clear();

@@ -1,23 +1,25 @@
 package sample.dataAccessLayer.database;
 
+import javafx.collections.ObservableList;
 import sample.models.Log;
 import sample.models.Tour;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 public interface IDataAccess {
-    void openConnection() throws SQLException;
+    Connection getConnection();
+    void openConnection(String url, String user, String pass);
     void closeConnection() throws SQLException;
 
-    public List<Tour> GetTours();
+    public void GetTours(ObservableList<Tour> tourObservableList);
 
     void addTourData(Tour tour);
     void editTourData(Tour tour, String id);
-    void deleteTourData(String id) throws SQLException;
+    void deleteTourData(String id);
 
-    void addLogData(Log logs,Tour tour);
+    void addLogData(Log logs,String identific);
     void editLogData(Log logs);
-    void deleteLogData(String name) throws SQLException;
+    void deleteLogData(String name);
 
 }

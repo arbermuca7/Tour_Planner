@@ -1,38 +1,89 @@
 package sample.dataAccessLayer.database;
+import javafx.collections.ObservableList;
 import sample.models.Log;
 import sample.models.Tour;
 
 import java.sql.*;
-import java.util.List;
 
 public class DatabaseAccess implements IDataAccess {
 
-    Connection connection;
+    String url = "jdbc:postgresql://localhost:5432/postgres";
+    String user = "postgres";
+    String pwd = "admin";
+
+    public DatabaseAccess(){}
     @Override
-    public void openConnection() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres","admin");
+     public Connection getConnection() {
+        Connection connection = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(url, user, pwd);
+            System.out.println("-->Connection Successful");
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+
+    @Override
+    public void openConnection(String url, String user, String pass) {
+        /*try {
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(url,user,pass);
+            System.out.println("-->Connection Successfully Opened");
+        }catch (ClassNotFoundException | SQLException e){
+            e.getStackTrace();
+        }*/
     }
     @Override
-    public void closeConnection() throws SQLException {
-        connection.close();
-        connection = null;
+    public void closeConnection(){
+        /*try {
+            connection.close();
+            System.out.println("-->Connection Successfully Closed");
+        }catch (SQLException e){
+            e.getStackTrace();
+        }*/
+
     }
 
 
-    public List<Tour> GetTours() {
-        return null;
+    public void GetTours(ObservableList<Tour> tourObservableList){
+        String query = "SELECT * FROM tour";
+        try (Connection connection = getConnection()){
+            Statement stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while(res.next()){
+                String ident = res.getString("identification");
+                String name = res.getString("bezeichnung");
+                String desc = res.getString("description");
+                double dist = res.getDouble("distance");
+                String start = res.getString("startpoint");
+                String dest = res.getString("destination");
+                //System.out.println("ID: "+ident+", Name: "+name+", Description: "+desc+", Distance: "+dist+", Start: "+start+", Destin: "+dest);
+
+                Tour tour = new Tour(ident,name,desc,start,dest,dist);
+
+                /*System.out.println("-->Tour-->ID: "+tour.getIdentification()+", Name: "+tour.getT_Name()+", Description: "+tour.getDescription()
+                        +", Distance: "+tour.getT_Distance()+", Start: "+tour.getStartPoint()+", Destin: "+tour.getDestination());*/
+
+                //add the database tours to observable list
+                tourObservableList.add(tour);
+            }
+            stmt.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     //add the tour to the databaseTable
     @Override
     public void addTourData(Tour tour) {
-        String distance = Double.toString(tour.getT_Distance());
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO fighter VALUES (?,?,?,?,?,?); ");
+        try (Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO tour(identification,bezeichnung,description,distance,startpoint,destination) VALUES (?,?,?,?,?,?); ");
             statement.setString(1,tour.getIdentification());
             statement.setString(2,tour.getT_Name());
             statement.setString(3,tour.getDescription());
-            statement.setString(4,distance);
+            statement.setDouble(4,tour.getT_Distance());
             statement.setString(5,tour.getStartPoint());
             statement.setString(6,tour.getDestination());
             statement.execute();
@@ -43,12 +94,11 @@ public class DatabaseAccess implements IDataAccess {
     //edit a certain Tour
     @Override
     public void editTourData(Tour tour, String id) {
-        String distance = Double.toString(tour.getT_Distance());
-        try {
+        try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("UPDATE tour SET bezeichnung=?, description=?, distance=?, startpoint=?, destination=? WHERE identification=?;\n");
             statement.setString(1,tour.getT_Name());
             statement.setString(2, tour.getDescription());
-            statement.setString(3,distance);
+            statement.setDouble(3,tour.getT_Distance());
             statement.setString(4, tour.getStartPoint());
             statement.setString(5, tour.getDestination());
             statement.setString(4, id);
@@ -60,8 +110,8 @@ public class DatabaseAccess implements IDataAccess {
     }
     //delete a certain Tour from database
     @Override
-    public void deleteTourData(String id) throws SQLException {
-        try {
+    public void deleteTourData(String id){
+        try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("DELETE FROM tour WHERE identification = ?; ");
             statement.setString(1,id);
             statement.execute();
@@ -71,25 +121,20 @@ public class DatabaseAccess implements IDataAccess {
     }
 
     @Override
-    public void addLogData(Log logs,Tour tour) {
-        String distance = Double.toString(logs.getDistance());
-        String speed = Integer.toString(logs.getAvg_speed());
-        String fuel = Float.toString(logs.getFuel_cost());
-        String rate = Integer.toString(logs.getRating());
-        String toll = Boolean.toString(logs.isToll_roads());
-        try {
+    public void addLogData(Log logs,String identific) {
+        try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("INSERT INTO logs VALUES (?,?,?,?,?,?,?,?,?,?,?); ");
             statement.setString(1,logs.getName());
             statement.setString(2,logs.getDate());
             statement.setString(3,logs.getDuration());
-            statement.setString(4,distance);
-            statement.setString(5,speed);
-            statement.setString(6,fuel);
+            statement.setDouble(4,logs.getDistance());
+            statement.setInt(5,logs.getAvg_speed());
+            statement.setFloat(6,logs.getFuel_cost());
             statement.setString(7,logs.getRoute_type());
-            statement.setString(8,rate);
+            statement.setInt(8,logs.getRating());
             statement.setString(9,logs.getTravel_mode());
-            statement.setString(10,toll);
-            statement.setString(11,tour.getIdentification());
+            statement.setBoolean(10,logs.isToll_roads());
+            statement.setString(11,identific);
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -98,25 +143,19 @@ public class DatabaseAccess implements IDataAccess {
 
     @Override
     public void editLogData(Log logs) {
-        String distance = Double.toString(logs.getDistance());
-        String speed = Integer.toString(logs.getAvg_speed());
-        String fuel = Float.toString(logs.getFuel_cost());
-        String rate = Integer.toString(logs.getRating());
-        String toll = Boolean.toString(logs.isToll_roads());
-
-        try {
+        try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("UPDATE logs SET log_name=?, l_date=?, duration=?, distance=?, avg_speed=?" +
                     ", fuel_costs=?, route_type=?, rating=?, travel_mode=?, toll_roads=? WHERE log_name=?;\n");
             statement.setString(1,logs.getName());
             statement.setString(2,logs.getDate());
             statement.setString(3,logs.getDuration());
-            statement.setString(4,distance);
-            statement.setString(5,speed);
-            statement.setString(6,fuel);
+            statement.setDouble(4,logs.getDistance());
+            statement.setInt(5,logs.getAvg_speed());
+            statement.setFloat(6,logs.getFuel_cost());
             statement.setString(7,logs.getRoute_type());
-            statement.setString(8,rate);
+            statement.setInt(8,logs.getRating());
             statement.setString(9,logs.getTravel_mode());
-            statement.setString(10,toll);
+            statement.setBoolean(10,logs.isToll_roads());
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -124,9 +163,9 @@ public class DatabaseAccess implements IDataAccess {
     }
 
     @Override
-    public void deleteLogData(String name) throws SQLException {
+    public void deleteLogData(String name){
 
-        try {
+        try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("DELETE FROM logs WHERE log_name = ?; ");
             statement.setString(1,name);
             statement.execute();

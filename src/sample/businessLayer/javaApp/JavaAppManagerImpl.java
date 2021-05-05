@@ -2,10 +2,11 @@ package sample.businessLayer.javaApp;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import sample.dataAccessLayer.DAOs.TourDAO;
 import sample.models.Tour;
 import sample.views.MainWindowController;
-import sample.views.TourViews.AddTourController;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,17 +14,25 @@ import java.util.stream.Collectors;
 public class JavaAppManagerImpl implements JavaAppManager{
 
     List<Tour> tourItems = new ArrayList<>();
+    TourDAO tourDAO = new TourDAO();
     MainWindowController mainWindowController;
+
     @Override
-    public void SetTourItems(Tour tour) {
-        tourItems.add(tour);
+    public void SetTourItems(Tour tour) throws SQLException {
+        tourDAO.addTourToDB(tour);
+        //tourItems.add(tour);
     }
     @Override
     public List<Tour> GetTourItems() {
+        //tourDAO.GetTours(ObservableList);
         return tourItems;
     }
     @Override
-    public List<Tour> searchTourItem(String tourName, boolean caseSensitive) {
+    public void GetTour(ObservableList<Tour> tour) throws SQLException {
+        tourDAO.GetTours(tour);
+    }
+    @Override
+    public List<Tour> searchTourItem(String tourName, boolean caseSensitive) throws SQLException {
         ObservableList<Tour> list = FXCollections.observableArrayList();
         list.addAll(mainWindowController.getTourListItems());
         for (Tour tour : list) {

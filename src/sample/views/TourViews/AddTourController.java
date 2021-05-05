@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -33,22 +34,23 @@ public class AddTourController implements Initializable {
      * and closes the window.
      * */
     @FXML
-    public void addTour(ActionEvent actionEvent) {
+    public void addTour(ActionEvent actionEvent) throws SQLException {
         tour = tourData();
-        //add tour to Observeable list in HomeWindowViewModel
+        //add tour to Observeable list in MainCOntroller and database
         manager.SetTourItems(tour);
-        mainWindowController.getTourListItems().addAll(manager.GetTourItems());
+        /**!!Problem is here*/
+        //manager.GetTour(mainWindowController.getTourListItems());
+        mainWindowController.getTourListItems().add(tour);
         //Save tour to listview
         mainWindowController.setToursToList();
         //close the window
         Stage stage = (Stage) AddBtn.getScene().getWindow();
         stage.close();
-        manager.GetTourItems().clear();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Controller AddTour init");
+        System.out.println("-->AddTourController init");
         manager = JavaAppManagerFactory.GetManager();
         //validate the input fields
         validate_WordsTextFields(NameTextField);
@@ -73,8 +75,6 @@ public class AddTourController implements Initializable {
             distance = Double.parseDouble(dist);
         //create the tour
         Tour tour = new Tour(ident, name, desc, start, dest, distance);
-        //add the tour to database
-        //dataAccess.addTourData(tour);
         return tour;
     }
     /**
