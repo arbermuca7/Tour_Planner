@@ -23,14 +23,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 500, 600));
         primaryStage.show();
     }
-    private static final String url = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String user = "postgres";
-    private static final String pwd = "admin";
-
     public static void main(String[] args) throws SQLException {
-        //IDataAccess db = new DatabaseAccess();
-        //db.openConnection(url,user,pwd);
         launch(args);
-        //db.closeConnection();
     }
 }
