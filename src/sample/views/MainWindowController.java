@@ -45,7 +45,10 @@ public class MainWindowController implements Initializable{
     @Getter private final ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
 
     @Getter private JavaAppManager manager;
+
     @Getter private String identification = "";
+    @Getter private Tour tourG;
+
 
     public Tour currentTour;
     public int selectedIndex = -1;
@@ -56,14 +59,6 @@ public class MainWindowController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("-->MainWindowController init");
-        //Tour tour = new Tour("ha12sh","Sample","hey whats up","vienna","graz",220.5);
-        //Tour tour1 = new Tour("ha12sh","Tour2","hey whats up","vienna","shkodra",1200.5);
-        //Tour tour2 = new Tour("ha12sh","Tour3","hey whats up","shkodra","tirana",120);
-
-        //------------------The init of the tours---------------------------
-        //tourListItems.addAll(tour,tour1,tour2);
-        //tourListItems.addAll(tour);
-        //tourListItems.addAll(addTourController.getTour());
         manager = JavaAppManagerFactory.GetManager();
         //set the tour items into the ListView and take them from DB
         manager.GetData(tourListItems);
@@ -72,14 +67,18 @@ public class MainWindowController implements Initializable{
         setFormatCells();
         // set the listener to the tour
         setTourListener();
-
     }
+
     @FXML
-    public void displaySelect(MouseEvent mouseEvent) {
+    public void selectedTour(MouseEvent mouseEvent) {
         diplaySelect(TourListView);
         readDescription(TourListView);
     }
-
+    /**
+     * this method takes as
+     * @param listView as ListView and when you select a certain
+     * tour the Label which are defined will be set with the tour name
+     * */
     // display the selected tour to these Labels
     public void diplaySelect(ListView<Tour> listView){
         String name = listView.getSelectionModel().getSelectedItem().getT_Name();
@@ -127,6 +126,22 @@ public class MainWindowController implements Initializable{
         manager.delData(ident);
     }
 
+    //---------------------------------------edit a tour from the list-----------------------------------------------
+    /**
+     * this method has a
+     * @param tourG a Tour, with its help we set
+     * all the fields with the selected tour values
+     * */
+    public String setTourDataToEdit(Tour tourG){
+        String distance = "";
+        if (tourG.getT_Distance()!=0)
+            distance = Double.toString(tourG.getT_Distance());
+
+        return tourG.getIdentification()+","
+                +tourG.getT_Name()+","+tourG.getStartPoint()+","
+                +tourG.getDestination()+","+tourG.getDescription()+","+distance;
+    }
+
     //-----------------------------------Format and set the tours to list----------------------------------------------
     //set the tour items into the ListView
     /**
@@ -172,7 +187,7 @@ public class MainWindowController implements Initializable{
         }));
     }
 
-    //----------------------------------------Connect different Windows-------------------------------------------------
+    //----------------------------------------Connect different Windows------------------------------------------------
 
     /**
      * the method which connects the main window with
@@ -188,10 +203,14 @@ public class MainWindowController implements Initializable{
      * the editTour window, when you click the edit button
      * */
     public void editTourWindow(ActionEvent actionEvent) {
-        identification = TourListView.getSelectionModel().getSelectedItem().getIdentification();
-        System.out.println("*****EditTourWindow*****\n-->idOfSelItem: "+ identification);
         EditTourController editTourController = (EditTourController) newWindow("TourViews/editTour","Edit Tour");
         editTourController.mainWindowController = this;
+
+        tourG = TourListView.getSelectionModel().getSelectedItem();
+        String getInfoToEdit = setTourDataToEdit(tourG);
+        identification = TourListView.getSelectionModel().getSelectedItem().getIdentification();
+        //show the certain tour data in the edit window
+        editTourController.initEdit(getInfoToEdit);
     }
 
     /**
@@ -201,6 +220,7 @@ public class MainWindowController implements Initializable{
     public void addLogWindow(ActionEvent actionEvent) {
         newWindow("LogViews/addLog","Add Log");
     }
+
     /**
      * The method is used to open the editLog window,
      * when you click at the edit button
@@ -208,6 +228,7 @@ public class MainWindowController implements Initializable{
     public void editLogWindow(ActionEvent actionEvent) {
         newWindow("LogViews/editLog","Edit Log");
     }
+
     /**
      * the following method takes
      * @param windowName as String which contains the url to the new window
@@ -215,9 +236,10 @@ public class MainWindowController implements Initializable{
      * */
     public Initializable newWindow(String windowName, String windowTitle){
         Parent root=null;
-        FXMLLoader loader = new FXMLLoader();
 
+        FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainWindowController.class.getResource(windowName+".fxml"));
+
         try {
             root = loader.load();
         } catch (IOException e) {
@@ -230,6 +252,19 @@ public class MainWindowController implements Initializable{
         stage.show();
         return loader.getController();
     }
+
+    /**
+     * you can close the application by clicking
+     * in the Menu item "Exit"
+     * */
+    @FXML
+    public void closeProgram(ActionEvent actionEvent) {
+        CloseAppMenuItem.setOnAction(e -> {
+            System.exit(0);
+        });
+    }
+
+    //----------------------------------------Search Option------------------------------------------------------------
 
     /**
      * this method makes it possible to clear the content
@@ -245,17 +280,10 @@ public class MainWindowController implements Initializable{
         //get tours form db and save them in ObservableList
         manager.GetData(tourListItems);
     }
-    /**
-     * you can close the application by clicking
-     * in the Menu item "Exit"
-     * */
-    @FXML
-    public void closeProgram(ActionEvent actionEvent) {
-        CloseAppMenuItem.setOnAction(e -> {
-            System.exit(0);
-        });
-    }
 
+    /**
+     * this method is used to search for a certain tour in the List
+     * */
     @FXML
     public void searchItems(ActionEvent actionEvent) throws SQLException {
         //clear the ObservableList

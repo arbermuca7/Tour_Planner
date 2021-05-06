@@ -145,7 +145,7 @@
                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#deleteTour" prefHeight="26.0" prefWidth="33.0" text="-" GridPane.columnIndex="2" />
                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
                     <children>
-                        <ListView fx:id="TourListView" onMouseClicked="#displaySelect" prefHeight="409.0" prefWidth="173.0" />
+                        <ListView fx:id="TourListView" onMouseClicked="#selectedTour" prefHeight="409.0" prefWidth="173.0" />
                     </children>
                     <GridPane.margin>
                         <Insets left="10.0" />

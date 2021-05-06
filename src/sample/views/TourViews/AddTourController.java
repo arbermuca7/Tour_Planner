@@ -61,6 +61,7 @@ public class AddTourController implements Initializable {
      * this method takes the input values from the textFields
      * and saves then in the Tour
      * and the tour will be saved also in the database
+     * @return Tour
      */
     public Tour tourData() {
         String ident = this.IDTextField.getText();

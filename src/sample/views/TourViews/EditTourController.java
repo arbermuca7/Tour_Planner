@@ -25,17 +25,14 @@ public class EditTourController implements Initializable {
     public TextField DistanceTextField;
     public TextArea DescriptionTextField;
     public Button EditBtn;
-
-    int index = -1;
-    String ident = mainWindowController.getIdentification();
     
     public JavaAppManager manager;
+    String id = null;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("-->EditTourController init");
         //set the value of the tour we want to edit
-        setTourDataToEdit();
         //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
         //validate the input fields
@@ -44,13 +41,9 @@ public class EditTourController implements Initializable {
         validate_WordsTextFields(DestinationTextField);
         validate_NumbersTextFields(DistanceTextField);
     }
-
+    // here is edited everything which a tour contains
     public void editTourD(ActionEvent actionEvent) throws SQLException {
-        //String ident = mainWindowController.getIdentification();
-        //get the index of the selected tour
-        index = mainWindowController.TourListView.getSelectionModel().getSelectedIndex();
-        //remove the selected Tour
-        mainWindowController.TourListView.getItems().remove(index);
+        System.out.println("+++++++++\nID: "+id+"\n+++++++");
         //get the edited data
         String data = tourData();
         String[] content = data.split(",");
@@ -63,31 +56,42 @@ public class EditTourController implements Initializable {
         if (!dist.isEmpty())
             distance = Double.parseDouble(dist);
         //create the new updated tour
-        Tour tour = new Tour(ident,name,desc,start,dest,distance);
+        Tour tour = new Tour(id,name,desc,start,dest,distance);
         //edit Tour in DB
-        manager.editData(tour,ident);
+        manager.editData(tour,id);
         //add the updated Tour to the ListView
-        mainWindowController.TourListView.getItems().add(index,tour);
+        mainWindowController.getTourListItems().clear();
+        manager.GetData(mainWindowController.getTourListItems());
         //close the window
         Stage stage = (Stage) EditBtn.getScene().getWindow();
         stage.close();
     }
-    public void setTourDataToEdit(){
-        Tour tourG = null;
-        NameTextField.setText(tourG.getT_Name());
-        StartingPointTextField.setText(tourG.getStartPoint());
-        DestinationTextField.setText(tourG.getDestination());
-        DescriptionTextField.setText(tourG.getDescription());
-        String distance = "";
-        if (tourG.getT_Distance()!=0)
-            distance = Double.toString(tourG.getT_Distance());
-        DistanceTextField.setText(distance);
+    //set the data to be changed in the edit window
+    /**
+     * @param editInfo String with all the informations of the tour
+     * like identification, name, start, destination, description
+     * and set these data in the edit window
+     * */
+    public void initEdit(String editInfo){
+        String[] content = editInfo.split(",");
+        id = content[0];
+        NameTextField.setText(content[1]);
+        StartingPointTextField.setText(content[2]);
+        DestinationTextField.setText(content[3]);
+        DescriptionTextField.setText(content[4]);
+        DistanceTextField.setText(content[5]);
+        System.out.println(id+","
+                +content[1]+","+content[2]+","
+                +content[3]+","+content[4]+","+content[5]);
     }
-
+    /**
+     * takes the input from the text fields of the edit window
+     * @return String with all the values to be added in DB
+     * */
     public String tourData(){
         String name = this.NameTextField.getText();
         String start = this.StartingPointTextField.getText();
-        String dest = this.DescriptionTextField.getText();
+        String dest = this.DestinationTextField.getText();
         String dist = this.DistanceTextField.getText();
         String desc = this.DescriptionTextField.getText();
 

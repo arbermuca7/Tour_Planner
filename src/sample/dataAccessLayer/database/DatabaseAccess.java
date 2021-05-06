@@ -28,7 +28,7 @@ public class DatabaseAccess implements IDataAccess {
     }
 
     public void GetTours(ObservableList<Tour> tourObservableList){
-        String query = "SELECT * FROM tour";
+        String query = "SELECT * FROM tour ORDER BY tourID ASC";
         try (Connection connection = getConnection()){
             Statement stmt = connection.createStatement();
             ResultSet res = stmt.executeQuery(query);
@@ -111,7 +111,7 @@ public class DatabaseAccess implements IDataAccess {
             statement.setDouble(3,tour.getT_Distance());
             statement.setString(4, tour.getStartPoint());
             statement.setString(5, tour.getDestination());
-            statement.setString(4, id);
+            statement.setString(6, id);
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
