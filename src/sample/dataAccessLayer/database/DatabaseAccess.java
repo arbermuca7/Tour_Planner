@@ -15,6 +15,10 @@ public class DatabaseAccess implements IDataAccess {
     String pwd = "admin";
 
     public DatabaseAccess(){}
+    /**
+     * this method creates a connection with the database
+     * @return the connection
+     * */
     @Override
      public Connection getConnection() {
         Connection connection = null;
@@ -27,6 +31,10 @@ public class DatabaseAccess implements IDataAccess {
         return connection;
     }
 
+    /**
+     * @param tourObservableList as a ObservableList
+     * takes the tours from the database and saves them in the ObservableList
+     * */
     public void GetTours(ObservableList<Tour> tourObservableList){
         String query = "SELECT * FROM tour ORDER BY tourID ASC";
         try (Connection connection = getConnection()){
@@ -39,12 +47,8 @@ public class DatabaseAccess implements IDataAccess {
                 double dist = res.getDouble("distance");
                 String start = res.getString("startpoint");
                 String dest = res.getString("destination");
-                //System.out.println("ID: "+ident+", Name: "+name+", Description: "+desc+", Distance: "+dist+", Start: "+start+", Destin: "+dest);
 
                 Tour tour = new Tour(ident,name,desc,start,dest,dist);
-
-                /*System.out.println("-->Tour-->ID: "+tour.getIdentification()+", Name: "+tour.getT_Name()+", Description: "+tour.getDescription()
-                        +", Distance: "+tour.getT_Distance()+", Start: "+tour.getStartPoint()+", Destin: "+tour.getDestination());*/
 
                 //add the database tours to observable list
                 tourObservableList.add(tour);
@@ -54,6 +58,10 @@ public class DatabaseAccess implements IDataAccess {
             e.printStackTrace();
         }
     }
+    /**
+     * takes the tours from the database but it doesn't saves them in a ObservableList
+     * @return the list which contains all the Tour in the database
+     * */
     @Override
     public List<Tour> GetToursWithoutSaving(){
         String query = "SELECT * FROM tour";
@@ -68,12 +76,8 @@ public class DatabaseAccess implements IDataAccess {
                 double dist = res.getDouble("distance");
                 String start = res.getString("startpoint");
                 String dest = res.getString("destination");
-                //System.out.println("ID: "+ident+", Name: "+name+", Description: "+desc+", Distance: "+dist+", Start: "+start+", Destin: "+dest);
 
                 Tour tour = new Tour(ident,name,desc,start,dest,dist);
-
-                /*System.out.println("-->Tour-->ID: "+tour.getIdentification()+", Name: "+tour.getT_Name()+", Description: "+tour.getDescription()
-                        +", Distance: "+tour.getT_Distance()+", Start: "+tour.getStartPoint()+", Destin: "+tour.getDestination());*/
 
                 //add the database tours to a List
                 tourList.add(tour);
@@ -86,6 +90,10 @@ public class DatabaseAccess implements IDataAccess {
     }
 
     //add the tour to the databaseTable
+    /**
+     * @param tour takes a Tour as parameter
+     * and saves that tour to the database
+     * */
     @Override
     public void addTourData(Tour tour) {
         try (Connection connection = getConnection()){
@@ -102,6 +110,11 @@ public class DatabaseAccess implements IDataAccess {
         }
     }
     //edit a certain Tour
+    /**
+     * @param tour as a Tour you want to modify
+     * @param id as the Tour Identification
+     * so you can update it in the database
+     * */
     @Override
     public void editTourData(Tour tour, String id) {
         try (Connection connection = getConnection()){
@@ -119,6 +132,10 @@ public class DatabaseAccess implements IDataAccess {
 
     }
     //delete a certain Tour from database
+    /**
+     * @param id as the Tour Identification,
+     * so it can be deleted from the database
+     * */
     @Override
     public void deleteTourData(String id){
         try (Connection connection = getConnection()){
@@ -130,10 +147,15 @@ public class DatabaseAccess implements IDataAccess {
         }
     }
 
+    /**
+     * @param logs as a Log you want to modify
+     * @param identific as the Tour Identification,
+     * so you can add a Log to a certain Tour in the Database and TableView
+     * */
     @Override
     public void addLogData(Log logs,String identific) {
         try (Connection connection = getConnection()){
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO logs VALUES (?,?,?,?,?,?,?,?,?,?,?); ");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO logs VALUES (?,?,?,?,?,?,?,?,?,?,?,?); ");
             statement.setString(1,logs.getName());
             statement.setString(2,logs.getDate());
             statement.setString(3,logs.getDuration());
@@ -145,17 +167,22 @@ public class DatabaseAccess implements IDataAccess {
             statement.setString(9,logs.getTravel_mode());
             statement.setBoolean(10,logs.isToll_roads());
             statement.setString(11,identific);
+            statement.setBoolean(12,logs.isResting_place());
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
+    /**
+     * @param logs as a Log you want to modify
+     * so you can update it in the database
+     * */
     @Override
     public void editLogData(Log logs) {
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("UPDATE logs SET log_name=?, l_date=?, duration=?, distance=?, avg_speed=?" +
-                    ", fuel_costs=?, route_type=?, rating=?, travel_mode=?, toll_roads=? WHERE log_name=?;\n");
+                    ", fuel_costs=?, route_type=?, rating=?, travel_mode=?, toll_roads=?, resting_place=? WHERE log_name=?;\n");
             statement.setString(1,logs.getName());
             statement.setString(2,logs.getDate());
             statement.setString(3,logs.getDuration());
@@ -166,12 +193,18 @@ public class DatabaseAccess implements IDataAccess {
             statement.setInt(8,logs.getRating());
             statement.setString(9,logs.getTravel_mode());
             statement.setBoolean(10,logs.isToll_roads());
+            statement.setBoolean(11,logs.isResting_place());
+            statement.setString(12,logs.getName());
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
+    /**
+     * @param name as the Log name,
+     * so it can be deleted from the database
+     * */
     @Override
     public void deleteLogData(String name){
 

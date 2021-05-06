@@ -14,6 +14,7 @@ public class Log {
     @Getter @Setter private String travel_mode; //e.g. auto, bus, plane....
     @Getter @Setter private String route_type; //e.g. fastest
     @Getter @Setter private int rating;
+    @Getter @Setter private boolean resting_place;
 
     /**
      * The standard constructor takes
@@ -29,6 +30,7 @@ public class Log {
         rating = 3;
         travel_mode = "auto";
         toll_roads = true;
+        resting_place = false;
     }
     /**
      * The parameter constructor takes as parameter
@@ -43,7 +45,7 @@ public class Log {
      * @param toll_roads should you pay for the road
      * and in that way the logs can be saved*/
     public Log(String name, String date, String duration, double distance, int avg_speed, float fuel_cost,
-        String route_type, int rating, String travel_mode,boolean toll_roads){
+        String route_type, int rating, String travel_mode,boolean toll_roads, boolean resting_place){
         this.name = name;
         this.date = date;
         this.duration = duration;
@@ -54,5 +56,6 @@ public class Log {
         this.rating = rating;
         this.travel_mode = travel_mode;
         this.toll_roads = toll_roads;
+        this.resting_place = resting_place;
     }
 }

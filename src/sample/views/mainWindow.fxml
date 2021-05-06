@@ -98,6 +98,7 @@
                 <TableView fx:id="LogTableView" prefHeight="190.0" prefWidth="393.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2">
                     <columns>
                         <TableColumn prefWidth="75.0" text="Date" />
+                  <TableColumn prefWidth="75.0" text="Name" />
                         <TableColumn prefWidth="75.0" text="Duration" />
                         <TableColumn prefWidth="75.0" text="Distance" />
                         <TableColumn prefWidth="75.0" text="Avg. speed" />
@@ -106,6 +107,7 @@
                         <TableColumn prefWidth="75.0" text="Rating" />
                         <TableColumn maxWidth="90.0" prefWidth="90.0" text="Travel Mode" />
                         <TableColumn prefWidth="75.0" text="Toll Roads" />
+                  <TableColumn prefWidth="75.0" text="Resting Place" />
                     </columns>
                     <padding>
                         <Insets right="10.0" />
