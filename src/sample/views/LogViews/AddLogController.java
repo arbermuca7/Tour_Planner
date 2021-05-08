@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import lombok.Getter;
+import sample.businessLayer.inputValidation.IValid;
+import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Log;
@@ -19,6 +21,7 @@ import java.util.ResourceBundle;
 public class AddLogController implements Initializable {
 
     public MainWindowController mainWindowController;
+    public IValid validate = new Valid();
 
     public TextField NameTextField;
     public TextField DateTextField;
@@ -60,16 +63,16 @@ public class AddLogController implements Initializable {
         //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
         //validate the input fields
-        validate_date(DateTextField);
-        validate_duration(DurationTextField);
-        validate_distance_fuel(DistanceTextField);
-        validate_distance_fuel(FuelCostTextField);
-        validate_speed(AverageSpeedTextField);
-        validate_toll(TollRoadsTextField);
-        validate_toll(RestingPlaceTextField);
-        validate_rate(RatingTextField);
-        validate_WordsTextFields(RouteTypeTextField);
-        validate_WordsTextFields(TravelModeTextField);
+        validate.validate_date(DateTextField);
+        validate.validate_duration(DurationTextField);
+        validate.validate_distance_fuel(DistanceTextField);
+        validate.validate_distance_fuel(FuelCostTextField);
+        validate.validate_speed(AverageSpeedTextField);
+        validate.validate_toll(TollRoadsTextField);
+        validate.validate_toll(RestingPlaceTextField);
+        validate.validate_rate(RatingTextField);
+        validate.validate_WordsTextFields(RouteTypeTextField);
+        validate.validate_WordsTextFields(TravelModeTextField);
     }
 
     /**
@@ -136,78 +139,5 @@ public class AddLogController implements Initializable {
         String[] content = addInfo.split(",");
         id = content[0];
         System.out.println("TourID in Log: "+id);
-    }
-
-    /**
-     * a method to validate the date input
-     * in a format dd.mm.yyyy
-     * @param textField the field which will be validated
-     * */
-    public void validate_date(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9.]{0,10})?")) ? change : null));
-
-    }
-
-    /**
-     * a method to validate the time spend on route input
-     * in a format hh:mm:ss
-     * @param textField the field which will be validated
-     * */
-    public void validate_duration(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9:]{0,8})?")) ? change : null));
-
-    }
-
-    /**
-     * a method to validate the numbers input of
-     * a text field  where we set maximal 2 digits after the "."
-     * @param textField the field which will be validated
-     * */
-    public void validate_distance_fuel(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9][0-9]*)?([.])?([0-9][0-9]?)?")) ? change : null));
-    }
-
-    /**
-     * a method to validate the speed input of
-     * a text field  where we set between 2 and 5 digits
-     * @param textField the field which will be validated
-     * */
-    public void validate_speed(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9]{0,5})")) ? change : null));
-    }
-
-    /**
-     * a method to validate the rating input
-     * between 1 and 5 with a certain regex
-     * @param textField the field which will be validated
-     * */
-    public void validate_rate(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([1-5]?)")) ? change : null));
-    }
-
-    /**
-     * a method to validate the true/false input with
-     * the format of just being possible to write true or false
-     * @param textField the field which will be validated
-     * */
-    public void validate_toll(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("[tf]?")) ? change : null));
-    }
-
-    /**
-     * a method to validate the input of
-     * a text field where can be set only letters, space and number between 1 and 9
-     * @param textField the field which will be validated
-     * */
-    public void validate_WordsTextFields(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("[a-zA-Z]*")) ? change : null));
-
     }
 }

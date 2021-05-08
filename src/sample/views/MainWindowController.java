@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable{
+
     public TextField InputTextField;
     public Label tourLogs;
     public Label OutputNameLabel;

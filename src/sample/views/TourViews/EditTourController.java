@@ -5,6 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.Getter;
+import sample.businessLayer.inputValidation.IValid;
+import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Tour;
@@ -18,6 +20,7 @@ import java.util.ResourceBundle;
 public class EditTourController implements Initializable {
 
     public MainWindowController mainWindowController = new MainWindowController();
+    public IValid validate = new Valid();
 
     public TextField NameTextField;
     public TextField StartingPointTextField;
@@ -36,10 +39,10 @@ public class EditTourController implements Initializable {
         //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
         //validate the input fields
-        validate_WordsTextFields(NameTextField);
-        validate_WordsTextFields(StartingPointTextField);
-        validate_WordsTextFields(DestinationTextField);
-        validate_NumbersTextFields(DistanceTextField);
+        validate.validate_specialTextFields(NameTextField);
+        validate.validate_specialTextFields(StartingPointTextField);
+        validate.validate_specialTextFields(DestinationTextField);
+        validate.validate_distance_fuel(DistanceTextField);
     }
     // here is edited everything which a tour contains
     public void editTourD(ActionEvent actionEvent) throws SQLException {
@@ -96,24 +99,5 @@ public class EditTourController implements Initializable {
         String desc = this.DescriptionTextField.getText();
 
         return name+","+start+","+dest+","+dist+","+desc;
-    }
-    /**
-     * a method to validate the input of
-     * a text field where can be set only letters, space and number between 1 and 9
-     * @param textField the field which will be validated
-     * */
-    public void validate_WordsTextFields(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("[a-zA-Z1-9 ]*")) ? change : null));
-
-    }
-    /**
-     * a method to validate the numbers input of
-     * a text field where we set maximal 2 digits after the "."
-     * @param textField the field which will be validated
-     * */
-    public void validate_NumbersTextFields(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([1-9][0-9]*)?([.])?([1-9][0-9]{0,1})?")) ? change : null));
     }
 }
