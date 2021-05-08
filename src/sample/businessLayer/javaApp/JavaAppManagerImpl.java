@@ -1,8 +1,6 @@
 package sample.businessLayer.javaApp;
 
 import javafx.collections.ObservableList;
-import sample.dataAccessLayer.DAOs.DAOFactory;
-import sample.dataAccessLayer.DAOs.IDAO;
 import sample.dataAccessLayer.DAOs.LogsDAO;
 import sample.dataAccessLayer.DAOs.TourDAO;
 import sample.models.Log;
@@ -71,9 +69,23 @@ public class JavaAppManagerImpl implements JavaAppManager{
         logsDAO.GetLogs(logs);
     }
 
+    /**
+     * @param logObservableList as the observable list
+     * @param id as the tour id,
+     * and wherewith we will select the logs for a certain tour
+     * */
     @Override
     public void GetLogsForTour(ObservableList<Log> logObservableList, String id) {
         logsDAO.GetLogsForTour(logObservableList, id);
+    }
+
+    /**
+     * takes the logs from the database but it doesn't saves them in a ObservableList
+     * @return the list which contains all the logs in the database
+     * */
+    @Override
+    public List<Log> GetLogItems(){
+        return logsDAO.GetLogsWithoutSave();
     }
 
     /**
@@ -105,6 +117,26 @@ public class JavaAppManagerImpl implements JavaAppManager{
     }
 
     /**
+     * @param logObservableList as the observable list
+     * @param id as the tour id,
+     * and wherewith we will look if the certain tour has logs or not
+     * @return true if there are logs connected to the certain tour
+     * */
+    @Override
+    public boolean checkIfTourHasLog(ObservableList<Log> logObservableList, String id) {
+        return logsDAO.checkIfTourHasLog(logObservableList,id);
+    }
+
+    /**
+     * @param id as the tour id,
+     * so it can be deleted from the database the log with a tour id
+     * */
+    @Override
+    public void deleteTheLogsOfTour(String id) {
+        logsDAO.deleteTheLogsOfTour(id);
+    }
+
+    /**
      * this method searches for certain tours from ListView
      * @param tourName the String you want to search for
      * @param caseSensitive the boolean to tell the program if u want to search caseSensitive or not
@@ -123,6 +155,21 @@ public class JavaAppManagerImpl implements JavaAppManager{
         return tourList
                 .stream()
                 .filter(x -> x.getT_Name().toLowerCase().contains(tourName.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<Log> searchLogItem(String logName, boolean caseSensitive) throws SQLException {
+        //get TourList from DB but not saving in the ObservableList, but in a normal List
+        List<Log> logList = GetLogItems();
+        if(caseSensitive){
+            return logList
+                    .stream()
+                    .filter(x -> x.getName().contains(logName))
+                    .collect(Collectors.toList());
+        }
+        return logList
+                .stream()
+                .filter(x -> x.getName().toLowerCase().contains(logName.toLowerCase()))
                 .collect(Collectors.toList());
     }
 }

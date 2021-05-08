@@ -38,11 +38,13 @@ public class MainWindowController implements Initializable{
     public Label tourLogs;
     public Label OutputNameLabel;
     public MenuItem CloseAppMenuItem;
+    public ChoiceBox<String> SearchChoicebox;
     public ListView<Tour> TourListView = new ListView<>();
     public TableView<Log> LogTableView;
     public Tab DescriptionTab;
     public Tab RouteTab;
     public Label DescriptionLabel;
+
     //TableColumns add
     public TableColumn<Log, String> date;
     public TableColumn<Log, String> logName;
@@ -57,9 +59,10 @@ public class MainWindowController implements Initializable{
     public TableColumn<Log, Boolean> restingPlace;
 
 
-
+    @Getter private final ObservableList<String> choiceboxItems = FXCollections.observableArrayList();
     @Getter private final ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
     @Getter private final ObservableList<Log> logsTableItems = FXCollections.observableArrayList();
+
 
     @Getter private JavaAppManager manager;
 
@@ -88,6 +91,9 @@ public class MainWindowController implements Initializable{
         setFormatCells();
         // set the listener to the tour
         setTourListener();
+
+        //insert to choicebox
+        insertToChoicebox(SearchChoicebox);
     }
 
     @FXML
@@ -142,7 +148,7 @@ public class MainWindowController implements Initializable{
         //insert again the other to the logs
         manager.GetLogsForTour(logsTableItems,identificationTour);
     }
-    
+
     //---------------------------------------delete a tour/log from the list/table-------------------------------------
     /** you can delete a certain Tour */
     @FXML
@@ -157,9 +163,14 @@ public class MainWindowController implements Initializable{
     //delete the selected tour
     public void deleteSelectedTour(ListView<Tour> listView) throws SQLException {
         selectedIndex = listView.getSelectionModel().getSelectedIndex();
+        String ident = listView.getSelectionModel().getSelectedItem().getIdentification();
         listView.getItems().remove(selectedIndex);
         //remove also from database
-        String ident = listView.getSelectionModel().getSelectedItem().getIdentification();
+        System.out.println("id of the selected tour to del:" + ident);
+        if(manager.checkIfTourHasLog(logsTableItems,ident)){
+            //remove the logs of this tour
+            manager.deleteTheLogsOfTour(ident);
+        }
         manager.delData(ident);
     }
 
@@ -175,9 +186,9 @@ public class MainWindowController implements Initializable{
      * */
     public void deleteSelectedLog(TableView<Log> tableView) throws SQLException {
         selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+        String name = tableView.getSelectionModel().getSelectedItem().getName();
         tableView.getItems().remove(selectedIndex);
         //remove from db the log
-        String name = tableView.getSelectionModel().getSelectedItem().getName();
         System.out.println("Name of Log to be deleted: "+name);
         manager.delLogItem(name);
     }
@@ -244,13 +255,6 @@ public class MainWindowController implements Initializable{
     }
 
     //----------------------------------------Log management-----------------------------------------------------------
-    /**
-     * get the id of the selected tour
-     * wherewith we will add the log to the certain tour
-     * */
-    public String GetTheID(String id){
-        return id;
-    }
 
     /** this method connects the log data with the table columns */
     public void connectDataWithColumns(){
@@ -365,26 +369,57 @@ public class MainWindowController implements Initializable{
      * */
     @FXML
     public void clearInput(ActionEvent actionEvent) throws SQLException {
-        //clear the list with the searched Items
-        tourListItems.clear();
-        //clear the input field
-        InputTextField.textProperty().setValue("");
-        //get tours form db and save them in ObservableList
-        manager.GetData(tourListItems);
+        if(SearchChoicebox.getValue().equals("Tours")){
+            //clear the list with the searched Items
+            tourListItems.clear();
+            //clear the input field
+            InputTextField.textProperty().setValue("");
+            //get tours form db and save them in ObservableList
+            manager.GetData(tourListItems);
+        }else if(SearchChoicebox.getValue().equals("Logs")){
+            //clear the list with the searched Items
+            logsTableItems.clear();
+            //clear the input field
+            InputTextField.textProperty().setValue("");
+            //get tours form db and save them in ObservableList
+            manager.GetAllLogs(logsTableItems);
+        }
+
     }
 
     /**
-     * this method is used to search for a certain tour in the List
+     * this method is used to search for a certain tour or tour log in the List
+     * depending on the choicebox
      * */
     @FXML
     public void searchItems(ActionEvent actionEvent) throws SQLException {
-        //clear the ObservableList
-        tourListItems.clear();
-        // add to a list all the searched tours
-        List<Tour> tours = manager.searchTourItem(InputTextField.textProperty().getValue(),false);
-        //insert these searched tours to the ObservableList
-        tourListItems.addAll(tours);
+
+        if(SearchChoicebox.getValue().equals("Tours")){
+            //clear the ObservableList
+            tourListItems.clear();
+            // add to a list all the searched tours
+            List<Tour> tours = manager.searchTourItem(InputTextField.textProperty().getValue(),false);
+            //insert these searched tours to the ObservableList
+            tourListItems.addAll(tours);
+        }else if(SearchChoicebox.getValue().equals("Logs")){
+            //clear the ObservableList
+            logsTableItems.clear();
+            // add to a list all the searched tours
+            List<Log> logs = manager.searchLogItem(InputTextField.textProperty().getValue(),false);
+            //insert these searched tours to the ObservableList
+            logsTableItems.addAll(logs);
+        }
     }
 
+    /**
+     * insert items to choice box, so you can choose where you want to search
+     * @param search the choicebox
+     * */
+    public void insertToChoicebox(ChoiceBox<String> search){
+        String t = "Tours";
+        String l = "Logs";
+        choiceboxItems.addAll(t,l);
+        search.getItems().addAll(choiceboxItems);
+    }
 
 }

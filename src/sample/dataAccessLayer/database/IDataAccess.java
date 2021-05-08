@@ -19,8 +19,11 @@ public interface IDataAccess {
 
     void GetAllLogs(ObservableList<Log> tourObservableList);
     void GetLogsForTour(ObservableList<Log> logObservableList,String id);
+    List<Log> GetLogsWithoutSaving();
     void addLogData(Log logs,String identific);
     void editLogData(Log logs);
     void deleteLogData(String name);
+    boolean checkIfTourHasLogs(ObservableList<Log> logObservableList, String id);
+    void delTheLogsOfTour(String id);
 
 }

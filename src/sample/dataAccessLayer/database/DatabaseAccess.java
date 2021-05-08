@@ -154,7 +154,7 @@ public class DatabaseAccess implements IDataAccess {
      * */
     @Override
     public void GetAllLogs(ObservableList<Log> logObservableList){
-        String query = "SELECT * FROM logs";
+        String query = "SELECT * FROM logs ORDER BY logID ASC";
         try (Connection connection = getConnection()){
             Statement stmt = connection.createStatement();
             ResultSet res = stmt.executeQuery(query);
@@ -188,7 +188,7 @@ public class DatabaseAccess implements IDataAccess {
     @Override
     public void GetLogsForTour(ObservableList<Log> logObservableList, String id){
         try (Connection connection = getConnection()){
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE tour_ident=?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE tour_ident=? ORDER BY logID ASC");
             statement.setString(1, id);
             ResultSet res = statement.executeQuery();
             while(res.next()){
@@ -213,6 +213,42 @@ public class DatabaseAccess implements IDataAccess {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * takes the logs from the database but it doesn't saves them in a ObservableList
+     * @return the list which contains all the logs in the database
+     * */
+    @Override
+    public List<Log> GetLogsWithoutSaving(){
+        String query = "SELECT * FROM logs ORDER BY logID ASC";
+        List<Log> logList = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            Statement stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while(res.next()){
+                String date = res.getString("l_date");
+                String name = res.getString("log_name");
+                String duration = res.getString("duration");
+                double dist = res.getDouble("distance");
+                int speed = res.getInt("avg_speed");
+                float fuel = res.getFloat("fuel_costs");
+                String route = res.getString("route_type");
+                int rate = res.getInt("rating");
+                String travel = res.getString("travel_mode");
+                boolean tollRoad = res.getBoolean("toll_roads");
+                boolean restPlace = res.getBoolean("resting_place");
+
+                Log log = new Log(name,date,duration,dist,speed,fuel,route,rate,travel,tollRoad,restPlace);
+
+                //add the database tours to a List
+                logList.add(log);
+            }
+            stmt.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return logList;
     }
 
     /**
@@ -250,20 +286,19 @@ public class DatabaseAccess implements IDataAccess {
     @Override
     public void editLogData(Log logs) {
         try (Connection connection = getConnection()){
-            PreparedStatement statement = connection.prepareStatement("UPDATE logs SET log_name=?, l_date=?, duration=?, distance=?, avg_speed=?" +
+            PreparedStatement statement = connection.prepareStatement("UPDATE logs SET l_date=?, duration=?, distance=?, avg_speed=?" +
                     ", fuel_costs=?, route_type=?, rating=?, travel_mode=?, toll_roads=?, resting_place=? WHERE log_name=?;\n");
-            statement.setString(1,logs.getName());
-            statement.setString(2,logs.getDate());
-            statement.setString(3,logs.getDuration());
-            statement.setDouble(4,logs.getDistance());
-            statement.setInt(5,logs.getAvg_speed());
-            statement.setFloat(6,logs.getFuel_cost());
-            statement.setString(7,logs.getRoute_type());
-            statement.setInt(8,logs.getRating());
-            statement.setString(9,logs.getTravel_mode());
-            statement.setBoolean(10,logs.isToll_roads());
-            statement.setBoolean(11,logs.isResting_place());
-            statement.setString(12,logs.getName());
+            statement.setString(1,logs.getDate());
+            statement.setString(2,logs.getDuration());
+            statement.setDouble(3,logs.getDistance());
+            statement.setInt(4,logs.getAvg_speed());
+            statement.setFloat(5,logs.getFuel_cost());
+            statement.setString(6,logs.getRoute_type());
+            statement.setInt(7,logs.getRating());
+            statement.setString(8,logs.getTravel_mode());
+            statement.setBoolean(9,logs.isToll_roads());
+            statement.setBoolean(10,logs.isResting_place());
+            statement.setString(11,logs.getName());
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -285,4 +320,42 @@ public class DatabaseAccess implements IDataAccess {
             throwables.printStackTrace();
         }
     }
+    /**
+     * @param logObservableList as the observable list
+     * @param id as the tour id,
+     * and wherewith we will look if the certain tour has logs or not
+     * @return true if there are logs connected to the certain tour
+     * */
+    @Override
+    public boolean checkIfTourHasLogs(ObservableList<Log> logObservableList, String id){
+        try (Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE tour_ident=?");
+            statement.setString(1, id);
+            ResultSet res = statement.executeQuery();
+            if (res.next()){
+                return true;
+            }
+            statement.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * @param id as the tour id,
+     * so it can be deleted from the database the log with a tour id
+     * */
+    @Override
+    public void delTheLogsOfTour(String id) {
+        try (Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM logs WHERE tour_ident = ?; ");
+            statement.setString(1,id);
+            statement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+
 }
