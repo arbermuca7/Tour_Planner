@@ -24,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.beans.binding.Bindings;
 import sample.views.LogViews.AddLogController;
+import sample.views.LogViews.EditLogController;
 import sample.views.TourViews.AddTourController;
 import sample.views.TourViews.EditTourController;
 
@@ -66,8 +67,9 @@ public class MainWindowController implements Initializable{
 
     @Getter private JavaAppManager manager;
 
-    @Getter private String identification = "";
+    //@Getter private String identification = "";
     @Getter private Tour tourG;
+    @Getter private Log logG;
 
     public Tour currentTour;
     public int selectedIndex = -1;
@@ -180,7 +182,6 @@ public class MainWindowController implements Initializable{
     }
 
     /**
-     * this method has
      * @param tableView Table view where the logs are shown
      * and delete the selected log
      * */
@@ -195,7 +196,6 @@ public class MainWindowController implements Initializable{
 
     //---------------------------------------edit a tour from the list-----------------------------------------------
     /**
-     * this method has a
      * @param tourG a Tour, with its help we set
      * all the fields with the selected tour values
      * */
@@ -209,6 +209,41 @@ public class MainWindowController implements Initializable{
                 +tourG.getDestination()+","+tourG.getDescription()+","+distance;
     }
 
+    /**
+     * @param logG a Log, with its help we set
+     * all the fields with the selected log values
+     * */
+    public String setLogDataToEdit(Log logG){
+        String distance = "";
+        if (logG.getDistance()!=0)
+            distance = Double.toString(logG.getDistance());
+
+        String speed = "";
+        if(logG.getAvg_speed()!=0)
+            speed = Integer.toString(logG.getAvg_speed());
+
+        String fuel = "";
+        if(logG.getFuel_cost()!=0)
+            fuel = Float.toString(logG.getFuel_cost());
+
+        String tollRoad;
+        if (logG.isToll_roads()){ tollRoad = "t"; }
+        else{ tollRoad = "f"; }
+
+        String rating = "";
+        if(logG.getRating()!=0)
+            rating = Integer.toString(logG.getRating());
+
+        String rest = "";
+        if (logG.isResting_place()){ rest = "t"; }
+        else{ rest = "f"; }
+
+
+        return logG.getName()+","+logG.getDate()+","
+                +logG.getDuration()+","+distance+","+speed+","+fuel+","+tollRoad+","+logG.getTravel_mode()+","
+                +logG.getRoute_type()+","+rating+","+rest;
+    }
+
     //-----------------------------------Format and set the tours to list----------------------------------------------
     //set the tour items into the ListView
     /**
@@ -218,11 +253,6 @@ public class MainWindowController implements Initializable{
      * */
     public void setToursToList(){
         TourListView.setItems(tourListItems);
-        if(!TourListView.getItems().isEmpty()){
-            //System.out.println("List view: "+TourListView.getItems().get(0).getT_Name());
-        }else{
-            //System.out.println("nothing..................");
-        }
     }
 
     /**
@@ -299,7 +329,7 @@ public class MainWindowController implements Initializable{
 
         tourG = TourListView.getSelectionModel().getSelectedItem();
         String getInfoToEdit = setTourDataToEdit(tourG);
-        identification = TourListView.getSelectionModel().getSelectedItem().getIdentification();
+        //identification = TourListView.getSelectionModel().getSelectedItem().getIdentification();
         //show the certain tour data in the edit window
         editTourController.initEdit(getInfoToEdit);
     }
@@ -322,7 +352,12 @@ public class MainWindowController implements Initializable{
      * when you click at the edit button
      **/
     public void editLogWindow(ActionEvent actionEvent) {
-        newWindow("LogViews/editLog","Edit Log");
+        EditLogController editLogController = (EditLogController) newWindow("LogViews/editLog","Edit Log");
+        editLogController.mainWindowController = this;
+
+        logG = LogTableView.getSelectionModel().getSelectedItem();
+        String logInfoToEdit = setLogDataToEdit(logG);
+        editLogController.initTheEdit(logInfoToEdit);
     }
 
     /**

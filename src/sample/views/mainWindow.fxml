@@ -73,7 +73,7 @@
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="DescriptionLabel" layoutX="21.0" layoutY="18.0" prefHeight="127.0" prefWidth="366.0" text="Label" />
+                              <Label fx:id="DescriptionLabel" layoutX="21.0" layoutY="18.0" prefHeight="127.0" prefWidth="366.0" text="Click a Tour to see the Description" />
                            </children></AnchorPane>
                             </content>
                         </Tab>

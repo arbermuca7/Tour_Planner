@@ -78,7 +78,7 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="AverageSpeedTextFIeld" layoutX="20.0" layoutY="246.0" GridPane.rowIndex="7">
+                <TextField fx:id="AverageSpeedTextField" layoutX="20.0" layoutY="246.0" GridPane.rowIndex="7">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
