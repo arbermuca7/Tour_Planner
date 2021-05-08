@@ -94,12 +94,12 @@ public class MainWindowController implements Initializable{
     public void selectedTour(MouseEvent mouseEvent) {
         diplaySelect(TourListView);
         readDescription(TourListView);
-        /*if(!logsTableItems.isEmpty()) {
+        //get the logs for a certain tour
+        if(!logsTableItems.isEmpty()) {
             showOnlyLogsOfTour(TourListView);
-            System.out.println("filled with logs");
         }else{
             System.out.println("still empty");
-        }*/
+        }
     }
     /**
      * this method takes as
@@ -133,11 +133,14 @@ public class MainWindowController implements Initializable{
         }
     }
 
+
     public void showOnlyLogsOfTour(ListView<Tour> toursList){
         Tour tour = toursList.getSelectionModel().getSelectedItem();
         String identificationTour = tour.getIdentification();
+        //clear the observable list
+        logsTableItems.clear();
+        //insert again the other to the logs
         manager.GetLogsForTour(logsTableItems,identificationTour);
-        System.out.println("show only logs for a tour: "+getLogsTableItems().toString());
     }
     //---------------------------------------delete a tour from the list-----------------------------------------------
     /** you can delete a certain Tour */

@@ -187,14 +187,10 @@ public class DatabaseAccess implements IDataAccess {
      * */
     @Override
     public void GetLogsForTour(ObservableList<Log> logObservableList, String id){
-
-        String query = "SELECT * FROM logs tour_ident =" + "\'" + id + "\' ORDER BY logID ASC";
         try (Connection connection = getConnection()){
-            //PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE tour_ident=?  ORDER BY logID ASC");
-            //statement.setString(1, id);
-            //ResultSet resultSet = statement.executeQuery();
-            Statement stmt = connection.createStatement();
-            ResultSet res = stmt.executeQuery(query);
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE tour_ident=?  ORDER BY logID ASC");
+            statement.setString(1, id);
+            ResultSet res = statement.executeQuery();
             while(res.next()){
                 String date = res.getString("l_date");
                 String name = res.getString("log_name");
@@ -213,7 +209,7 @@ public class DatabaseAccess implements IDataAccess {
                 logObservableList.addAll(log);
 
             }
-            stmt.close();
+            statement.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
