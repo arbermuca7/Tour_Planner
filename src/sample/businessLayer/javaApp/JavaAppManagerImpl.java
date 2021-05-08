@@ -100,7 +100,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * so it can be deleted from the database
      * */
     @Override
-    public void delLogItems(String name) throws SQLException {
+    public void delLogItem(String name) throws SQLException {
         logsDAO.deleteLogFromDB(name);
     }
 

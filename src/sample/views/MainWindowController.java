@@ -95,11 +95,7 @@ public class MainWindowController implements Initializable{
         diplaySelect(TourListView);
         readDescription(TourListView);
         //get the logs for a certain tour
-        if(!logsTableItems.isEmpty()) {
-            showOnlyLogsOfTour(TourListView);
-        }else{
-            System.out.println("still empty");
-        }
+        showOnlyLogsOfTour(TourListView);
     }
     /**
      * this method takes as
@@ -133,7 +129,11 @@ public class MainWindowController implements Initializable{
         }
     }
 
-
+    /**
+     * the following method makes it possible
+     * to show only the log connected to a certain Tour
+     * @param toursList  the List of Tours
+     * */
     public void showOnlyLogsOfTour(ListView<Tour> toursList){
         Tour tour = toursList.getSelectionModel().getSelectedItem();
         String identificationTour = tour.getIdentification();
@@ -142,7 +142,8 @@ public class MainWindowController implements Initializable{
         //insert again the other to the logs
         manager.GetLogsForTour(logsTableItems,identificationTour);
     }
-    //---------------------------------------delete a tour from the list-----------------------------------------------
+    
+    //---------------------------------------delete a tour/log from the list/table-------------------------------------
     /** you can delete a certain Tour */
     @FXML
     public void deleteTour(MouseEvent mouseEvent) throws SQLException {
@@ -160,6 +161,25 @@ public class MainWindowController implements Initializable{
         //remove also from database
         String ident = listView.getSelectionModel().getSelectedItem().getIdentification();
         manager.delData(ident);
+    }
+
+    /** you can delete a certain Log */
+    public void deleteLog(MouseEvent mouseEvent) throws SQLException {
+       deleteSelectedLog(LogTableView);
+    }
+
+    /**
+     * this method has
+     * @param tableView Table view where the logs are shown
+     * and delete the selected log
+     * */
+    public void deleteSelectedLog(TableView<Log> tableView) throws SQLException {
+        selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+        tableView.getItems().remove(selectedIndex);
+        //remove from db the log
+        String name = tableView.getSelectionModel().getSelectedItem().getName();
+        System.out.println("Name of Log to be deleted: "+name);
+        manager.delLogItem(name);
     }
 
     //---------------------------------------edit a tour from the list-----------------------------------------------
@@ -365,4 +385,6 @@ public class MainWindowController implements Initializable{
         //insert these searched tours to the ObservableList
         tourListItems.addAll(tours);
     }
+
+
 }

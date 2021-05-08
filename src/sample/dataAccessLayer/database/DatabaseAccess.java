@@ -154,7 +154,7 @@ public class DatabaseAccess implements IDataAccess {
      * */
     @Override
     public void GetAllLogs(ObservableList<Log> logObservableList){
-        String query = "SELECT * FROM logs ORDER BY logID ASC";
+        String query = "SELECT * FROM logs";
         try (Connection connection = getConnection()){
             Statement stmt = connection.createStatement();
             ResultSet res = stmt.executeQuery(query);
@@ -188,7 +188,7 @@ public class DatabaseAccess implements IDataAccess {
     @Override
     public void GetLogsForTour(ObservableList<Log> logObservableList, String id){
         try (Connection connection = getConnection()){
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE tour_ident=?  ORDER BY logID ASC");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE tour_ident=?");
             statement.setString(1, id);
             ResultSet res = statement.executeQuery();
             while(res.next()){

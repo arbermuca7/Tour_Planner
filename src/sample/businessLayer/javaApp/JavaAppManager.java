@@ -19,7 +19,7 @@ public interface JavaAppManager {
     void GetLogsForTour(ObservableList<Log> logObservableList,String id);
     void setLogItems(Log logItems, String id);
     void editLogItems(Log log);
-    void delLogItems(String name) throws SQLException;
+    void delLogItem(String name) throws SQLException;
 
     List<Tour> searchTourItem(String tourName, boolean caseSensitive) throws SQLException;
 }
