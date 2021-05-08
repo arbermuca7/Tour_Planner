@@ -5,7 +5,6 @@ import sample.models.Log;
 import sample.models.Tour;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface IDataAccess {
@@ -18,6 +17,8 @@ public interface IDataAccess {
     void editTourData(Tour tour, String id);
     void deleteTourData(String id);
 
+    void GetAllLogs(ObservableList<Log> tourObservableList);
+    void GetLogsForTour(ObservableList<Log> logObservableList,String id);
     void addLogData(Log logs,String identific);
     void editLogData(Log logs);
     void deleteLogData(String name);

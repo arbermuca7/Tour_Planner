@@ -97,15 +97,17 @@
             <children>
                 <TableView fx:id="LogTableView" prefHeight="190.0" prefWidth="393.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="Date" />
-                        <TableColumn prefWidth="75.0" text="Duration" />
-                        <TableColumn prefWidth="75.0" text="Distance" />
-                        <TableColumn prefWidth="75.0" text="Avg. speed" />
-                        <TableColumn prefWidth="69.19998168945312" text="Fuel cost" />
-                        <TableColumn prefWidth="81.20001220703125" text="Route type" />
-                        <TableColumn prefWidth="75.0" text="Rating" />
-                        <TableColumn maxWidth="90.0" prefWidth="90.0" text="Travel Mode" />
-                        <TableColumn prefWidth="75.0" text="Toll Roads" />
+                        <TableColumn fx:id="date" prefWidth="75.0" text="Date" />
+                        <TableColumn fx:id="logName" prefWidth="75.0" text="Name" />
+                        <TableColumn fx:id="duration" prefWidth="75.0" text="Duration" />
+                        <TableColumn fx:id="logDistance" prefWidth="75.0" text="Distance" />
+                        <TableColumn fx:id="avgSpeed" prefWidth="75.0" text="Avg. speed" />
+                        <TableColumn fx:id="fuel" prefWidth="69.19998168945312" text="Fuel cost" />
+                        <TableColumn fx:id="routeType" prefWidth="81.20001220703125" text="Route type" />
+                        <TableColumn fx:id="rating" prefWidth="75.0" text="Rating" />
+                        <TableColumn fx:id="travelMode" maxWidth="90.0" prefWidth="90.0" text="Travel Mode" />
+                        <TableColumn fx:id="tollRoads" prefWidth="75.0" text="Toll Roads" />
+                        <TableColumn fx:id="restingPlace" prefWidth="90.0" text="Resting Place" />
                     </columns>
                     <padding>
                         <Insets right="10.0" />

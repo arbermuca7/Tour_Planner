@@ -11,11 +11,14 @@ import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Log;
 import sample.models.Tour;
+import sample.views.MainWindowController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AddLogController implements Initializable {
+
+    public MainWindowController mainWindowController;
 
     public TextField NameTextField;
     public TextField DateTextField;
@@ -32,17 +35,24 @@ public class AddLogController implements Initializable {
 
     @Getter private JavaAppManager manager;
     @Getter private Log logItems;
+    @Getter private String id = null;
 
 
 
     public void addLog(ActionEvent actionEvent) {
-        //logItems = logData();
-        //.............continuous.........
+        logItems = logData();
+        //save the log in the database
+        manager.setLogItems(logItems,id);
+        //insert the log into the observable list
+        mainWindowController.getLogsTableItems().add(logItems);
+        // set the observable list into the table view
+        mainWindowController.setLogsToTable();
         //close the window after adding the log into the table
         Stage stage = (Stage) addBtn.getScene().getWindow();
         stage.close();
 
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -106,17 +116,26 @@ public class AddLogController implements Initializable {
         if(tollRoad.equals("t")){
             hasTollRoads = true;
         }
+        //parse the boolean if there is any resting place
         boolean hasRestPlace = false;
         if(restingPlc.equals("t")){
             hasRestPlace = true;
         }
-
         //Add the Log
         Log log = new Log(name,date,duration,dist,speed,fuel,routeType,rate,travelMode,hasTollRoads,hasRestPlace);
 
-        //database access
-        //database.addLogData(log);
         return log;
+    }
+
+    /**
+     * initialize the ID of the tour we clicked
+     * that's how we can add it the to the database
+     * and connect it directly to the tour
+     * */
+    public void getClickedID(String addInfo){
+        String[] content = addInfo.split(",");
+        id = content[0];
+        System.out.println("TourID in Log: "+id);
     }
 
     /**
@@ -148,7 +167,7 @@ public class AddLogController implements Initializable {
      * */
     public void validate_distance_fuel(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([1-9][0-9]*)?([.])?([1-9][0-9]?)?")) ? change : null));
+                (change.getControlNewText().matches("([0-9][0-9]*)?([.])?([0-9][0-9]?)?")) ? change : null));
     }
 
     /**

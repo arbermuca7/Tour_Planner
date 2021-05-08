@@ -1,6 +1,8 @@
 package sample.businessLayer.javaApp;
 
 import javafx.collections.ObservableList;
+import sample.dataAccessLayer.DAOs.DAOFactory;
+import sample.dataAccessLayer.DAOs.IDAO;
 import sample.dataAccessLayer.DAOs.LogsDAO;
 import sample.dataAccessLayer.DAOs.TourDAO;
 import sample.models.Log;
@@ -25,6 +27,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
     /**
      * takes the tours from the database but it doesn't saves them in a ObservableList
      * @return the list which contains all the Tour in the database
+     * it is used for the searching method
      * */
     @Override
     public List<Tour> GetTourItems() {
@@ -57,6 +60,20 @@ public class JavaAppManagerImpl implements JavaAppManager{
     @Override
     public void editData(Tour tour, String id) {
         tourDAO.editTourInDB(tour, id);
+    }
+
+    /**
+     * @param logs as a ObservableList
+     * takes the logs from the database and saves them in the ObservableList
+     * */
+    @Override
+    public void GetAllLogs(ObservableList<Log> logs) {
+        logsDAO.GetLogs(logs);
+    }
+
+    @Override
+    public void GetLogsForTour(ObservableList<Log> logObservableList, String id) {
+        logsDAO.GetLogsForTour(logObservableList, id);
     }
 
     /**

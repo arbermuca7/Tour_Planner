@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -22,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.beans.binding.Bindings;
+import sample.views.LogViews.AddLogController;
 import sample.views.TourViews.AddTourController;
 import sample.views.TourViews.EditTourController;
 
@@ -41,14 +43,28 @@ public class MainWindowController implements Initializable{
     public Tab DescriptionTab;
     public Tab RouteTab;
     public Label DescriptionLabel;
+    //TableColumns add
+    public TableColumn<Log, String> date;
+    public TableColumn<Log, String> logName;
+    public TableColumn<Log, String> duration;
+    public TableColumn<Log, Double> logDistance;
+    public TableColumn<Log, Integer> avgSpeed;
+    public TableColumn<Log, Float> fuel;
+    public TableColumn<Log, String> routeType;
+    public TableColumn<Log, Integer> rating;
+    public TableColumn<Log, String> travelMode;
+    public TableColumn<Log, Boolean> tollRoads;
+    public TableColumn<Log, Boolean> restingPlace;
+
+
 
     @Getter private final ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
+    @Getter private final ObservableList<Log> logsTableItems = FXCollections.observableArrayList();
 
     @Getter private JavaAppManager manager;
 
     @Getter private String identification = "";
     @Getter private Tour tourG;
-
 
     public Tour currentTour;
     public int selectedIndex = -1;
@@ -63,6 +79,11 @@ public class MainWindowController implements Initializable{
         //set the tour items into the ListView and take them from DB
         manager.GetData(tourListItems);
         setToursToList();
+        //associate logData with the table columns
+        connectDataWithColumns();
+        //set all the logs into the observable list and then in tho the Table view, when we get them from database
+        manager.GetAllLogs(logsTableItems);
+        setLogsToTable();
         //format cells to show name
         setFormatCells();
         // set the listener to the tour
@@ -73,6 +94,12 @@ public class MainWindowController implements Initializable{
     public void selectedTour(MouseEvent mouseEvent) {
         diplaySelect(TourListView);
         readDescription(TourListView);
+        /*if(!logsTableItems.isEmpty()) {
+            showOnlyLogsOfTour(TourListView);
+            System.out.println("filled with logs");
+        }else{
+            System.out.println("still empty");
+        }*/
     }
     /**
      * this method takes as
@@ -106,6 +133,12 @@ public class MainWindowController implements Initializable{
         }
     }
 
+    public void showOnlyLogsOfTour(ListView<Tour> toursList){
+        Tour tour = toursList.getSelectionModel().getSelectedItem();
+        String identificationTour = tour.getIdentification();
+        manager.GetLogsForTour(logsTableItems,identificationTour);
+        System.out.println("show only logs for a tour: "+getLogsTableItems().toString());
+    }
     //---------------------------------------delete a tour from the list-----------------------------------------------
     /** you can delete a certain Tour */
     @FXML
@@ -187,6 +220,37 @@ public class MainWindowController implements Initializable{
         }));
     }
 
+    //----------------------------------------Log management-----------------------------------------------------------
+    /**
+     * get the id of the selected tour
+     * wherewith we will add the log to the certain tour
+     * */
+    public String GetTheID(String id){
+        return id;
+    }
+
+    /** this method connects the log data with the table columns */
+    public void connectDataWithColumns(){
+        date.setCellValueFactory(new PropertyValueFactory<Log, String>("date"));
+        logName.setCellValueFactory(new PropertyValueFactory<Log, String>("name"));
+        duration.setCellValueFactory(new PropertyValueFactory<Log, String>("duration"));
+        logDistance.setCellValueFactory(new PropertyValueFactory<Log, Double>("distance"));
+        avgSpeed.setCellValueFactory(new PropertyValueFactory<Log, Integer>("avg_speed"));
+        fuel.setCellValueFactory(new PropertyValueFactory<Log, Float>("fuel_cost"));
+        tollRoads.setCellValueFactory(new PropertyValueFactory<Log, Boolean>("toll_roads"));
+        travelMode.setCellValueFactory(new PropertyValueFactory<Log, String>("travel_mode"));
+        routeType.setCellValueFactory(new PropertyValueFactory<Log, String>("route_type"));
+        rating.setCellValueFactory(new PropertyValueFactory<Log, Integer>("rating"));
+        restingPlace.setCellValueFactory(new PropertyValueFactory<Log, Boolean>("resting_place"));
+    }
+
+    /**
+     * this method takes all the Log inserted in the ObservableList
+     * and adds them to the Tableview
+     * */
+    public void setLogsToTable(){
+        LogTableView.setItems(logsTableItems);
+    }
     //----------------------------------------Connect different Windows------------------------------------------------
 
     /**
@@ -218,7 +282,12 @@ public class MainWindowController implements Initializable{
      * when you click at the edit button
      **/
     public void addLogWindow(ActionEvent actionEvent) {
-        newWindow("LogViews/addLog","Add Log");
+        AddLogController addLogController = (AddLogController) newWindow("LogViews/addLog","Add Log");
+        addLogController.mainWindowController = this;
+
+        tourG = TourListView.getSelectionModel().getSelectedItem();
+        String getInfoToEdit = setTourDataToEdit(tourG);
+        addLogController.getClickedID(getInfoToEdit);
     }
 
     /**

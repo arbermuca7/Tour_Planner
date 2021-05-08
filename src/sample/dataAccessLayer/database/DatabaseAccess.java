@@ -35,6 +35,7 @@ public class DatabaseAccess implements IDataAccess {
      * @param tourObservableList as a ObservableList
      * takes the tours from the database and saves them in the ObservableList
      * */
+    @Override
     public void GetTours(ObservableList<Tour> tourObservableList){
         String query = "SELECT * FROM tour ORDER BY tourID ASC";
         try (Connection connection = getConnection()){
@@ -64,7 +65,7 @@ public class DatabaseAccess implements IDataAccess {
      * */
     @Override
     public List<Tour> GetToursWithoutSaving(){
-        String query = "SELECT * FROM tour";
+        String query = "SELECT * FROM tour ORDER BY tourID ASC";
         List<Tour> tourList = new ArrayList<>();
         try (Connection connection = getConnection()){
             Statement stmt = connection.createStatement();
@@ -148,6 +149,77 @@ public class DatabaseAccess implements IDataAccess {
     }
 
     /**
+     * @param logObservableList as a ObservableList
+     * takes the logs from the database and saves them in the ObservableList
+     * */
+    @Override
+    public void GetAllLogs(ObservableList<Log> logObservableList){
+        String query = "SELECT * FROM logs ORDER BY logID ASC";
+        try (Connection connection = getConnection()){
+            Statement stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while(res.next()){
+                String date = res.getString("l_date");
+                String name = res.getString("log_name");
+                String duration = res.getString("duration");
+                double dist = res.getDouble("distance");
+                int speed = res.getInt("avg_speed");
+                float fuel = res.getFloat("fuel_costs");
+                String route = res.getString("route_type");
+                int rate = res.getInt("rating");
+                String travel = res.getString("travel_mode");
+                boolean tollRoad = res.getBoolean("toll_roads");
+                boolean restPlace = res.getBoolean("resting_place");
+
+                Log log = new Log(name,date,duration,dist,speed,fuel,route,rate,travel,tollRoad,restPlace);
+                //add the database tours to observable list
+                logObservableList.add(log);
+            }
+            stmt.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    /**
+     * @param logObservableList as the observable list
+     * @param id as the tour id,
+     * and wherewith we will select the logs for a certain tour
+     * */
+    @Override
+    public void GetLogsForTour(ObservableList<Log> logObservableList, String id){
+
+        String query = "SELECT * FROM logs tour_ident =" + "\'" + id + "\' ORDER BY logID ASC";
+        try (Connection connection = getConnection()){
+            //PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE tour_ident=?  ORDER BY logID ASC");
+            //statement.setString(1, id);
+            //ResultSet resultSet = statement.executeQuery();
+            Statement stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while(res.next()){
+                String date = res.getString("l_date");
+                String name = res.getString("log_name");
+                String duration = res.getString("duration");
+                double dist = res.getDouble("distance");
+                int speed = res.getInt("avg_speed");
+                float fuel = res.getFloat("fuel_costs");
+                String route = res.getString("route_type");
+                int rate = res.getInt("rating");
+                String travel = res.getString("travel_mode");
+                boolean tollRoad = res.getBoolean("toll_roads");
+                boolean restPlace = res.getBoolean("resting_place");
+
+                Log log = new Log(name,date,duration,dist,speed,fuel,route,rate,travel,tollRoad,restPlace);
+                //add the database tours to observable list
+                logObservableList.addAll(log);
+
+            }
+            stmt.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * @param logs as a Log you want to modify
      * @param identific as the Tour Identification,
      * so you can add a Log to a certain Tour in the Database and TableView
@@ -155,7 +227,8 @@ public class DatabaseAccess implements IDataAccess {
     @Override
     public void addLogData(Log logs,String identific) {
         try (Connection connection = getConnection()){
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO logs VALUES (?,?,?,?,?,?,?,?,?,?,?,?); ");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO logs(log_name,l_date,duration,distance,avg_speed," +
+                    "fuel_costs,route_type,rating,travel_mode,toll_roads,tour_ident,resting_place) VALUES (?,?,?,?,?,?,?,?,?,?,?,?); ");
             statement.setString(1,logs.getName());
             statement.setString(2,logs.getDate());
             statement.setString(3,logs.getDuration());
