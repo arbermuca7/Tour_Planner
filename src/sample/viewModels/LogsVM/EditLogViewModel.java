@@ -1,86 +1,126 @@
 package sample.viewModels.LogsVM;
 
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.fxml.Initializable;
+import lombok.Getter;
+import sample.models.Log;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class EditLogViewModel {
 
-    @Override
-    public void logData() {
+    public EditLogViewModel(){
+        System.out.println("EditLogViewModel");
+    }
+    @Getter private final StringProperty inputName = new SimpleStringProperty("");
+    @Getter private final StringProperty inputDate = new SimpleStringProperty("");
+    @Getter private final StringProperty inputDuration = new SimpleStringProperty("");
+    @Getter private final StringProperty inputDistance = new SimpleStringProperty("");
+    @Getter private final StringProperty inputAvgSpeed = new SimpleStringProperty("");
+    @Getter private final StringProperty inputFuelCosts = new SimpleStringProperty("");
+    @Getter private final StringProperty inputTollRoads = new SimpleStringProperty("");
+    @Getter private final StringProperty inputTravelMode = new SimpleStringProperty("");
+    @Getter private final StringProperty inputRouteType = new SimpleStringProperty("");
+    @Getter private final StringProperty inputRating = new SimpleStringProperty("");
+    @Getter private final StringProperty inputRestingPlace = new SimpleStringProperty("");
 
+
+    public void initTheEdit(String info){
+        String[] content = info.split(",");
+        inputName.set(content[0]);
+        inputDate.set(content[1]);
+        inputDuration.set(content[2]);
+        inputDistance.set(content[3]);
+        inputAvgSpeed.set(content[4]);
+        inputFuelCosts.set(content[5]);
+        inputTollRoads.set(content[6]);
+        inputTravelMode.set(content[7]);
+        inputRouteType.set(content[8]);
+        inputRating.set(content[9]);
+        inputRestingPlace.set(content[10]);
+        /*
+        NameTextField.setText(content[0]);
+        DateTextField.setText(content[1]);
+        DurationTextField.setText(content[2]);
+        DistanceTextField.setText(content[3]);
+        AverageSpeedTextField.setText(content[4]);
+        FuelCostsTextField.setText(content[5]);
+        TollRoadsTextField.setText(content[6]);
+        TravelModeTextField.setText(content[7]);
+        RouteTypeTextField.setText(content[8]);
+        RatingTextField.setText(content[9]);
+        RestingPlaceTextField.setText(content[10]);
+        */
+
+        /*System.out.println("INIT the EDIT LOG: "+content[0]+","+content[1]+","+content[2]+","+content[3]+","+content[4]+","
+                +content[5]+","+content[6]+","+content[7]+","+content[8]+","+content[9]+","+content[10]);*/
     }
 
     /**
-     * a method to validate the date input
-     * in a format dd.mm.yyyy
-     * @param textField the field which will be validated
+     * takes the input from the text fields of the edit window
+     * @return String with all the values to be added in DB
      * */
-    @Override
-    public void validate_date(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9.]{0,10})?")) ? change : null));
+    public Log logData(){
+        String name = this.inputName.get();
+        String date = this.inputDate.get();
+        String duration = this.inputDuration.get();
+        String distance = this.inputDistance.get();
+        String avgSpeed = this.inputAvgSpeed.get();
+        String fuelCost = this.inputFuelCosts.get();
+        String tollRoad = this.inputTollRoads.get();
+        String travel = this.inputTravelMode.get();
+        String route = this.inputRouteType.get();
+        String rating = this.inputRating.get();
+        String restingPlc = this.inputRestingPlace.get();
 
-    }
-    /**
-     * a method to validate the time spend on route input
-     * in a format hh:mm:ss
-     * @param textField the field which will be validated
-     * */
-    @Override
-    public void validate_duration(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9:]{0,8})?")) ? change : null));
+        //parse the distance
+        double dist = 0;
+        if(!distance.isEmpty()){
+            dist = Double.parseDouble(distance);
+        }
+        //parse the average speed
+        int speed = 0;
+        if(!avgSpeed.isEmpty()){
+            speed = Integer.parseInt(avgSpeed);
+        }
+        //parse fuel consumption
+        float fuel = 0;
+        if(!fuelCost.isEmpty()){
+            fuel = Float.parseFloat(fuelCost);
+        }
+        //parse the route rating
+        int rate = 0;
+        if(!rating.isEmpty()){
+            rate = Integer.parseInt(rating);
+        }
+        //parse the boolean if there is any toll road
+        boolean hasTollRoads = false;
+        if(tollRoad.equals("t")){
+            hasTollRoads = true;
+        }
+        //parse the boolean if there is any resting place
+        boolean hasRestPlace = false;
+        if(restingPlc.equals("t")){
+            hasRestPlace = true;
+        }
+        //Add the Log
+        return new Log(name,date,duration,dist,speed,fuel,route,rate,travel,hasTollRoads,hasRestPlace);
 
-    }
-    /**
-     * a method to validate the numbers input of
-     * a text field  where we set maximal 2 digits after the "."
-     * @param textField the field which will be validated
-     * */
-    @Override
-    public void validate_distance_fuel(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([1-9][0-9]*)?([.])?([1-9][0-9]?)?")) ? change : null));
-    }
-    /**
-     * a method to validate the speed input of
-     * a text field  where we set between 2 and 5 digits
-     * @param textField the field which will be validated
-     * */
-    @Override
-    public void validate_speed(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9]{0,5})")) ? change : null));
-    }
-    /**
-     * a method to validate the rating input
-     * between 1 and 5 with a certain regex
-     * @param textField the field which will be validated
-     * */
-    @Override
-    public void validate_rate(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([1-5]?)")) ? change : null));
-    }
-    /**
-     * a method to validate the true/false input with
-     * the format of just being possible to write true or false
-     * @param textField the field which will be validated
-     * */
-    @Override
-    public void validate_toll(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("[tf]?")) ? change : null));
-    }
-    /**
-     * a method to validate the input of
-     * a text field where can be set only letters, space and number between 1 and 9
-     * @param textField the field which will be validated
-     * */
-    @Override
-    public void validate_WordsTextFields(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("[a-zA-Z]*")) ? change : null));
-
+        /*
+        String name = this.NameTextField.getText();
+        String date = this.DateTextField.getText();
+        String duration = this.DurationTextField.getText();
+        String distance = this.DistanceTextField.getText();
+        String avgSpeed = this.AverageSpeedTextField.getText();
+        String fuelCost = this.FuelCostsTextField.getText();
+        String tollRoad = this.TollRoadsTextField.getText();
+        String travel = this.TravelModeTextField.getText();
+        String route = this.RouteTypeTextField.getText();
+        String rating = this.RatingTextField.getText();
+        String restingPlc = this.RestingPlaceTextField.getText();
+        */
     }
 }

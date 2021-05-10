@@ -12,6 +12,7 @@ import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Log;
+import sample.viewModels.LogsVM.EditLogViewModel;
 import sample.views.MainWindowController;
 
 import java.net.URL;
@@ -21,6 +22,7 @@ import java.util.ResourceBundle;
 public class EditLogController implements Initializable {
 
     public MainWindowController mainWindowController = new MainWindowController();
+    public EditLogViewModel editLogViewModel = new EditLogViewModel();
     public IValid validate = new Valid();
 
     public TextField NameTextField;
@@ -45,6 +47,18 @@ public class EditLogController implements Initializable {
         System.out.println("-->EditLogController init");
         //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
+        //Binding of Controller Components and StringProperties in VM
+        NameTextField.textProperty().bindBidirectional(editLogViewModel.getInputName());
+        DateTextField.textProperty().bindBidirectional(editLogViewModel.getInputDate());
+        DurationTextField.textProperty().bindBidirectional(editLogViewModel.getInputDuration());
+        DistanceTextField.textProperty().bindBidirectional(editLogViewModel.getInputDistance());
+        AverageSpeedTextField.textProperty().bindBidirectional(editLogViewModel.getInputAvgSpeed());
+        FuelCostsTextField.textProperty().bindBidirectional(editLogViewModel.getInputFuelCosts());
+        TollRoadsTextField.textProperty().bindBidirectional(editLogViewModel.getInputTollRoads());
+        TravelModeTextField.textProperty().bindBidirectional(editLogViewModel.getInputTravelMode());
+        RouteTypeTextField.textProperty().bindBidirectional(editLogViewModel.getInputRouteType());
+        RatingTextField.textProperty().bindBidirectional(editLogViewModel.getInputRating());
+        RestingPlaceTextField.textProperty().bindBidirectional(editLogViewModel.getInputRestingPlace());
         //validate the input fields
         validate.validate_date(DateTextField);
         validate.validate_duration(DurationTextField);
@@ -61,7 +75,7 @@ public class EditLogController implements Initializable {
 
     public void editTour(ActionEvent actionEvent) throws SQLException {
         //get the tour to edit
-        logItem = logData();
+        logItem = editLogViewModel.logData();
 
         //edit Log in DB
         manager.editLogItems(logItem);
@@ -74,7 +88,7 @@ public class EditLogController implements Initializable {
         Stage stage = (Stage) EditBtn.getScene().getWindow();
         stage.close();
     }
-
+/*
     public void initTheEdit(String info){
         String[] content = info.split(",");
         NameTextField.setText(content[0]);
@@ -90,13 +104,9 @@ public class EditLogController implements Initializable {
         RestingPlaceTextField.setText(content[10]);
 
         /*System.out.println("INIT the EDIT LOG: "+content[0]+","+content[1]+","+content[2]+","+content[3]+","+content[4]+","
-                +content[5]+","+content[6]+","+content[7]+","+content[8]+","+content[9]+","+content[10]);*/
+                +content[5]+","+content[6]+","+content[7]+","+content[8]+","+content[9]+","+content[10]);
     }
 
-    /**
-     * takes the input from the text fields of the edit window
-     * @return String with all the values to be added in DB
-     * */
     public Log logData(){
         String name = this.NameTextField.getText();
         String date = this.DateTextField.getText();
@@ -142,5 +152,5 @@ public class EditLogController implements Initializable {
         }
         //Add the Log
         return new Log(name,date,duration,dist,speed,fuel,route,rate,travel,hasTollRoads,hasRestPlace);
-    }
+    }*/
 }
