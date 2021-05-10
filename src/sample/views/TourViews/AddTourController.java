@@ -15,11 +15,13 @@ import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Tour;
+import sample.viewModels.TourVM.AddTourViewModel;
 import sample.views.MainWindowController;
 
 public class AddTourController implements Initializable {
 
     public MainWindowController mainWindowController;
+    public AddTourViewModel addTourViewModel = new AddTourViewModel();
     public IValid validate = new Valid();
 
     public TextField IDTextField;
@@ -38,7 +40,7 @@ public class AddTourController implements Initializable {
      * */
     @FXML
     public void addTour(ActionEvent actionEvent) throws SQLException {
-        tour = tourData();
+        tour = addTourViewModel.tourData();
         //add tour to ObservableList in MainController and database
         manager.SetDataItems(tour);
         mainWindowController.getTourListItems().add(tour);
@@ -54,31 +56,19 @@ public class AddTourController implements Initializable {
         System.out.println("-->AddTourController init");
         //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
+        //Binding StringProperties in VM with the Controller Components
+        IDTextField.textProperty().bindBidirectional(addTourViewModel.getInputIdentific());
+        NameTextField.textProperty().bindBidirectional(addTourViewModel.getInputName());
+        StartingPointTextField.textProperty().bindBidirectional(addTourViewModel.getInputStart());
+        DestinationTextField.textProperty().bindBidirectional(addTourViewModel.getInputDestination());
+        DistanceTextField.textProperty().bindBidirectional(addTourViewModel.getInputDistance());
+        DescriptionTextField.textProperty().bindBidirectional(addTourViewModel.getInputDescription());
+
         //validate the input fields
         validate.validate_specialTextFields(NameTextField);
         validate.validate_specialTextFields(StartingPointTextField);
         validate.validate_specialTextFields(DestinationTextField);
         validate.validate_distance_fuel(DistanceTextField);
-    }
-    /**
-     * this method takes the input values from the textFields
-     * and saves then in the Tour
-     * and the tour will be saved also in the database
-     * @return Tour
-     */
-    public Tour tourData() {
-        String ident = this.IDTextField.getText();
-        String name = this.NameTextField.getText();
-        String start = this.StartingPointTextField.getText();
-        String dest = this.DestinationTextField.getText();
-        String dist = this.DistanceTextField.getText();
-        String desc = this.DescriptionTextField.getText();
-        double distance = 0;
-        if (!dist.isEmpty())
-            distance = Double.parseDouble(dist);
-        //create the tour
-        Tour tour = new Tour(ident, name, desc, start, dest, distance);
-        return tour;
     }
 }
 

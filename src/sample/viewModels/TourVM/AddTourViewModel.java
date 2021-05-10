@@ -1,7 +1,12 @@
 package sample.viewModels.TourVM;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import lombok.Getter;
+import sample.models.Tour;
+
 public class AddTourViewModel {
-/*
+
     public AddTourViewModel() {
         System.out.println("AddTourViewModel");
     }
@@ -19,11 +24,13 @@ public class AddTourViewModel {
     @Getter
     private final StringProperty inputDescription = new SimpleStringProperty("");
 
-    HomeWindowViewModel homeWindowViewModel = new HomeWindowViewModel();
-    MainWindowController mainWindowController = new MainWindowController();
-    IDataAccess dataAccess = new DatabaseAccess();
-
-    public String tourData() {
+    /**
+     * this method takes the input values from the textFields
+     * and saves then in the Tour
+     * and the tour will be saved also in the database
+     * @return the Tour
+     */
+    public Tour tourData() {
         String ident = this.inputIdentific.get();
         String name = this.inputName.get();
         String start = this.inputStart.get();
@@ -34,18 +41,17 @@ public class AddTourViewModel {
         double distance = 0;
         if (!dist.isEmpty())
             distance = Double.parseDouble(dist);
-
         //create the tour
         Tour tour = new Tour(ident, name, desc, start, dest, distance);
-
-        //add tour to Observeable list in HomeWindowViewModel
-        homeWindowViewModel.getTourListItems().addAll(tour);
-        //Save tour to listview
-        homeWindowViewModel.setToursToList(mainWindowController.TourListView);
-        //add the tour to database
-        //dataAccess.addTourData(tour);
-        return "";
+        return tour;
+        /*
+        String ident = this.IDTextField.getText();
+        String name = this.NameTextField.getText();
+        String start = this.StartingPointTextField.getText();
+        String dest = this.DestinationTextField.getText();
+        String dist = this.DistanceTextField.getText();
+        String desc = this.DescriptionTextField.getText();
+        */
     }
-    */
 }
 
