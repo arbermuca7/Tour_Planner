@@ -11,7 +11,7 @@ import sample.dataAccessLayer.database.IDataAccess;
 import sample.models.Tour;
 
 public class EditTourViewModel{
-/*
+
     public EditTourViewModel(){
         System.out.println("EditTourViewModel");
     }
@@ -21,52 +21,52 @@ public class EditTourViewModel{
     @Getter private final StringProperty inputDistance = new SimpleStringProperty("");
     @Getter private final StringProperty inputDescription = new SimpleStringProperty("");
 
-    IDataAccess dataAccess = new DatabaseAccess();
+    @Getter private String id = null;
 
-    public void setTourDataToEdit(ListView<Tour> listView){
-        String name = listView.getSelectionModel().getSelectedItem().getT_Name();
-        String start =  listView.getSelectionModel().getSelectedItem().getStartPoint();
-        String dest = listView.getSelectionModel().getSelectedItem().getDestination();
-        Double dist = listView.getSelectionModel().getSelectedItem().getT_Distance();
-        String desc = listView.getSelectionModel().getSelectedItem().getDescription();
-        inputName.set(name);
-        inputStart.set(start);
-        inputDestination.set(dest);
-        inputDescription.set(desc);
-        String distance = "";
-        if (!dist.equals(""))
-            distance = Double.toString(dist);
-        inputDistance.set(distance);
+    //set the data to be changed in the edit window
+    /**
+     * @param editInfo String with all the informations of the tour
+     * like identification, name, start, destination, description
+     * and set these data in the edit window
+     * */
+    public void initEdit(String editInfo){
+        String[] content = editInfo.split(",");
+        id = content[0];
+        inputName.set(content[1]);
+        inputStart.set(content[2]);
+        inputDestination.set(content[3]);
+        inputDescription.set(content[4]);
+        inputDistance.set(content[5]);
+        System.out.println(id+","
+                +content[1]+","+content[2]+","
+                +content[3]+","+content[4]+","+content[5]);
+        /*
+        id = content[0];
+        NameTextField.setText(content[1]);
+        StartingPointTextField.setText(content[2]);
+        DestinationTextField.setText(content[3]);
+        DescriptionTextField.setText(content[4]);
+        DistanceTextField.setText(content[5]);
+        */
     }
-    @Override
+    /**
+     * takes the input from the text fields of the edit window
+     * @return String with all the values to be added in DB
+     * */
     public String tourData(){
         String name = this.inputName.get();
-        String start =  this.inputStart.get();
+        String start = this.inputStart.get();
         String dest = this.inputDestination.get();
         String dist = this.inputDistance.get();
         String desc = this.inputDescription.get();
 
-        //double distance = 0;
-        //if (!dist.isEmpty())
-        //    distance = Double.parseDouble(dist);
-
         return name+","+start+","+dest+","+dist+","+desc;
-        //create the tour
-        //Tour tour = new Tour(ident,name,desc,start,dest,distance);
-
+        /*
+        String name = this.NameTextField.getText();
+        String start = this.StartingPointTextField.getText();
+        String dest = this.DestinationTextField.getText();
+        String dist = this.DistanceTextField.getText();
+        String desc = this.DescriptionTextField.getText();
+        */
     }
-
-    @Override
-    public void validate_WordsTextFields(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("[a-zA-Z1-9 ]*")) ? change : null));
-
-    }
-
-    @Override
-    public void validate_NumbersTextFields(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([1-9][0-9]*)?([.])?([1-9][0-9]{0,1})?")) ? change : null));
-    }
-    */
 }
