@@ -5,10 +5,11 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
+import sample.models.Log;
 
 public class AddLogViewModel{
 
-    /*
+
     public AddLogViewModel(){
         System.out.println("AddLogViewModel");
     }
@@ -22,8 +23,18 @@ public class AddLogViewModel{
     @Getter private final StringProperty inputTravelMode = new SimpleStringProperty("");
     @Getter private final StringProperty inputRouteType = new SimpleStringProperty("");
     @Getter private final StringProperty inputRating = new SimpleStringProperty("");
+    @Getter private final StringProperty inputRestingPlace = new SimpleStringProperty("");
 
-    public void logData() {
+
+    @Getter private String id = null;
+
+    /**
+     * this method takes the input values from the textFields
+     * and saves then in the Log
+     * and the Logs will be saved also in the database
+     * @return the Log
+     * */
+    public Log logData() {
         String name     = this.inputName.get();
         String date     = this.inputDate.get();
         String duration = this.inputDuration.get();
@@ -34,6 +45,7 @@ public class AddLogViewModel{
         String travelMode = this.inputTravelMode.get();
         String routeType = this.inputRouteType.get();
         String rating   = this.inputRating.get();
+        String restingPlc = this.inputRestingPlace.get();
 
         //parse the distance
         double dist = 0;
@@ -60,52 +72,37 @@ public class AddLogViewModel{
         if(tollRoad.equals("t")){
             hasTollRoads = true;
         }
-
+        //parse the boolean if there is any resting place
+        boolean hasRestPlace = false;
+        if(restingPlc.equals("t")){
+            hasRestPlace = true;
+        }
         //Add the Log
-        //Log log = new Log(name,date,duration,dist,speed,fuel,routeType,rate,travelMode,hasTollRoads);
-
-        //database access
-        //database.addLogData(log);
+        Log log = new Log(name,date,duration,dist,speed,fuel,routeType,rate,travelMode,hasTollRoads,hasRestPlace);
+        return log;
+        /*
+        String name       = this.NameTextField.getText();
+        String date       = this.DateTextField.getText();
+        String duration   = this.DurationTextField.getText();
+        String distance   = this.DistanceTextField.getText();
+        String avgSpeed   = this.AverageSpeedTextField.getText();
+        String fuelCost   = this.FuelCostTextField.getText();
+        String tollRoad   = this.TollRoadsTextField.getText();
+        String travelMode = this.TravelModeTextField.getText();
+        String routeType  = this.RouteTypeTextField.getText();
+        String rating     = this.RatingTextField.getText();
+        String restingPlc = this.RestingPlaceTextField.getText();
+        */
     }
 
-    @Override
-    public void validate_date(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9.]{0,10})?")) ? change : null));
-
+    /**
+     * initialize the ID of the tour we clicked
+     * that's how we can add it the to the database
+     * and connect it directly to the tour
+     * */
+    public void getClickedID(String addInfo){
+        String[] content = addInfo.split(",");
+        id = content[0];
+        System.out.println("TourID in Log: "+id);
     }
-    @Override
-    public void validate_duration(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9:]{0,8})?")) ? change : null));
-
-    }
-    @Override
-    public void validate_distance_fuel(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([1-9][0-9]*)?([.])?([1-9][0-9]?)?")) ? change : null));
-    }
-
-    @Override
-    public void validate_speed(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([0-9]{0,5})")) ? change : null));
-    }
-    @Override
-    public void validate_rate(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("([1-5]?)")) ? change : null));
-    }
-    @Override
-    public void validate_toll(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("[tf]?")) ? change : null));
-    }
-
-    @Override
-    public void validate_WordsTextFields(TextField textField){
-        textField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("[a-zA-Z]*")) ? change : null));
-
-    }*/
 }
