@@ -1,16 +1,5 @@
 package sample.viewModels.TourVM;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import lombok.Getter;
-import sample.dataAccessLayer.database.DatabaseAccess;
-import sample.dataAccessLayer.database.IDataAccess;
-import sample.models.Tour;
-import sample.viewModels.HomeWindowViewModel;
-import sample.views.MainWindowController;
-
 public class AddTourViewModel {
 /*
     public AddTourViewModel() {

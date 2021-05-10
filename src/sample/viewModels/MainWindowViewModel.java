@@ -18,7 +18,7 @@ import sample.views.MainWindowController;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class HomeWindowViewModel {
+public class MainWindowViewModel {
 /*
     @Getter private final StringProperty searchInputTours = new SimpleStringProperty("");
     @Getter private final StringProperty searchInputLogs = new SimpleStringProperty("");

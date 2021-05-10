@@ -2,7 +2,6 @@ package sample.views;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,13 +15,9 @@ import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Log;
 import sample.models.Tour;
-import sample.viewModels.TourVM.AddTourViewModel;
-import sample.viewModels.TourVM.EditTourViewModel;
-import sample.viewModels.HomeWindowViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.beans.binding.Bindings;
 import sample.views.LogViews.AddLogController;
 import sample.views.LogViews.EditLogController;
 import sample.views.TourViews.AddTourController;
@@ -459,4 +454,8 @@ public class MainWindowController implements Initializable{
         search.getItems().addAll(choiceboxItems);
     }
 
+    public void instructionOpen(ActionEvent actionEvent) {
+        InstructionController instructionController = (InstructionController) newWindow("instructions","Help");
+        instructionController.mainWindowController = this;
+    }
 }

@@ -37,10 +37,9 @@ public class DatabaseAccess implements IDataAccess {
      * */
     @Override
     public void GetTours(ObservableList<Tour> tourObservableList){
-        String query = "SELECT * FROM tour ORDER BY tourID ASC";
         try (Connection connection = getConnection()){
-            Statement stmt = connection.createStatement();
-            ResultSet res = stmt.executeQuery(query);
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tour ORDER BY tourID ASC");
+            ResultSet res = statement.executeQuery();
             while(res.next()){
                 String ident = res.getString("identification");
                 String name = res.getString("bezeichnung");
@@ -54,7 +53,7 @@ public class DatabaseAccess implements IDataAccess {
                 //add the database tours to observable list
                 tourObservableList.add(tour);
             }
-            stmt.close();
+            statement.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -65,11 +64,10 @@ public class DatabaseAccess implements IDataAccess {
      * */
     @Override
     public List<Tour> GetToursWithoutSaving(){
-        String query = "SELECT * FROM tour ORDER BY tourID ASC";
         List<Tour> tourList = new ArrayList<>();
         try (Connection connection = getConnection()){
-            Statement stmt = connection.createStatement();
-            ResultSet res = stmt.executeQuery(query);
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tour ORDER BY tourID ASC");
+            ResultSet res = statement.executeQuery();
             while(res.next()){
                 String ident = res.getString("identification");
                 String name = res.getString("bezeichnung");
@@ -83,7 +81,7 @@ public class DatabaseAccess implements IDataAccess {
                 //add the database tours to a List
                 tourList.add(tour);
             }
-            stmt.close();
+            statement.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -154,10 +152,9 @@ public class DatabaseAccess implements IDataAccess {
      * */
     @Override
     public void GetAllLogs(ObservableList<Log> logObservableList){
-        String query = "SELECT * FROM logs ORDER BY logID ASC";
         try (Connection connection = getConnection()){
-            Statement stmt = connection.createStatement();
-            ResultSet res = stmt.executeQuery(query);
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs ORDER BY logID ASC");
+            ResultSet res = statement.executeQuery();
             while(res.next()){
                 String date = res.getString("l_date");
                 String name = res.getString("log_name");
@@ -175,7 +172,7 @@ public class DatabaseAccess implements IDataAccess {
                 //add the database tours to observable list
                 logObservableList.add(log);
             }
-            stmt.close();
+            statement.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -224,8 +221,8 @@ public class DatabaseAccess implements IDataAccess {
         String query = "SELECT * FROM logs ORDER BY logID ASC";
         List<Log> logList = new ArrayList<>();
         try (Connection connection = getConnection()){
-            Statement stmt = connection.createStatement();
-            ResultSet res = stmt.executeQuery(query);
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet res = statement.executeQuery();
             while(res.next()){
                 String date = res.getString("l_date");
                 String name = res.getString("log_name");
@@ -244,7 +241,7 @@ public class DatabaseAccess implements IDataAccess {
                 //add the database tours to a List
                 logList.add(log);
             }
-            stmt.close();
+            statement.close();
         }catch (SQLException e){
             e.printStackTrace();
         }

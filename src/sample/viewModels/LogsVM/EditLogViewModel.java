@@ -3,7 +3,7 @@ package sample.viewModels.LogsVM;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
-public class EditLogViewModel implements LogViewModel{
+public class EditLogViewModel {
 
     @Override
     public void logData() {
