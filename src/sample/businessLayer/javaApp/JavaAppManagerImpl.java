@@ -1,8 +1,7 @@
 package sample.businessLayer.javaApp;
 
 import javafx.collections.ObservableList;
-import sample.dataAccessLayer.DAOs.LogsDAO;
-import sample.dataAccessLayer.DAOs.TourDAO;
+import sample.dataAccessLayer.DAOs.*;
 import sample.models.Log;
 import sample.models.Tour;
 import java.sql.SQLException;
@@ -10,6 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class JavaAppManagerImpl implements JavaAppManager{
+
+    IDAO<Tour> daoTour = DAOFactory.getInstance("tour");
+    IDAO<Log> daoLog = DAOFactory.getInstance("log");
 
     TourDAO tourDAO = new TourDAO();
     LogsDAO logsDAO = new LogsDAO();
@@ -29,7 +31,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * */
     @Override
     public List<Tour> GetTourItems() {
-        return tourDAO.GetTourWithoutSaving();
+        return daoTour.GetDataWithoutSave();
     }
 
     /**
@@ -39,7 +41,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * */
     @Override
     public void GetData(ObservableList<Tour> tour) throws SQLException {
-        tourDAO.GetTours(tour);
+        daoTour.GetDatas(tour);
     }
 
     /**
@@ -47,7 +49,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * so it can be deleted from the database
      * */
     public void delData(String id) throws SQLException {
-        tourDAO.deleteTourFromDB(id);
+        daoTour.deleteFromDB(id);
     }
 
     /**
@@ -65,8 +67,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * takes the logs from the database and saves them in the ObservableList
      * */
     @Override
-    public void GetAllLogs(ObservableList<Log> logs) {
-        logsDAO.GetLogs(logs);
+    public void GetAllLogs(ObservableList<Log> logs) throws SQLException {
+        daoLog.GetDatas(logs);
     }
 
     /**
@@ -85,7 +87,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * */
     @Override
     public List<Log> GetLogItems(){
-        return logsDAO.GetLogsWithoutSave();
+        return daoLog.GetDataWithoutSave();
     }
 
     /**
@@ -113,7 +115,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * */
     @Override
     public void delLogItem(String name) throws SQLException {
-        logsDAO.deleteLogFromDB(name);
+        daoLog.deleteFromDB(name);
     }
 
     /**

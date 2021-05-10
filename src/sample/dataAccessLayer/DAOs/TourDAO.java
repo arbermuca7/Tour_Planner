@@ -7,7 +7,7 @@ import sample.models.Tour;
 import java.sql.SQLException;
 import java.util.List;
 
-public class TourDAO {
+public class TourDAO implements IDAO<Tour> {
     IDataAccess dataAccess;
 
     public TourDAO(){
@@ -18,7 +18,7 @@ public class TourDAO {
      * @param list as a ObservableList
      * takes the tours from the database and saves them in the ObservableList
      * */
-    public void GetTours(ObservableList<Tour> list) throws SQLException {
+    public void GetDatas(ObservableList<Tour> list) throws SQLException {
         dataAccess.GetTours(list);
     }
 
@@ -26,7 +26,7 @@ public class TourDAO {
      * takes the tours from the database but it doesn't saves them in a ObservableList
      * @return the list which contains all the Tour in the database
      * */
-    public List<Tour> GetTourWithoutSaving(){
+    public List<Tour> GetDataWithoutSave(){
         return dataAccess.GetToursWithoutSaving();
     }
 
@@ -51,7 +51,7 @@ public class TourDAO {
      * @param id as the Tour Identification,
      * so it can be deleted from the database
      * */
-    public void deleteTourFromDB(String id) throws SQLException {
+    public void deleteFromDB(String id) throws SQLException {
         dataAccess.deleteTourData(id);
     }
 

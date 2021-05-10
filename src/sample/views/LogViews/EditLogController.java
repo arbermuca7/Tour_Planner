@@ -15,6 +15,7 @@ import sample.models.Log;
 import sample.views.MainWindowController;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class EditLogController implements Initializable {
@@ -58,7 +59,7 @@ public class EditLogController implements Initializable {
 
     }
 
-    public void editTour(ActionEvent actionEvent) {
+    public void editTour(ActionEvent actionEvent) throws SQLException {
         //get the tour to edit
         logItem = logData();
 

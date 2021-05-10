@@ -4,12 +4,11 @@ import javafx.collections.ObservableList;
 import sample.dataAccessLayer.database.DatabaseAccess;
 import sample.dataAccessLayer.database.IDataAccess;
 import sample.models.Log;
-import sample.models.Tour;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class LogsDAO {
+public class LogsDAO implements IDAO<Log>{
     IDataAccess dataAccess;
 
     public LogsDAO(){
@@ -20,9 +19,18 @@ public class LogsDAO {
      * @param logObservableList as a ObservableList
      * takes the logs from the database and saves them in the ObservableList
      * */
-    public void GetLogs(ObservableList<Log> logObservableList){
+    public void GetDatas(ObservableList<Log> logObservableList){
         dataAccess.GetAllLogs(logObservableList);
     }
+
+    /**
+     * takes the logs from the database but it doesn't saves them in a ObservableList
+     * @return the list which contains all the logs in the database
+     * */
+    public List<Log> GetDataWithoutSave(){
+        return dataAccess.GetLogsWithoutSaving();
+    }
+
 
     /**
      * @param logObservableList as the observable list
@@ -31,14 +39,6 @@ public class LogsDAO {
      * */
     public void GetLogsForTour(ObservableList<Log> logObservableList,String id){
         dataAccess.GetLogsForTour(logObservableList, id);
-    }
-
-    /**
-     * takes the logs from the database but it doesn't saves them in a ObservableList
-     * @return the list which contains all the logs in the database
-     * */
-    public List<Log> GetLogsWithoutSave(){
-        return dataAccess.GetLogsWithoutSaving();
     }
 
     /**
@@ -62,7 +62,7 @@ public class LogsDAO {
      * @param name as the Log name,
      * so it can be deleted from the database
      * */
-    public void deleteLogFromDB(String name) throws SQLException {
+    public void deleteFromDB(String name) throws SQLException {
         dataAccess.deleteLogData(name);
     }
 

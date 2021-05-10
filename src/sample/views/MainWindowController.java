@@ -106,6 +106,7 @@ public class MainWindowController implements Initializable{
         //get the logs for a certain tour
         showOnlyLogsOfTour(TourListView);
     }
+
     /**
      * this method takes as
      * @param listView as ListView and when you select a certain

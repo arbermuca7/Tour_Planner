@@ -15,7 +15,7 @@ public interface JavaAppManager {
     void delData(String id) throws SQLException;
     void editData(Tour tour, String id);
 
-    void GetAllLogs(ObservableList<Log> logs);
+    void GetAllLogs(ObservableList<Log> logs) throws SQLException;
     void GetLogsForTour(ObservableList<Log> logObservableList,String id);
     List<Log> GetLogItems();
     void setLogItems(Log logItems, String id);
