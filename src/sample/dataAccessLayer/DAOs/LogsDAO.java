@@ -46,7 +46,7 @@ public class LogsDAO implements IDAO<Log>{
      * @param ident as the Tour Identification,
      * so you can add a Log to a certain Tour in the Database and TableView
      * */
-    public void addLogToDB(Log logs, String ident){
+    public void addToDB(Log logs, String ident){
         dataAccess.addLogData(logs, ident);
     }
 
@@ -54,7 +54,7 @@ public class LogsDAO implements IDAO<Log>{
      * @param logs as a Log you want to modify
      * so you can update it in the database
      * */
-    public void editLogInDB(Log logs){
+    public void editInDB(Log logs, String id){
         dataAccess.editLogData(logs);
     }
 

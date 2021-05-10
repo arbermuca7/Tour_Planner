@@ -16,6 +16,7 @@ import sample.models.Tour;
 import sample.views.MainWindowController;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddLogController implements Initializable {
@@ -42,7 +43,7 @@ public class AddLogController implements Initializable {
 
 
 
-    public void addLog(ActionEvent actionEvent) {
+    public void addLog(ActionEvent actionEvent) throws SQLException {
         logItems = logData();
         //save the log in the database
         manager.setLogItems(logItems,id);

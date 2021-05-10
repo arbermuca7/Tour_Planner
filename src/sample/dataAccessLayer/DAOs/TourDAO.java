@@ -34,7 +34,7 @@ public class TourDAO implements IDAO<Tour> {
      * @param tour takes a Tour as parameter
      * and saves that tour to the database
      * */
-    public void addTourToDB(Tour tour) throws SQLException {
+    public void addToDB(Tour tour, String id) throws SQLException {
         dataAccess.addTourData(tour);
     }
 
@@ -43,7 +43,7 @@ public class TourDAO implements IDAO<Tour> {
      * @param id as the Tour Identification
      * so you can update it in the database
      * */
-    public void editTourInDB(Tour tour, String id){
+    public void editInDB(Tour tour, String id){
         dataAccess.editTourData(tour, id);
     }
 

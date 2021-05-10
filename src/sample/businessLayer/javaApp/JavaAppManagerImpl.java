@@ -21,7 +21,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * */
     @Override
     public void SetDataItems(Tour tour) throws SQLException {
-        tourDAO.addTourToDB(tour);
+        String id = "";
+        daoTour.addToDB(tour,id);
     }
 
     /**
@@ -59,7 +60,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * */
     @Override
     public void editData(Tour tour, String id) {
-        tourDAO.editTourInDB(tour, id);
+        daoTour.editInDB(tour, id);
     }
 
     /**
@@ -96,8 +97,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * so you can add a Log to a certain Tour in the Database and TableView
      * */
     @Override
-    public void setLogItems(Log logItems, String id) {
-        logsDAO.addLogToDB(logItems,id);
+    public void setLogItems(Log logItems, String id) throws SQLException {
+        daoLog.addToDB(logItems,id);
     }
 
     /**
@@ -106,7 +107,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * */
     @Override
     public void editLogItems(Log log) {
-        logsDAO.editLogInDB(log);
+        String id = "";
+        daoLog.editInDB(log,id);
     }
 
     /**
