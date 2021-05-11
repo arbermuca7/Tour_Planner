@@ -1,6 +1,7 @@
 package sample.dataAccessLayer.database;
 
 import javafx.collections.ObservableList;
+import sample.businessLayer.configuration.Configuration;
 import sample.models.Log;
 import sample.models.Tour;
 
@@ -10,11 +11,15 @@ import java.util.List;
 
 public class DatabaseAccess implements IDataAccess {
 
-    String url = "jdbc:postgresql://localhost:5432/postgres";
-    String user = "postgres";
-    String pwd = "admin";
 
+    public Configuration configuration = new Configuration();
+    String dbConnection = configuration.getDBConfigs();
+    String[] conn = dbConnection.split("#");
+    String url  = conn[0];
+    String user = conn[1];
+    String pwd  = conn[2];
     public DatabaseAccess(){}
+
     /**
      * this method creates a connection with the database
      * @return the connection

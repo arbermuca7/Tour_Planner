@@ -1,4 +1,4 @@
-package sample.businessLayer;
+package sample.businessLayer.mapQuest;
 
 import lombok.Getter;
 
