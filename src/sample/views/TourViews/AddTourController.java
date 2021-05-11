@@ -45,7 +45,7 @@ public class AddTourController implements Initializable {
         manager.SetDataItems(tour);
         mainWindowController.getTourListItems().add(tour);
         //Save tour to listview
-        mainWindowController.setToursToList();
+        mainWindowController.mainWindowViewModel.setToursToList(mainWindowController.TourListView, mainWindowController.getTourListItems());
         //close the window
         Stage stage = (Stage) AddBtn.getScene().getWindow();
         stage.close();

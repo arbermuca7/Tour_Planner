@@ -52,7 +52,7 @@ public class AddLogController implements Initializable {
         //insert the log into the observable list
         mainWindowController.getLogsTableItems().add(logItems);
         // set the observable list into the table view
-        mainWindowController.setLogsToTable();
+        mainWindowController.mainWindowViewModel.setLogsToTable(mainWindowController.LogTableView, mainWindowController.getLogsTableItems());
         //close the window after adding the log into the table
         Stage stage = (Stage) addBtn.getScene().getWindow();
         stage.close();
