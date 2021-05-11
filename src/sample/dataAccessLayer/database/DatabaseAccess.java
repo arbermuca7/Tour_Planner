@@ -11,13 +11,9 @@ import java.util.List;
 
 public class DatabaseAccess implements IDataAccess {
 
-
-    public Configuration configuration = new Configuration();
-    String dbConnection = configuration.getDBConfigs();
-    String[] conn = dbConnection.split("#");
-    String url  = conn[0];
-    String user = conn[1];
-    String pwd  = conn[2];
+    String url  = Configuration.getUrl();
+    String user = Configuration.getUsername();
+    String pwd  = Configuration.getPassword();
     public DatabaseAccess(){}
 
     /**

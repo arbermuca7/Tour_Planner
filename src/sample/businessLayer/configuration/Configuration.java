@@ -8,13 +8,13 @@ import java.util.Properties;
 
 public class Configuration {
 
-    private String url;
-    private String username;
-    private String password;
+    @Getter private static String url;
+    @Getter private static String username;
+    @Getter private static String password;
 
     public Configuration(){}
 
-    public String getDBConfigs(){
+    public static void getDBConfigs(){
         try{
             FileInputStream confFile = new FileInputStream("src/sample/businessLayer/configuration/config.properties");
             Properties configData = new Properties();
@@ -26,7 +26,6 @@ public class Configuration {
         }catch (IOException e) {
             e.printStackTrace();
         }
-        return url+"#"+username+"#"+password;
     }
 
 }
