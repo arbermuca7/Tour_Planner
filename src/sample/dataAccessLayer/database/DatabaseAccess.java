@@ -89,13 +89,29 @@ public class DatabaseAccess implements IDataAccess {
         return tourList;
     }
 
+    @Override
+    public boolean checkIfTourExists(String id) {
+        try (Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tour WHERE identification=?");
+            statement.setString(1, id);
+            ResultSet res = statement.executeQuery();
+            if (res.next()){
+                return true;
+            }
+            statement.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     //add the tour to the databaseTable
     /**
      * @param tour takes a Tour as parameter
      * and saves that tour to the database
      * */
     @Override
-    public String addTourData(Tour tour) {
+    public boolean addTourData(Tour tour) {
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("INSERT INTO tour(identification,bezeichnung,description,distance,startpoint,destination) VALUES (?,?,?,?,?,?); ");
             statement.setString(1,tour.getIdentification());
@@ -108,7 +124,7 @@ public class DatabaseAccess implements IDataAccess {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return tour.getIdentification();
+        return checkIfTourExists(tour.getIdentification());
     }
     //edit a certain Tour
     /**
@@ -148,7 +164,10 @@ public class DatabaseAccess implements IDataAccess {
             throwables.printStackTrace();
             return false;
         }
-        return true;
+        if(!checkIfTourExists(id)){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -295,7 +314,7 @@ public class DatabaseAccess implements IDataAccess {
      * so you can add a Log to a certain Tour in the Database and TableView
      * */
     @Override
-    public String addLogData(Log logs,String identific) {
+    public boolean addLogData(Log logs,String identific) {
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("INSERT INTO logs(log_name,l_date,duration,distance,avg_speed," +
                     "fuel_costs,route_type,rating,travel_mode,toll_roads,tour_ident,resting_place) VALUES (?,?,?,?,?,?,?,?,?,?,?,?); ");
@@ -315,7 +334,7 @@ public class DatabaseAccess implements IDataAccess {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return logs.getName();
+        return checkIfLogsExists(logs.getName());
     }
 
     /**
@@ -360,7 +379,25 @@ public class DatabaseAccess implements IDataAccess {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return true;
+        if(!checkIfLogsExists(name)){
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public boolean checkIfLogsExists(String name){
+        try (Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE log_name=?");
+            statement.setString(1, name);
+            ResultSet res = statement.executeQuery();
+            if (res.next()){
+                return true;
+            }
+            statement.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
     /**
      * @param logObservableList as the observable list
@@ -400,6 +437,4 @@ public class DatabaseAccess implements IDataAccess {
         }
         return true;
     }
-
-
 }

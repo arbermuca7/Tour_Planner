@@ -13,7 +13,9 @@ public interface IDataAccess {
     void GetTours(ObservableList<Tour> tourObservableList);
     List<Tour> GetToursWithoutSaving();
 
-    String addTourData(Tour tour);
+    boolean checkIfTourExists(String id);
+
+    boolean addTourData(Tour tour);
     boolean editTourData(Tour tour, String id);
     boolean deleteTourData(String id);
 
@@ -21,9 +23,10 @@ public interface IDataAccess {
     void GetLogsForTour(ObservableList<Log> logObservableList,String id);
     List<Log> ReportGetLogs(String id);
     List<Log> GetLogsWithoutSaving();
-    String addLogData(Log logs,String identific);
+    boolean addLogData(Log logs,String identific);
     boolean editLogData(Log logs);
     boolean deleteLogData(String name);
+    boolean checkIfLogsExists(String name);
     boolean checkIfTourHasLogs(ObservableList<Log> logObservableList, String id);
     boolean delTheLogsOfTour(String id);
 
