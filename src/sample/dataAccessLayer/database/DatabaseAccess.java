@@ -95,7 +95,7 @@ public class DatabaseAccess implements IDataAccess {
      * and saves that tour to the database
      * */
     @Override
-    public void addTourData(Tour tour) {
+    public String addTourData(Tour tour) {
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("INSERT INTO tour(identification,bezeichnung,description,distance,startpoint,destination) VALUES (?,?,?,?,?,?); ");
             statement.setString(1,tour.getIdentification());
@@ -108,6 +108,7 @@ public class DatabaseAccess implements IDataAccess {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        return tour.getIdentification();
     }
     //edit a certain Tour
     /**
@@ -116,7 +117,7 @@ public class DatabaseAccess implements IDataAccess {
      * so you can update it in the database
      * */
     @Override
-    public void editTourData(Tour tour, String id) {
+    public boolean editTourData(Tour tour, String id) {
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("UPDATE tour SET bezeichnung=?, description=?, distance=?, startpoint=?, destination=? WHERE identification=?;\n");
             statement.setString(1,tour.getT_Name());
@@ -128,8 +129,9 @@ public class DatabaseAccess implements IDataAccess {
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return false;
         }
-
+        return true;
     }
     //delete a certain Tour from database
     /**
@@ -137,14 +139,16 @@ public class DatabaseAccess implements IDataAccess {
      * so it can be deleted from the database
      * */
     @Override
-    public void deleteTourData(String id){
+    public boolean deleteTourData(String id){
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("DELETE FROM tour WHERE identification = ?; ");
             statement.setString(1,id);
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     /**
@@ -214,6 +218,42 @@ public class DatabaseAccess implements IDataAccess {
     }
 
     /**
+     * @param id as the tour id,
+     * and wherewith we will select the logs for a certain tour
+     * */
+    @Override
+    public List<Log> ReportGetLogs(String id){
+        List<Log> logsForTour = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM logs WHERE tour_ident=? ORDER BY logID ASC");
+            statement.setString(1, id);
+            ResultSet res = statement.executeQuery();
+            while(res.next()){
+                String date = res.getString("l_date");
+                String name = res.getString("log_name");
+                String duration = res.getString("duration");
+                double dist = res.getDouble("distance");
+                int speed = res.getInt("avg_speed");
+                float fuel = res.getFloat("fuel_costs");
+                String route = res.getString("route_type");
+                int rate = res.getInt("rating");
+                String travel = res.getString("travel_mode");
+                boolean tollRoad = res.getBoolean("toll_roads");
+                boolean restPlace = res.getBoolean("resting_place");
+
+                Log log = new Log(name,date,duration,dist,speed,fuel,route,rate,travel,tollRoad,restPlace);
+                //add the database tours to observable list
+                logsForTour.add(log);
+
+            }
+            statement.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return logsForTour;
+    }
+
+    /**
      * takes the logs from the database but it doesn't saves them in a ObservableList
      * @return the list which contains all the logs in the database
      * */
@@ -255,7 +295,7 @@ public class DatabaseAccess implements IDataAccess {
      * so you can add a Log to a certain Tour in the Database and TableView
      * */
     @Override
-    public void addLogData(Log logs,String identific) {
+    public String addLogData(Log logs,String identific) {
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("INSERT INTO logs(log_name,l_date,duration,distance,avg_speed," +
                     "fuel_costs,route_type,rating,travel_mode,toll_roads,tour_ident,resting_place) VALUES (?,?,?,?,?,?,?,?,?,?,?,?); ");
@@ -275,6 +315,7 @@ public class DatabaseAccess implements IDataAccess {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        return logs.getName();
     }
 
     /**
@@ -282,7 +323,7 @@ public class DatabaseAccess implements IDataAccess {
      * so you can update it in the database
      * */
     @Override
-    public void editLogData(Log logs) {
+    public boolean editLogData(Log logs) {
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("UPDATE logs SET l_date=?, duration=?, distance=?, avg_speed=?" +
                     ", fuel_costs=?, route_type=?, rating=?, travel_mode=?, toll_roads=?, resting_place=? WHERE log_name=?;\n");
@@ -300,7 +341,9 @@ public class DatabaseAccess implements IDataAccess {
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     /**
@@ -308,7 +351,7 @@ public class DatabaseAccess implements IDataAccess {
      * so it can be deleted from the database
      * */
     @Override
-    public void deleteLogData(String name){
+    public boolean deleteLogData(String name){
 
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("DELETE FROM logs WHERE log_name = ?; ");
@@ -317,6 +360,7 @@ public class DatabaseAccess implements IDataAccess {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        return true;
     }
     /**
      * @param logObservableList as the observable list
@@ -345,14 +389,16 @@ public class DatabaseAccess implements IDataAccess {
      * so it can be deleted from the database the log with a tour id
      * */
     @Override
-    public void delTheLogsOfTour(String id) {
+    public boolean delTheLogsOfTour(String id) {
         try (Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement("DELETE FROM logs WHERE tour_ident = ?; ");
             statement.setString(1,id);
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return false;
         }
+        return true;
     }
 
 

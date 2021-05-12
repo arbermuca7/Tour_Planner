@@ -13,17 +13,18 @@ public interface IDataAccess {
     void GetTours(ObservableList<Tour> tourObservableList);
     List<Tour> GetToursWithoutSaving();
 
-    void addTourData(Tour tour);
-    void editTourData(Tour tour, String id);
-    void deleteTourData(String id);
+    String addTourData(Tour tour);
+    boolean editTourData(Tour tour, String id);
+    boolean deleteTourData(String id);
 
     void GetAllLogs(ObservableList<Log> tourObservableList);
     void GetLogsForTour(ObservableList<Log> logObservableList,String id);
+    List<Log> ReportGetLogs(String id);
     List<Log> GetLogsWithoutSaving();
-    void addLogData(Log logs,String identific);
-    void editLogData(Log logs);
-    void deleteLogData(String name);
+    String addLogData(Log logs,String identific);
+    boolean editLogData(Log logs);
+    boolean deleteLogData(String name);
     boolean checkIfTourHasLogs(ObservableList<Log> logObservableList, String id);
-    void delTheLogsOfTour(String id);
+    boolean delTheLogsOfTour(String id);
 
 }

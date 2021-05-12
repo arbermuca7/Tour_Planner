@@ -43,16 +43,16 @@ public class TourDAO implements IDAO<Tour> {
      * @param id as the Tour Identification
      * so you can update it in the database
      * */
-    public void editInDB(Tour tour, String id){
-        dataAccess.editTourData(tour, id);
+    public boolean editInDB(Tour tour, String id){
+        return dataAccess.editTourData(tour, id);
     }
 
     /**
      * @param id as the Tour Identification,
      * so it can be deleted from the database
      * */
-    public void deleteFromDB(String id) throws SQLException {
-        dataAccess.deleteTourData(id);
+    public boolean deleteFromDB(String id) throws SQLException {
+        return dataAccess.deleteTourData(id);
     }
 
 }

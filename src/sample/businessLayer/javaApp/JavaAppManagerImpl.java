@@ -13,7 +13,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
     IDAO<Tour> daoTour = DAOFactory.getInstance("tour");
     IDAO<Log> daoLog = DAOFactory.getInstance("log");
 
-    TourDAO tourDAO = new TourDAO();
+    //TourDAO tourDAO = new TourDAO();
     LogsDAO logsDAO = new LogsDAO();
     /**
      * @param tour takes a Tour as parameter
@@ -49,8 +49,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * @param id as the Tour Identification,
      * so it can be deleted from the database
      * */
-    public void delData(String id) throws SQLException {
-        daoTour.deleteFromDB(id);
+    public boolean delData(String id) throws SQLException {
+        return daoTour.deleteFromDB(id);
     }
 
     /**
@@ -59,8 +59,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * so you can update it in the database
      * */
     @Override
-    public void editData(Tour tour, String id) {
-        daoTour.editInDB(tour, id);
+    public boolean editData(Tour tour, String id) {
+        return daoTour.editInDB(tour, id);
     }
 
     /**
@@ -80,6 +80,14 @@ public class JavaAppManagerImpl implements JavaAppManager{
     @Override
     public void GetLogsForTour(ObservableList<Log> logObservableList, String id) {
         logsDAO.GetLogsForTour(logObservableList, id);
+    }
+    /**
+     * @param id as the tour id,
+     * and wherewith we will select the logs for a certain tour
+     * */
+    @Override
+    public List<Log> ReportGetLogsForTour(String id){
+        return logsDAO.ReportGetLogs(id);
     }
 
     /**
@@ -106,9 +114,9 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * so you can update it in the database
      * */
     @Override
-    public void editLogItems(Log log) {
+    public boolean editLogItems(Log log) {
         String id = "";
-        daoLog.editInDB(log,id);
+        return daoLog.editInDB(log,id);
     }
 
     /**
@@ -116,8 +124,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * so it can be deleted from the database
      * */
     @Override
-    public void delLogItem(String name) throws SQLException {
-        daoLog.deleteFromDB(name);
+    public boolean delLogItem(String name) throws SQLException {
+       return daoLog.deleteFromDB(name);
     }
 
     /**
@@ -136,8 +144,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
      * so it can be deleted from the database the log with a tour id
      * */
     @Override
-    public void deleteTheLogsOfTour(String id) {
-        logsDAO.deleteTheLogsOfTour(id);
+    public boolean deleteTheLogsOfTour(String id) {
+        return logsDAO.deleteTheLogsOfTour(id);
     }
 
     /**

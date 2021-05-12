@@ -13,18 +13,19 @@ public interface JavaAppManager {
     void SetDataItems(Tour tour) throws SQLException;
     List<Tour> GetTourItems();
     void GetData(ObservableList<Tour> tour) throws SQLException;
-    void delData(String id) throws SQLException;
-    void editData(Tour tour, String id);
+    boolean delData(String id) throws SQLException;
+    boolean editData(Tour tour, String id);
 
     //Log methods
     void GetAllLogs(ObservableList<Log> logs) throws SQLException;
     void GetLogsForTour(ObservableList<Log> logObservableList,String id);
+    List<Log> ReportGetLogsForTour(String id);
     List<Log> GetLogItems();
     void setLogItems(Log logItems, String id) throws SQLException;
-    void editLogItems(Log log);
-    void delLogItem(String name) throws SQLException;
+    boolean editLogItems(Log log);
+    boolean delLogItem(String name) throws SQLException;
     boolean checkIfTourHasLog(ObservableList<Log> logObservableList, String id);
-    void deleteTheLogsOfTour(String id);
+    boolean deleteTheLogsOfTour(String id);
 
     //Search Methods
     List<Tour> searchTourItem(String tourName, boolean caseSensitive) throws SQLException;

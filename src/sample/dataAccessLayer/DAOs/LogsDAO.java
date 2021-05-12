@@ -42,6 +42,14 @@ public class LogsDAO implements IDAO<Log>{
     }
 
     /**
+     * @param id as the tour id,
+     * and wherewith we will select the logs for a certain tour
+     * */
+    public List<Log> ReportGetLogs(String id){
+        return dataAccess.ReportGetLogs(id);
+    }
+
+    /**
      * @param logs as a Log you want to modify
      * @param ident as the Tour Identification,
      * so you can add a Log to a certain Tour in the Database and TableView
@@ -54,16 +62,16 @@ public class LogsDAO implements IDAO<Log>{
      * @param logs as a Log you want to modify
      * so you can update it in the database
      * */
-    public void editInDB(Log logs, String id){
-        dataAccess.editLogData(logs);
+    public boolean editInDB(Log logs, String id){
+        return dataAccess.editLogData(logs);
     }
 
     /**
      * @param name as the Log name,
      * so it can be deleted from the database
      * */
-    public void deleteFromDB(String name) throws SQLException {
-        dataAccess.deleteLogData(name);
+    public boolean deleteFromDB(String name) throws SQLException {
+        return dataAccess.deleteLogData(name);
     }
 
     /**
@@ -80,7 +88,7 @@ public class LogsDAO implements IDAO<Log>{
      * @param id as the tour id,
      * so it can be deleted from the database the log with a tour id
      * */
-    public void deleteTheLogsOfTour(String id){
-        dataAccess.delTheLogsOfTour(id);
+    public boolean deleteTheLogsOfTour(String id){
+        return dataAccess.delTheLogsOfTour(id);
     }
 }

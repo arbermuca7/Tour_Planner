@@ -10,6 +10,6 @@ public interface IDAO<T> {
     void GetDatas(ObservableList<T> list) throws SQLException;
     List<T> GetDataWithoutSave();
     void addToDB(T st, String sth) throws SQLException;
-    void editInDB(T st, String sth);
-    void deleteFromDB(String sth) throws SQLException;
+    boolean editInDB(T st, String sth);
+    boolean deleteFromDB(String sth) throws SQLException;
 }

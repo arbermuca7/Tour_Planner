@@ -11,6 +11,8 @@ public class Configuration {
     @Getter private static String url;
     @Getter private static String username;
     @Getter private static String password;
+    @Getter private static String pdfPath;
+
 
     public Configuration(){}
 
@@ -22,6 +24,7 @@ public class Configuration {
             url = configData.getProperty("ConnectionString");
             username = configData.getProperty("usernameDB");
             password = configData.getProperty("passwordDB");
+            pdfPath = configData.getProperty("reportPath");
             confFile.close();
         }catch (IOException e) {
             e.printStackTrace();
