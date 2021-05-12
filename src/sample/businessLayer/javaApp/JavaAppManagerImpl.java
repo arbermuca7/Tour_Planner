@@ -1,6 +1,9 @@
 package sample.businessLayer.javaApp;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
+import sample.businessLayer.reporting.IReportGeneration;
+import sample.businessLayer.reporting.ReportGeneration;
 import sample.dataAccessLayer.DAOs.*;
 import sample.models.Log;
 import sample.models.Tour;
@@ -12,6 +15,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
 
     IDAO<Tour> daoTour = DAOFactory.getInstance("tour");
     IDAO<Log> daoLog = DAOFactory.getInstance("log");
+
+    IReportGeneration reportGeneration = new ReportGeneration();
 
     //TourDAO tourDAO = new TourDAO();
     LogsDAO logsDAO = new LogsDAO();
@@ -169,6 +174,12 @@ public class JavaAppManagerImpl implements JavaAppManager{
                 .filter(x -> x.getT_Name().toLowerCase().contains(tourName.toLowerCase()))
                 .collect(Collectors.toList());
     }
+    /**
+     * this method searches for certain log from ListView
+     * @param logName the String you want to search for
+     * @param caseSensitive the boolean to tell the program if u want to search caseSensitive or not
+     * @return List of the logs which matches the String you want to search
+     * */
     @Override
     public List<Log> searchLogItem(String logName, boolean caseSensitive) throws SQLException {
         //get TourList from DB but not saving in the ObservableList, but in a normal List
@@ -183,5 +194,10 @@ public class JavaAppManagerImpl implements JavaAppManager{
                 .stream()
                 .filter(x -> x.getName().toLowerCase().contains(logName.toLowerCase()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean genReport(ListView<Tour> tourListView, String savingFolder, JavaAppManager manager) {
+        return reportGeneration.report(tourListView, savingFolder, manager);
     }
 }

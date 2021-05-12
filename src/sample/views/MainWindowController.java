@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import sample.businessLayer.configuration.Configuration;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Log;
@@ -226,5 +227,14 @@ public class MainWindowController implements Initializable{
     @FXML
     public void searchItems(ActionEvent actionEvent) throws SQLException {
         mainWindowViewModel.searchTheInput(SearchChoicebox,manager,tourListItems,logsTableItems);
+    }
+
+    /**
+     * this method is used to generate a report
+     * for a certain tour
+     * */
+    @FXML
+    public void createReport(ActionEvent actionEvent) {
+        manager.genReport(TourListView, Configuration.getPdfPath(),manager);
     }
 }

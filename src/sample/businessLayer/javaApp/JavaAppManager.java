@@ -1,6 +1,7 @@
 package sample.businessLayer.javaApp;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 import sample.models.Log;
 import sample.models.Tour;
 
@@ -30,4 +31,7 @@ public interface JavaAppManager {
     //Search Methods
     List<Tour> searchTourItem(String tourName, boolean caseSensitive) throws SQLException;
     List<Log> searchLogItem(String logName, boolean caseSensitive) throws SQLException;
+
+    //generate Report
+    boolean genReport(ListView<Tour> tourListView, String savingFolder, JavaAppManager manager);
 }
