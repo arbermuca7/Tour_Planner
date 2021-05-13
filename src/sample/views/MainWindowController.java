@@ -47,6 +47,13 @@ public class MainWindowController implements Initializable{
     public Tab DescriptionTab;
     public Tab RouteTab;
     public Label DescriptionLabel;
+    //Buttons
+    public Button delTourBtn;
+    public Button editTourBtn;
+    public Button addLog;
+    public Button delLogBtn;
+    public Button editLog;
+
 
     //TableColumns add
     public TableColumn<Log, String> date;
@@ -103,6 +110,15 @@ public class MainWindowController implements Initializable{
         Bindings.bindBidirectional(OutputNameLabel.textProperty(), mainWindowViewModel.getOutputNameTour());
         Bindings.bindBidirectional(tourLogs.textProperty(), mainWindowViewModel.getOutputTourLogs());
         Bindings.bindBidirectional(DescriptionLabel.textProperty(), mainWindowViewModel.getOutputDescription());
+
+        //Disable Buttons when no tour bzw. log selected
+        delTourBtn.disableProperty().bind(TourListView.getSelectionModel().selectedItemProperty().isNull());
+        editTourBtn.disableProperty().bind(TourListView.getSelectionModel().selectedItemProperty().isNull());
+        addLog.disableProperty().bind(TourListView.getSelectionModel().selectedItemProperty().isNull());
+        delLogBtn.disableProperty().bind(LogTableView.getSelectionModel().selectedItemProperty().isNull());
+        editLog.disableProperty().bind(LogTableView.getSelectionModel().selectedItemProperty().isNull());
+
+
     }
 
     @FXML

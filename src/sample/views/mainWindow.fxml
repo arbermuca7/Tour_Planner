@@ -121,7 +121,7 @@
                         <Insets left="5.0" />
                     </GridPane.margin></Label>
                 <Button fx:id="addLog" layoutX="285.0" layoutY="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addLogWindow" text="+" GridPane.columnIndex="3" />
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#deleteLog" prefHeight="26.0" prefWidth="58.0" text="-" GridPane.columnIndex="4" />
+                <Button fx:id="delLogBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#deleteLog" prefHeight="26.0" prefWidth="58.0" text="-" GridPane.columnIndex="4" />
                 <Button fx:id="editLog" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editLogWindow" prefHeight="26.0" prefWidth="73.0" text="[]" GridPane.columnIndex="5">
                     <GridPane.margin>
                         <Insets right="10.0" />
@@ -147,7 +147,7 @@
                     </GridPane.margin>
                 </Label>
                 <Button fx:id="addTour" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addTourWindow" text="+" GridPane.columnIndex="1" />
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#deleteTour" prefHeight="26.0" prefWidth="33.0" text="-" GridPane.columnIndex="2" />
+                <Button fx:id="delTourBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#deleteTour" prefHeight="26.0" prefWidth="33.0" text="-" GridPane.columnIndex="2" />
                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
                     <children>
                         <ListView fx:id="TourListView" onMouseClicked="#selectedTour" prefHeight="409.0" prefWidth="173.0" />
@@ -156,7 +156,7 @@
                         <Insets left="10.0" />
                     </GridPane.margin>
                 </VBox>
-                <Button layoutX="113.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editTourWindow" prefHeight="26.0" prefWidth="33.0" text="[]" GridPane.columnIndex="3" />
+                <Button fx:id="editTourBtn" layoutX="113.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editTourWindow" prefHeight="26.0" prefWidth="33.0" text="[]" GridPane.columnIndex="3" />
             </children>
         </GridPane>
     </children>
