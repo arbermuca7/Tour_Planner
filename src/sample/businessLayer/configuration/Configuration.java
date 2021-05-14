@@ -15,6 +15,7 @@ public class Configuration {
     @Getter private static String username;
     @Getter private static String password;
     @Getter private static String pdfPath;
+    @Getter private static String mapPath;
 
     private static final Logger logger = LogManager.getLogger(Configuration.class);
 
@@ -30,6 +31,7 @@ public class Configuration {
             username = configData.getProperty("usernameDB");
             password = configData.getProperty("passwordDB");
             pdfPath = configData.getProperty("reportPath");
+            mapPath = configData.getProperty("tourMap");
             confFile.close();
             logger.info("get DB Connection and File location");
         }catch (IOException e) {
