@@ -1,5 +1,8 @@
 package sample.views.TourViews;
 
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.layout.element.Image;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -7,6 +10,7 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import sample.businessLayer.configuration.Configuration;
 import sample.businessLayer.inputValidation.IValid;
 import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.javaApp.JavaAppManager;
@@ -15,6 +19,7 @@ import sample.models.Tour;
 import sample.viewModels.TourVM.EditTourViewModel;
 import sample.views.MainWindowController;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -71,11 +76,15 @@ public class EditTourController implements Initializable {
             distance = Double.parseDouble(dist);
         //create the new updated tour
         Tour tour = new Tour(editTourViewModel.getId(),name,desc,start,dest,distance);
+        //delete the image of the tour
+        manager.deleteImage(tour);
         //edit Tour in DB
         manager.editData(tour,editTourViewModel.getId());
         //add the updated Tour to the ListView
         mainWindowController.getTourListItems().clear();
         manager.GetData(mainWindowController.getTourListItems());
+        //get the new image
+        manager.getImageFromMap(tour);
         //close the window
         Stage stage = (Stage) EditBtn.getScene().getWindow();
         stage.close();

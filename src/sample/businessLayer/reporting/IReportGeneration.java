@@ -16,7 +16,7 @@ public interface IReportGeneration {
 
     void titleCreate(Document document, Tour tour) throws IOException;
     void basicInfo(Document document, Tour tour) throws IOException;
-    void tourImage(Document document) throws IOException;
+    void tourImage(Document document, String tour) throws IOException;
     boolean tourLogsInfo(Document document, List<Log> logs) throws IOException;
 
 }

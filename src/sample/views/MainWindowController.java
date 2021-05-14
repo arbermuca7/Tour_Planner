@@ -8,12 +8,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import sample.Main;
 import sample.businessLayer.configuration.Configuration;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
@@ -51,6 +55,8 @@ public class MainWindowController implements Initializable{
     public Tab DescriptionTab;
     public Tab RouteTab;
     public Label DescriptionLabel;
+    public ImageView MapImageView;
+    public AnchorPane ImagePane;
     //Buttons
     public Button delTourBtn;
     public Button editTourBtn;
@@ -84,8 +90,6 @@ public class MainWindowController implements Initializable{
     @Getter private Tour tourG;
     @Getter private Log logG;
 
-    public Tour currentTour;
-    public int selectedIndex = -1;
 
     public MainWindowController(){}
 
@@ -129,11 +133,16 @@ public class MainWindowController implements Initializable{
     }
 
     @FXML
-    public void selectedTour(MouseEvent mouseEvent) {
+    public void selectedTour(MouseEvent mouseEvent) throws IOException {
         mainWindowViewModel.diplaySelect(TourListView);
         mainWindowViewModel.readDescription(TourListView);
         //get the logs for a certain tour
         mainWindowViewModel.showOnlyLogsOfTour(TourListView,logsTableItems,manager);
+        Image image = mainWindowViewModel.showImage(TourListView, manager);
+        MapImageView = new ImageView(image);
+        MapImageView.setFitHeight(200);
+        MapImageView.setFitWidth(500);
+        ImagePane.getChildren().add(MapImageView);
         logger.info("Tour in the ListView selected");
     }
 
@@ -275,4 +284,5 @@ public class MainWindowController implements Initializable{
         logger.info("Report-Button clicked");
 
     }
+
 }

@@ -2,14 +2,20 @@ package sample.businessLayer.javaApp;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import sample.businessLayer.inputValidation.Valid;
+import sample.businessLayer.mapQuest.IMapQuest;
+import sample.businessLayer.mapQuest.MapQuest;
 import sample.businessLayer.reporting.IReportGeneration;
 import sample.businessLayer.reporting.ReportGeneration;
 import sample.dataAccessLayer.DAOs.*;
+import sample.dataAccessLayer.fileAccess.FileAccess;
+import sample.dataAccessLayer.fileAccess.IFileAccess;
 import sample.models.Log;
 import sample.models.Tour;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +26,8 @@ public class JavaAppManagerImpl implements JavaAppManager{
     IDAO<Log> daoLog = DAOFactory.getInstance("log");
 
     IReportGeneration reportGeneration = new ReportGeneration();
+    IMapQuest map = new MapQuest();
+    IFileAccess fileAccess = new FileAccess();
 
     private static final Logger logger = LogManager.getLogger(JavaAppManagerImpl.class);
 
@@ -205,8 +213,45 @@ public class JavaAppManagerImpl implements JavaAppManager{
                 .collect(Collectors.toList());
     }
 
+    /**
+     * this method generates a report for a certain tour
+     * @param tourListView ListView with tours
+     * @param savingFolder the path where i can save it
+     * @param manager JavaAppManager
+     * */
     @Override
     public boolean genReport(ListView<Tour> tourListView, String savingFolder, JavaAppManager manager) {
         return reportGeneration.report(tourListView, savingFolder, manager);
+    }
+
+    /**
+     * this method deletes the generated tourReport
+     * @param tour the Tour, of which the report will be deleted
+     * */
+    @Override
+    public boolean deleteReport(Tour tour) {
+        return fileAccess.deletePDFReport(tour);
+    }
+
+    /**
+     * this method gets the image from MapQuest and saves in the folder
+     * @param tour the tour to which the image belongs
+     * */
+    @Override
+    public void getImageFromMap(Tour tour) {
+        map.getImageFromMapQuest(tour);
+    }
+    @Override
+    public Image showImage(Tour tour) throws IOException {
+        return map.showImageIn(tour);
+    }
+
+    /**
+     * this method deletes the image of the tour
+     * @param tour the Tour, of which the image will be deleted
+     * */
+    @Override
+    public boolean deleteImage(Tour tour){
+        return fileAccess.deleteMapImage(tour);
     }
 }

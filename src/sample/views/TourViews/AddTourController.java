@@ -50,6 +50,8 @@ public class AddTourController implements Initializable {
         mainWindowController.getTourListItems().add(tour);
         //Save tour to listview
         mainWindowController.mainWindowViewModel.setToursToList(mainWindowController.TourListView, mainWindowController.getTourListItems());
+        //get the image from mapquest
+        manager.getImageFromMap(tour);
         //close the window
         Stage stage = (Stage) AddBtn.getScene().getWindow();
         stage.close();

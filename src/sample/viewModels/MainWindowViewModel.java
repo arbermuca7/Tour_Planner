@@ -2,26 +2,27 @@ package sample.viewModels;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
+
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import sample.businessLayer.javaApp.JavaAppManager;
-import sample.dataAccessLayer.database.DatabaseAccess;
-import sample.dataAccessLayer.database.IDataAccess;
+
 import sample.models.Log;
 import sample.models.Tour;
 import sample.views.MainWindowController;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -74,6 +75,12 @@ public class MainWindowViewModel {
         logger.info("tour description created and visualized");
     }
 
+    public Image showImage(ListView<Tour> list, JavaAppManager manager) throws IOException {
+        Tour tour = list.getSelectionModel().getSelectedItem();
+        Image image = manager.showImage(tour);
+        return image;
+    }
+
     /**
      * the following method makes it possible
      * to show only the log connected to a certain Tour
@@ -102,6 +109,7 @@ public class MainWindowViewModel {
     public void deleteSelectedTour(ListView<Tour> listView,ObservableList<Log> logsTableObs, JavaAppManager manager) throws SQLException {
         selectedIndex = listView.getSelectionModel().getSelectedIndex();
         String ident = listView.getSelectionModel().getSelectedItem().getIdentification();
+        Tour selectedTour = listView.getSelectionModel().getSelectedItem();
         listView.getItems().remove(selectedIndex);
         //remove also from database
         System.out.println("id of the selected tour to del:" + ident);
@@ -109,6 +117,11 @@ public class MainWindowViewModel {
             //remove the logs of this tour
             manager.deleteTheLogsOfTour(ident);
         }
+        //delete the image of tour
+        manager.deleteImage(selectedTour);
+        //delete the report of the certain tour
+        manager.deleteReport(selectedTour);
+        //delete the tour itself
         manager.delData(ident);
         logger.info("Selected tour deleted");
     }

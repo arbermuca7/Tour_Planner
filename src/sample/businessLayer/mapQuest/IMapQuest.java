@@ -1,9 +1,11 @@
 package sample.businessLayer.mapQuest;
 
+import javafx.scene.image.Image;
+import sample.models.Tour;
+
+import java.io.IOException;
+
 public interface IMapQuest {
-    //get the map from mapquest
-
-    //get map from the folder
-
-    //save the map in folder
+    void getImageFromMapQuest(Tour tour);
+    Image showImageIn(Tour tour) throws IOException;
 }

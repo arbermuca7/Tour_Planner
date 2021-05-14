@@ -2,9 +2,11 @@ package sample.businessLayer.javaApp;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import sample.models.Log;
 import sample.models.Tour;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -34,4 +36,8 @@ public interface JavaAppManager {
 
     //generate Report
     boolean genReport(ListView<Tour> tourListView, String savingFolder, JavaAppManager manager);
+    boolean deleteReport(Tour tour);
+    void getImageFromMap(Tour tour);
+    Image showImage(Tour tour) throws IOException;
+    boolean deleteImage(Tour tour);
 }

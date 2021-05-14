@@ -1,6 +1,8 @@
 package sample.businessLayer.reporting;
 
 import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -12,10 +14,12 @@ import com.itextpdf.layout.property.TextAlignment;
 import javafx.scene.control.ListView;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import sample.businessLayer.configuration.Configuration;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.models.Log;
 import sample.models.Tour;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -47,13 +51,13 @@ public class ReportGeneration implements IReportGeneration{
             basicInfo(document,selectedTour);
 
             //tour image
-            tourImage(document);
+            tourImage(document,filename);
 
             //tourLogs information
             boolean what = tourLogsInfo(document,tourLogs);
             //close the document
             document.close();
-            logger.info("PDF-Report for the tour \""+selectedTour+"\" generated");
+            logger.info("PDF-Report for the tour \""+selectedTour.getT_Name()+"\" generated");
         }catch(Exception e){
             e.printStackTrace();
             logger.error("Couldn't create a PDF-Report. Error message: "+e.getMessage());
@@ -77,7 +81,7 @@ public class ReportGeneration implements IReportGeneration{
     }
 
     @Override
-    public void basicInfo(Document document, Tour tour) throws IOException {
+    public void basicInfo(Document document, Tour tour) {
         String starting = tour.getStartPoint();
         String destination = tour.getDestination();
         String description = tour.getDescription();
@@ -100,22 +104,35 @@ public class ReportGeneration implements IReportGeneration{
     }
 
     @Override
-    public void tourImage(Document document) throws IOException {
+    public void tourImage(Document document, String tour) throws IOException {
         Text image = new Text("\nTour Image: ").setBold().setUnderline();
         Paragraph imagePar = new Paragraph()
                 .add(image)
                 .setFontSize(14);
         document.add(imagePar);
-        //String src = "images\\img.jpg";
-        //ImageData img = ImageDataFactory.create(src);
-        //Image newimage = new Image(img);
-        //add it to the document
-        //document.add(newimage);
-        logger.info("Image inserted to the pdf");
+        String src = Configuration.getMapPath()+tour+".jpg";
+        File fileObject = new File(src);
+        if(fileObject.exists()){
+            ImageData img = ImageDataFactory.create(src);
+            Image newimage = new Image(img)
+                    .setHeight(200)
+                    .setWidth(260);
+            //add it to the document
+            document.add(newimage);
+            logger.info("Image inserted to the pdf");
+        }else{
+            Text noLog = new Text("\nNo image exists for this tour!!!!").setBold().setFontColor(ColorConstants.RED);
+            Paragraph noLogPar = new Paragraph()
+                    .add(noLog)
+                    .setFontSize(14);
+            document.add(noLogPar);
+            logger.warn("Image doesn't exist");
+
+        }
     }
 
     @Override
-    public boolean tourLogsInfo(Document document, List<Log> Tlogs) throws IOException {
+    public boolean tourLogsInfo(Document document, List<Log> Tlogs)  {
         Text logs = new Text("\nTour Logs: ").setBold().setUnderline();
         Text logs11 = new Text("\n").setBold().setUnderline();
         Paragraph logsPar = new Paragraph()
