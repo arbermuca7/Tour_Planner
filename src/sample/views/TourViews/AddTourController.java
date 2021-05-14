@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.businessLayer.inputValidation.IValid;
 import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.javaApp.JavaAppManager;
@@ -19,6 +21,8 @@ import sample.viewModels.TourVM.AddTourViewModel;
 import sample.views.MainWindowController;
 
 public class AddTourController implements Initializable {
+
+    private static final Logger logger = LogManager.getLogger(AddTourController.class);
 
     public MainWindowController mainWindowController;
     public AddTourViewModel addTourViewModel = new AddTourViewModel();
@@ -49,11 +53,14 @@ public class AddTourController implements Initializable {
         //close the window
         Stage stage = (Stage) AddBtn.getScene().getWindow();
         stage.close();
+
+        logger.info("Add-Tour Button clicked");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("-->AddTourController init");
+        logger.info("AddTourController initialized");
         //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
         //Binding StringProperties in VM with the Controller Components

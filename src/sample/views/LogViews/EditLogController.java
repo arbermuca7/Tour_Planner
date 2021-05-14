@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.businessLayer.inputValidation.IValid;
 import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.javaApp.JavaAppManager;
@@ -14,12 +16,15 @@ import sample.businessLayer.javaApp.JavaAppManagerFactory;
 import sample.models.Log;
 import sample.viewModels.LogsVM.EditLogViewModel;
 import sample.views.MainWindowController;
+import sample.views.TourViews.AddTourController;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class EditLogController implements Initializable {
+
+    private static final Logger logger = LogManager.getLogger(EditLogController.class);
 
     public MainWindowController mainWindowController = new MainWindowController();
     public EditLogViewModel editLogViewModel = new EditLogViewModel();
@@ -45,6 +50,7 @@ public class EditLogController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("-->EditLogController init");
+        logger.info("EditLogController Initialized");
         //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
         //Binding of Controller Components and StringProperties in VM
@@ -87,6 +93,8 @@ public class EditLogController implements Initializable {
         //close the window
         Stage stage = (Stage) EditBtn.getScene().getWindow();
         stage.close();
+
+        logger.info("Save-Changes in Log Button clicked");
     }
 /*
     public void initTheEdit(String info){

@@ -2,9 +2,12 @@ package sample.businessLayer.inputValidation;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class Valid implements IValid{
 
+    private static final Logger logger = LogManager.getLogger(Valid.class);
 
     /**
      * a method to validate the date input
@@ -15,7 +18,7 @@ public class Valid implements IValid{
     public void validate_date(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([0-9.]{0,10})?")) ? change : null));
-
+        logger.info("date validated");
     }
 
     /**
@@ -27,6 +30,7 @@ public class Valid implements IValid{
     public void validate_duration(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([0-9:]{0,8})?")) ? change : null));
+        logger.info("duration validated");
 
     }
 
@@ -39,6 +43,8 @@ public class Valid implements IValid{
     public void validate_distance_fuel(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([0-9][0-9]*)?([.])?([0-9][0-9]?)?")) ? change : null));
+        logger.info("distance and fuel costs validated");
+
     }
 
     /**
@@ -50,6 +56,8 @@ public class Valid implements IValid{
     public void validate_speed(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([0-9]{0,5})")) ? change : null));
+        logger.info("speed validated");
+
     }
 
     /**
@@ -61,6 +69,7 @@ public class Valid implements IValid{
     public void validate_rate(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("([1-5]?)")) ? change : null));
+        logger.info("rating validated");
     }
 
     /**
@@ -72,6 +81,8 @@ public class Valid implements IValid{
     public void validate_toll(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("[tf]?")) ? change : null));
+        logger.info("toll road and resting place validated");
+
     }
 
     /**
@@ -83,7 +94,7 @@ public class Valid implements IValid{
     public void validate_WordsTextFields(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("[a-zA-Z]*")) ? change : null));
-
+        logger.info("all fields containing only text validated");
     }
 
     /**
@@ -95,6 +106,7 @@ public class Valid implements IValid{
     public void validate_specialTextFields(TextField textField){
         textField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("[a-zA-Z1-9 ]*")) ? change : null));
+        logger.info("fields which contain letters and numbers validated");
 
     }
 }

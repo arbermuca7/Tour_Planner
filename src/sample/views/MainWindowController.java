@@ -12,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.businessLayer.configuration.Configuration;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
@@ -35,6 +37,8 @@ import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable{
 
+    private static final Logger logger = LogManager.getLogger(MainWindowController.class);
+
     public MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
     
     public TextField InputTextField;
@@ -53,6 +57,7 @@ public class MainWindowController implements Initializable{
     public Button addLog;
     public Button delLogBtn;
     public Button editLog;
+    public Button tourRep;
 
 
     //TableColumns add
@@ -88,6 +93,7 @@ public class MainWindowController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("-->MainWindowController init");
+        logger.info("MainWindowController initialized");
         manager = JavaAppManagerFactory.GetManager();
 
         //set the tour items into the ListView and take them from DB
@@ -114,6 +120,7 @@ public class MainWindowController implements Initializable{
         //Disable Buttons when no tour bzw. log selected
         delTourBtn.disableProperty().bind(TourListView.getSelectionModel().selectedItemProperty().isNull());
         editTourBtn.disableProperty().bind(TourListView.getSelectionModel().selectedItemProperty().isNull());
+        tourRep.disableProperty().bind(TourListView.getSelectionModel().selectedItemProperty().isNull());
         addLog.disableProperty().bind(TourListView.getSelectionModel().selectedItemProperty().isNull());
         delLogBtn.disableProperty().bind(LogTableView.getSelectionModel().selectedItemProperty().isNull());
         editLog.disableProperty().bind(LogTableView.getSelectionModel().selectedItemProperty().isNull());
@@ -127,6 +134,7 @@ public class MainWindowController implements Initializable{
         mainWindowViewModel.readDescription(TourListView);
         //get the logs for a certain tour
         mainWindowViewModel.showOnlyLogsOfTour(TourListView,logsTableItems,manager);
+        logger.info("Tour in the ListView selected");
     }
 
     //---------------------------------------delete a tour/log from the list/table-------------------------------------
@@ -134,11 +142,13 @@ public class MainWindowController implements Initializable{
     @FXML
     public void deleteTour(MouseEvent mouseEvent) throws SQLException {
        mainWindowViewModel.deleteSelectedTour(TourListView,logsTableItems,manager);
+       logger.info("Delete-Tour Button clicked");
     }
 
     /** you can delete a certain Log */
     public void deleteLog(MouseEvent mouseEvent) throws SQLException {
        mainWindowViewModel.deleteSelectedLog(LogTableView,manager);
+        logger.info("Delete-TourLog Button clicked");
     }
     //----------------------------------------Log management-----------------------------------------------------------
 
@@ -155,6 +165,7 @@ public class MainWindowController implements Initializable{
         routeType.setCellValueFactory(new PropertyValueFactory<Log, String>("route_type"));
         rating.setCellValueFactory(new PropertyValueFactory<Log, Integer>("rating"));
         restingPlace.setCellValueFactory(new PropertyValueFactory<Log, Boolean>("resting_place"));
+        logger.info("Data with Table column connected");
     }
 
     //----------------------------------------Connect different Windows------------------------------------------------
@@ -166,6 +177,7 @@ public class MainWindowController implements Initializable{
     public void addTourWindow(ActionEvent actionEvent) {
         AddTourController addTourController = (AddTourController) mainWindowViewModel.newWindow("TourViews/addTour","Add Tour");
         addTourController.mainWindowController = this;
+        logger.info("addTour window opened");
     }
 
     /**
@@ -175,7 +187,7 @@ public class MainWindowController implements Initializable{
     public void editTourWindow(ActionEvent actionEvent) {
         EditTourController editTourController = (EditTourController) mainWindowViewModel.newWindow("TourViews/editTour","Edit Tour");
         editTourController.mainWindowController = this;
-
+        logger.info("editTour window opened");
         tourG = TourListView.getSelectionModel().getSelectedItem();
         String getInfoToEdit = mainWindowViewModel.setTourDataToEdit(tourG);
         //show the certain tour data in the edit window
@@ -189,6 +201,7 @@ public class MainWindowController implements Initializable{
     public void addLogWindow(ActionEvent actionEvent) {
         AddLogController addLogController = (AddLogController) mainWindowViewModel.newWindow("LogViews/addLog","Add Log");
         addLogController.mainWindowController = this;
+        logger.info("addTourLog window opened");
 
         tourG = TourListView.getSelectionModel().getSelectedItem();
         String getInfoToEdit = mainWindowViewModel.setTourDataToEdit(tourG);
@@ -202,6 +215,7 @@ public class MainWindowController implements Initializable{
     public void editLogWindow(ActionEvent actionEvent) {
         EditLogController editLogController = (EditLogController) mainWindowViewModel.newWindow("LogViews/editLog","Edit Log");
         editLogController.mainWindowController = this;
+        logger.info("editTourLog window opened");
 
         logG = LogTableView.getSelectionModel().getSelectedItem();
         String logInfoToEdit = mainWindowViewModel.setLogDataToEdit(logG);
@@ -211,6 +225,8 @@ public class MainWindowController implements Initializable{
     public void instructionOpen(ActionEvent actionEvent) {
         InstructionController instructionController = (InstructionController) mainWindowViewModel.newWindow("instructions","Help");
         instructionController.mainWindowController = this;
+        logger.info("Instruction window opened");
+
     }
 
     /**
@@ -222,6 +238,7 @@ public class MainWindowController implements Initializable{
         CloseAppMenuItem.setOnAction(e -> {
             System.exit(0);
         });
+        logger.info("close the Application button clicked");
     }
 
     //----------------------------------------Search Option------------------------------------------------------------
@@ -234,6 +251,7 @@ public class MainWindowController implements Initializable{
     @FXML
     public void clearInput(ActionEvent actionEvent) throws SQLException {
         mainWindowViewModel.clearSearchField(SearchChoicebox,manager,tourListItems,logsTableItems);
+        logger.info("Clear-Button clicked");
     }
 
     /**
@@ -243,6 +261,8 @@ public class MainWindowController implements Initializable{
     @FXML
     public void searchItems(ActionEvent actionEvent) throws SQLException {
         mainWindowViewModel.searchTheInput(SearchChoicebox,manager,tourListItems,logsTableItems);
+        logger.info("Search-Button clicked");
+
     }
 
     /**
@@ -252,5 +272,7 @@ public class MainWindowController implements Initializable{
     @FXML
     public void createReport(ActionEvent actionEvent) {
         manager.genReport(TourListView, Configuration.getPdfPath(),manager);
+        logger.info("Report-Button clicked");
+
     }
 }

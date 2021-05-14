@@ -3,9 +3,13 @@ package sample.viewModels.TourVM;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.models.Tour;
 
 public class AddTourViewModel {
+
+    private static final Logger logger = LogManager.getLogger(AddTourViewModel.class);
 
     public AddTourViewModel() {
         System.out.println("AddTourViewModel");
@@ -43,6 +47,7 @@ public class AddTourViewModel {
             distance = Double.parseDouble(dist);
         //create the tour
         Tour tour = new Tour(ident, name, desc, start, dest, distance);
+        logger.info("the input text saved as a tour");
         return tour;
         /*
         String ident = this.IDTextField.getText();

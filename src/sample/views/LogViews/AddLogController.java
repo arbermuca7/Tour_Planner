@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.businessLayer.inputValidation.IValid;
 import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.javaApp.JavaAppManager;
@@ -15,12 +17,15 @@ import sample.models.Log;
 import sample.models.Tour;
 import sample.viewModels.LogsVM.AddLogViewModel;
 import sample.views.MainWindowController;
+import sample.views.TourViews.AddTourController;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddLogController implements Initializable {
+
+    private static final Logger logger = LogManager.getLogger(AddLogController.class);
 
     public MainWindowController mainWindowController;
     public AddLogViewModel addLogViewModel = new AddLogViewModel();
@@ -57,12 +62,14 @@ public class AddLogController implements Initializable {
         Stage stage = (Stage) addBtn.getScene().getWindow();
         stage.close();
 
+        logger.info("Add-Button in Log clicked");
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("-->AddLogController init");
+        logger.info("AddLogController initialized");
         //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
         //Binding of Controller Components and StringProperties in VM

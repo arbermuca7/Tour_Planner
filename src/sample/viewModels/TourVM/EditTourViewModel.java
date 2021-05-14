@@ -6,6 +6,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.dataAccessLayer.database.DatabaseAccess;
 import sample.dataAccessLayer.database.IDataAccess;
 import sample.models.Tour;
@@ -15,6 +17,8 @@ public class EditTourViewModel{
     public EditTourViewModel(){
         System.out.println("EditTourViewModel");
     }
+    private static final Logger logger = LogManager.getLogger(EditTourViewModel.class);
+
     @Getter private final StringProperty inputName = new SimpleStringProperty("");
     @Getter private final StringProperty inputStart = new SimpleStringProperty("");
     @Getter private final StringProperty inputDestination = new SimpleStringProperty("");
@@ -48,6 +52,7 @@ public class EditTourViewModel{
         DescriptionTextField.setText(content[4]);
         DistanceTextField.setText(content[5]);
         */
+        logger.info("TourData in the edit Window initialized");
     }
     /**
      * takes the input from the text fields of the edit window
@@ -59,6 +64,8 @@ public class EditTourViewModel{
         String dest = this.inputDestination.get();
         String dist = this.inputDistance.get();
         String desc = this.inputDescription.get();
+
+        logger.info("take the edited tour data from the window");
 
         return name+","+start+","+dest+","+dist+","+desc;
         /*

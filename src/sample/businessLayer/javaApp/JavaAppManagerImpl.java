@@ -2,6 +2,9 @@ package sample.businessLayer.javaApp;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.reporting.IReportGeneration;
 import sample.businessLayer.reporting.ReportGeneration;
 import sample.dataAccessLayer.DAOs.*;
@@ -17,6 +20,9 @@ public class JavaAppManagerImpl implements JavaAppManager{
     IDAO<Log> daoLog = DAOFactory.getInstance("log");
 
     IReportGeneration reportGeneration = new ReportGeneration();
+
+    private static final Logger logger = LogManager.getLogger(JavaAppManagerImpl.class);
+
 
     //TourDAO tourDAO = new TourDAO();
     LogsDAO logsDAO = new LogsDAO();
@@ -42,8 +48,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
 
     /**
      * @param tour as a ObservableList
-     * takes the tours from the database and saves them in the ObservableList and
-     * @return the list which contains all the Tour in the database
+     * takes the tours from the database and saves them in the ObservableList
      * */
     @Override
     public void GetData(ObservableList<Tour> tour) throws SQLException {
@@ -164,11 +169,13 @@ public class JavaAppManagerImpl implements JavaAppManager{
         //get TourList from DB but not saving in the ObservableList, but in a normal List
         List<Tour> tourList = GetTourItems();
         if(caseSensitive){
+            logger.info("searching caseSensitive words in Tours");
             return tourList
                     .stream()
                     .filter(x -> x.getT_Name().contains(tourName))
                     .collect(Collectors.toList());
         }
+        logger.info("searching non-caseSensitive words in Tours");
         return tourList
                 .stream()
                 .filter(x -> x.getT_Name().toLowerCase().contains(tourName.toLowerCase()))
@@ -185,11 +192,13 @@ public class JavaAppManagerImpl implements JavaAppManager{
         //get TourList from DB but not saving in the ObservableList, but in a normal List
         List<Log> logList = GetLogItems();
         if(caseSensitive){
+            logger.info("searching caseSensitive words in Log");
             return logList
                     .stream()
                     .filter(x -> x.getName().contains(logName))
                     .collect(Collectors.toList());
         }
+        logger.info("searching non-caseSensitive words in Log");
         return logList
                 .stream()
                 .filter(x -> x.getName().toLowerCase().contains(logName.toLowerCase()))

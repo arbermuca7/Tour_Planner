@@ -1,6 +1,8 @@
 package sample.dataAccessLayer.database;
 
 import javafx.collections.ObservableList;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.businessLayer.configuration.Configuration;
 import sample.models.Log;
 import sample.models.Tour;
@@ -16,6 +18,8 @@ public class DatabaseAccess implements IDataAccess {
     String pwd  = Configuration.getPassword();
     public DatabaseAccess(){}
 
+    private static final Logger logger = LogManager.getLogger(DatabaseAccess.class);
+
     /**
      * this method creates a connection with the database
      * @return the connection
@@ -26,8 +30,10 @@ public class DatabaseAccess implements IDataAccess {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url, user, pwd);
+            logger.info("Database connection created");
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
+            logger.error("Database connection couldn't be created. Erro message: "+e.getMessage());
         }
         return connection;
     }
@@ -53,10 +59,12 @@ public class DatabaseAccess implements IDataAccess {
 
                 //add the database tours to observable list
                 tourObservableList.add(tour);
+                logger.info("all the tour in the DB selected and added to the ObservableList");
             }
             statement.close();
         }catch (SQLException e){
             e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
         }
     }
     /**
@@ -81,10 +89,13 @@ public class DatabaseAccess implements IDataAccess {
 
                 //add the database tours to a List
                 tourList.add(tour);
+                logger.info("all tours selected and saved into a List");
             }
             statement.close();
         }catch (SQLException e){
             e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
+
         }
         return tourList;
     }
@@ -99,8 +110,11 @@ public class DatabaseAccess implements IDataAccess {
                 return true;
             }
             statement.close();
+            logger.info("checking if a certain tour exists");
         }catch (SQLException e){
             e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
+
         }
         return false;
     }
@@ -121,8 +135,11 @@ public class DatabaseAccess implements IDataAccess {
             statement.setString(5,tour.getStartPoint());
             statement.setString(6,tour.getDestination());
             statement.execute();
+            logger.info("the tour \""+tour.getT_Name()+"\" inserted to database");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Error Message: "+throwables.getMessage());
+
         }
         return checkIfTourExists(tour.getIdentification());
     }
@@ -143,8 +160,11 @@ public class DatabaseAccess implements IDataAccess {
             statement.setString(5, tour.getDestination());
             statement.setString(6, id);
             statement.execute();
+            logger.info("the tour \""+tour.getT_Name()+"\" was updated into the DB");
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Error Message: "+throwables.getMessage());
             return false;
         }
         return true;
@@ -160,8 +180,10 @@ public class DatabaseAccess implements IDataAccess {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM tour WHERE identification = ?; ");
             statement.setString(1,id);
             statement.execute();
+            logger.info("the tour with the id = "+id+" was deleted");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Error Message: "+throwables.getMessage());
             return false;
         }
         if(!checkIfTourExists(id)){
@@ -195,10 +217,13 @@ public class DatabaseAccess implements IDataAccess {
                 Log log = new Log(name,date,duration,dist,speed,fuel,route,rate,travel,tollRoad,restPlace);
                 //add the database tours to observable list
                 logObservableList.add(log);
+                logger.info("all logs selected and saved into the ObservableList");
+
             }
             statement.close();
         }catch (SQLException e){
             e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
         }
     }
     /**
@@ -228,11 +253,12 @@ public class DatabaseAccess implements IDataAccess {
                 Log log = new Log(name,date,duration,dist,speed,fuel,route,rate,travel,tollRoad,restPlace);
                 //add the database tours to observable list
                 logObservableList.addAll(log);
-
+                logger.info("all logs for a certain tour selected and saved into the ObservableList");
             }
             statement.close();
         }catch (SQLException e){
             e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
         }
     }
 
@@ -263,11 +289,12 @@ public class DatabaseAccess implements IDataAccess {
                 Log log = new Log(name,date,duration,dist,speed,fuel,route,rate,travel,tollRoad,restPlace);
                 //add the database tours to observable list
                 logsForTour.add(log);
-
+                logger.info("all logs for a certain tour selected and saved into a List for the pdf-Report");
             }
             statement.close();
         }catch (SQLException e){
             e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
         }
         return logsForTour;
     }
@@ -297,13 +324,16 @@ public class DatabaseAccess implements IDataAccess {
                 boolean restPlace = res.getBoolean("resting_place");
 
                 Log log = new Log(name,date,duration,dist,speed,fuel,route,rate,travel,tollRoad,restPlace);
-
+                logger.info("all logs for a certain tour selected and saved into a List");
                 //add the database tours to a List
                 logList.add(log);
+
             }
             statement.close();
         }catch (SQLException e){
             e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
+
         }
         return logList;
     }
@@ -331,8 +361,11 @@ public class DatabaseAccess implements IDataAccess {
             statement.setString(11,identific);
             statement.setBoolean(12,logs.isResting_place());
             statement.execute();
+            logger.info("the log \""+ logs.getName()+"\" inserted to database");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Error Message: "+throwables.getMessage());
+
         }
         return checkIfLogsExists(logs.getName());
     }
@@ -358,8 +391,10 @@ public class DatabaseAccess implements IDataAccess {
             statement.setBoolean(10,logs.isResting_place());
             statement.setString(11,logs.getName());
             statement.execute();
+            logger.info("the log \""+ logs.getName()+"\" updated into database");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Error Message: "+throwables.getMessage());
             return false;
         }
         return true;
@@ -376,8 +411,10 @@ public class DatabaseAccess implements IDataAccess {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM logs WHERE log_name = ?; ");
             statement.setString(1,name);
             statement.execute();
+            logger.info("the log with the name = \""+name+"\" was deleted");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Error Message: "+throwables.getMessage());
         }
         if(!checkIfLogsExists(name)){
             return true;
@@ -394,8 +431,10 @@ public class DatabaseAccess implements IDataAccess {
                 return true;
             }
             statement.close();
+            logger.info("checking if the log with the name = \""+name+"\" exists in DB");
         }catch (SQLException e){
             e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
         }
         return false;
     }
@@ -415,8 +454,10 @@ public class DatabaseAccess implements IDataAccess {
                 return true;
             }
             statement.close();
+            logger.info("checking if the tour with the id = \""+id+"\" has any log in DB");
         }catch (SQLException e){
             e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
         }
         return false;
     }
@@ -431,8 +472,11 @@ public class DatabaseAccess implements IDataAccess {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM logs WHERE tour_ident = ?; ");
             statement.setString(1,id);
             statement.execute();
+            logger.info("deleting all the log of the tour with the id = \""+id+"\" in DB");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Error Message: "+throwables.getMessage());
+
             return false;
         }
         return true;

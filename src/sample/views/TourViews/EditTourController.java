@@ -5,6 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.businessLayer.inputValidation.IValid;
 import sample.businessLayer.inputValidation.Valid;
 import sample.businessLayer.javaApp.JavaAppManager;
@@ -18,6 +20,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class EditTourController implements Initializable {
+
+    private static final Logger logger = LogManager.getLogger(EditTourController.class);
 
     public MainWindowController mainWindowController = new MainWindowController();
     public EditTourViewModel editTourViewModel = new EditTourViewModel();
@@ -35,6 +39,7 @@ public class EditTourController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("-->EditTourController init");
+        logger.info("EditTourController initialized");
         //set the value of the tour we want to edit
         //manager initialisation
         manager = JavaAppManagerFactory.GetManager();
@@ -74,5 +79,7 @@ public class EditTourController implements Initializable {
         //close the window
         Stage stage = (Stage) EditBtn.getScene().getWindow();
         stage.close();
+
+        logger.info("Save-Changes Button clicked");
     }
 }

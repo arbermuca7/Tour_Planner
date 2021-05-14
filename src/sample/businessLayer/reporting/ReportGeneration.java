@@ -10,6 +10,8 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.TextAlignment;
 import javafx.scene.control.ListView;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.models.Log;
 import sample.models.Tour;
@@ -19,6 +21,7 @@ import java.util.List;
 
 public class ReportGeneration implements IReportGeneration{
 
+    private static final Logger logger = LogManager.getLogger(ReportGeneration.class);
 
     @Override
     public boolean report(ListView<Tour> tourListView, String savingFolder, JavaAppManager manager) {
@@ -50,9 +53,10 @@ public class ReportGeneration implements IReportGeneration{
             boolean what = tourLogsInfo(document,tourLogs);
             //close the document
             document.close();
-
+            logger.info("PDF-Report for the tour \""+selectedTour+"\" generated");
         }catch(Exception e){
             e.printStackTrace();
+            logger.error("Couldn't create a PDF-Report. Error message: "+e.getMessage());
             return false;
         }
         return true;
@@ -69,6 +73,7 @@ public class ReportGeneration implements IReportGeneration{
         Paragraph titlePar = new Paragraph()
                 .add(title).setTextAlignment(TextAlignment.CENTER);
         document.add(titlePar);
+        logger.info("PDF-File Title inserted");
     }
 
     @Override
@@ -91,6 +96,7 @@ public class ReportGeneration implements IReportGeneration{
                 .add(desc)
                 .setFontSize(14);
         document.add(tourPar);
+        logger.info("tour general information to pdf inserted");
     }
 
     @Override
@@ -105,6 +111,7 @@ public class ReportGeneration implements IReportGeneration{
         //Image newimage = new Image(img);
         //add it to the document
         //document.add(newimage);
+        logger.info("Image inserted to the pdf");
     }
 
     @Override
@@ -156,8 +163,10 @@ public class ReportGeneration implements IReportGeneration{
                     .add(noLog)
                     .setFontSize(14);
             document.add(noLogPar);
+            logger.info("No assigned logs to this tour");
             return false;
         }
+        logger.info("tourlogs in the pdf showed inside a table");
         return true;
     }
 }

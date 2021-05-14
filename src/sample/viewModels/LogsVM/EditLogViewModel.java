@@ -5,12 +5,17 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.Initializable;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.models.Log;
+import sample.viewModels.TourVM.EditTourViewModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EditLogViewModel {
+
+    private static final Logger logger = LogManager.getLogger(EditLogViewModel.class);
 
     public EditLogViewModel(){
         System.out.println("EditLogViewModel");
@@ -57,6 +62,7 @@ public class EditLogViewModel {
 
         /*System.out.println("INIT the EDIT LOG: "+content[0]+","+content[1]+","+content[2]+","+content[3]+","+content[4]+","
                 +content[5]+","+content[6]+","+content[7]+","+content[8]+","+content[9]+","+content[10]);*/
+        logger.info("TourLogData in the edit Window initialized");
     }
 
     /**
@@ -106,6 +112,7 @@ public class EditLogViewModel {
         if(restingPlc.equals("t")){
             hasRestPlace = true;
         }
+        logger.info("take the edited data and save them as a TourLog");
         //Add the Log
         return new Log(name,date,duration,dist,speed,fuel,route,rate,travel,hasTollRoads,hasRestPlace);
 

@@ -5,10 +5,14 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.models.Log;
+import sample.views.MainWindowController;
 
 public class AddLogViewModel{
 
+    private static final Logger logger = LogManager.getLogger(AddLogViewModel.class);
 
     public AddLogViewModel(){
         System.out.println("AddLogViewModel");
@@ -79,6 +83,7 @@ public class AddLogViewModel{
         }
         //Add the Log
         Log log = new Log(name,date,duration,dist,speed,fuel,routeType,rate,travelMode,hasTollRoads,hasRestPlace);
+        logger.info("take the data from window and saved as a tourLog");
         return log;
         /*
         String name       = this.NameTextField.getText();
@@ -104,5 +109,6 @@ public class AddLogViewModel{
         String[] content = addInfo.split(",");
         id = content[0];
         System.out.println("TourID in Log: "+id);
+        logger.info("getting the ID of the selected tour");
     }
 }

@@ -14,6 +14,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.dataAccessLayer.database.DatabaseAccess;
 import sample.dataAccessLayer.database.IDataAccess;
@@ -25,6 +27,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class MainWindowViewModel {
+
+    private static final Logger logger = LogManager.getLogger(MainWindowViewModel.class);
 
     @Getter private final StringProperty searchInput = new SimpleStringProperty("");
     @Getter private final StringProperty outputNameTour = new SimpleStringProperty("Titel: ");
@@ -50,6 +54,7 @@ public class MainWindowViewModel {
         }else{
             System.out.println("nothing selected");
         }
+        logger.info("Title of the Tour visualized");
     }
 
     //it is a method that shows us what is the description of a certain tour
@@ -66,6 +71,7 @@ public class MainWindowViewModel {
                             +"The road length was "+tour.getT_Distance()+" km \n"
                             +"The Trip description: "+tour.getDescription());
         }
+        logger.info("tour description created and visualized");
     }
 
     /**
@@ -82,6 +88,7 @@ public class MainWindowViewModel {
         logTable.clear();
         //insert again the other to the logs
         mg.GetLogsForTour(logTable,identificationTour);
+        logger.info("Logs of a certain Tour showed");
     }
 
     /**
@@ -103,6 +110,7 @@ public class MainWindowViewModel {
             manager.deleteTheLogsOfTour(ident);
         }
         manager.delData(ident);
+        logger.info("Selected tour deleted");
     }
 
     /**
@@ -117,6 +125,7 @@ public class MainWindowViewModel {
         //remove from db the log
         System.out.println("Name of Log to be deleted: "+name);
         manager.delLogItem(name);
+        logger.info("selected Log deleted");
     }
     //---------------------------------------edit a tour from the list-----------------------------------------------
     /**
@@ -127,6 +136,8 @@ public class MainWindowViewModel {
         String distance = "";
         if (tourG.getT_Distance()!=0)
             distance = Double.toString(tourG.getT_Distance());
+
+        logger.info("fill the textfields in the tour Window with the text that's going to be edited");
 
         return tourG.getIdentification()+","
                 +tourG.getT_Name()+","+tourG.getStartPoint()+","
@@ -162,7 +173,7 @@ public class MainWindowViewModel {
         if (logG.isResting_place()){ rest = "t"; }
         else{ rest = "f"; }
 
-
+        logger.info("fill the textfields in the log Window with the text thats going to be edited");
         return logG.getName()+","+logG.getDate()+","
                 +logG.getDuration()+","+distance+","+speed+","+fuel+","+tollRoad+","+logG.getTravel_mode()+","
                 +logG.getRoute_type()+","+rating+","+rest;
@@ -174,6 +185,7 @@ public class MainWindowViewModel {
      * */
     public void setLogsToTable(TableView<Log> logTable, ObservableList<Log> items){
         logTable.setItems(items);
+        logger.info("Logs saved into the table");
     }
     //-----------------------------------Format and set the tours to list----------------------------------------------
 
@@ -187,6 +199,7 @@ public class MainWindowViewModel {
      * */
     public void setToursToList(ListView<Tour> listView, ObservableList<Tour> items){
         listView.setItems(items);
+        logger.info("Tour sved into the Listview");
     }
 
     /**
@@ -198,6 +211,7 @@ public class MainWindowViewModel {
         String l = "Logs";
         items.addAll(t,l);
         search.getItems().addAll(items);
+        logger.info("items to ChoiceBox inserted");
     }
 
     /**
@@ -218,6 +232,7 @@ public class MainWindowViewModel {
                 }
             }
         }));
+        logger.info("ListView Cells formated");
     }
 
     /**
@@ -231,6 +246,7 @@ public class MainWindowViewModel {
                 currentTour = newValue;
             }
         }));
+        logger.info("tourListener set");
     }
 
     /**
@@ -246,14 +262,17 @@ public class MainWindowViewModel {
 
         try {
             root = loader.load();
+            logger.info("FMXLLoader loaded successfully");
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("could not load the FMXLLoader!!");
         }
 
         Stage stage = new Stage();
         stage.setTitle(windowTitle);
         stage.setScene(new Scene(root));
         stage.show();
+        logger.info(windowName + "window was created");
         return loader.getController();
     }
 
@@ -283,6 +302,7 @@ public class MainWindowViewModel {
             //get tours form db and save them in ObservableList
             manager.GetAllLogs(logItem);
         }
+        logger.info("the input in the search field cleared");
     }
     /**
      * this method makes it possible to search the content
@@ -311,5 +331,6 @@ public class MainWindowViewModel {
             //insert these searched tours to the ObservableList
             logItem.addAll(logs);
         }
+        logger.info("search for the inserted input executed");
     }
 }
