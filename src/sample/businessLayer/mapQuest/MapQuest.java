@@ -10,6 +10,7 @@ import sample.models.Tour;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,16 +31,18 @@ public class MapQuest implements IMapQuest{
                 "start="+tour.getStartPoint() +"&end="+tour.getDestination()+"&size=600,400@2x&key="+key;
 
         fileAccess.saveMapImage(mapUrl, tour.getT_Name());
-
     }
 
     @Override
-    public Image showImageIn(Tour tour) throws IOException {
-        String mapUrl =
-                "https://www.mapquestapi.com/staticmap/v5/map?" +
-                        "start="+tour.getStartPoint() +"&end="+tour.getDestination()+"&size=600,400@2x&key="+key;
-        BufferedImage image = ImageIO.read(new URL(mapUrl));
-        Image img = SwingFXUtils.toFXImage(image,null);
+    public Image showImageIn(Tour tour){
+        String imageName = tour.getT_Name().replaceAll(" ","_");
+        String src = Configuration.getMapPath()+imageName+".jpg";
+        File imageFile = new File(src);
+        System.out.println(imageFile.getAbsolutePath());
+        Image img = null;
+        if (imageFile.exists()) {
+            img = new Image(imageFile.toURI().toString());
+        }
         return img;
     }
 }

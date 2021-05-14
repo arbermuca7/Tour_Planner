@@ -138,11 +138,7 @@ public class MainWindowController implements Initializable{
         mainWindowViewModel.readDescription(TourListView);
         //get the logs for a certain tour
         mainWindowViewModel.showOnlyLogsOfTour(TourListView,logsTableItems,manager);
-        Image image = mainWindowViewModel.showImage(TourListView, manager);
-        MapImageView = new ImageView(image);
-        MapImageView.setFitHeight(200);
-        MapImageView.setFitWidth(500);
-        ImagePane.getChildren().add(MapImageView);
+        mainWindowViewModel.showImage(TourListView,MapImageView, manager);
         logger.info("Tour in the ListView selected");
     }
 

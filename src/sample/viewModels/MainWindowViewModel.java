@@ -13,6 +13,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.apache.log4j.LogManager;
@@ -75,10 +76,13 @@ public class MainWindowViewModel {
         logger.info("tour description created and visualized");
     }
 
-    public Image showImage(ListView<Tour> list, JavaAppManager manager) throws IOException {
+    public void showImage(ListView<Tour> list, ImageView imageView, JavaAppManager manager) throws IOException {
         Tour tour = list.getSelectionModel().getSelectedItem();
         Image image = manager.showImage(tour);
-        return image;
+        imageView.setImage(image);
+        imageView.setFitHeight(200);
+        imageView.setFitWidth(500);
+        logger.info("image of the tour visualized");
     }
 
     /**
@@ -212,7 +216,7 @@ public class MainWindowViewModel {
      * */
     public void setToursToList(ListView<Tour> listView, ObservableList<Tour> items){
         listView.setItems(items);
-        logger.info("Tour sved into the Listview");
+        logger.info("Tour saved into the Listview");
     }
 
     /**
