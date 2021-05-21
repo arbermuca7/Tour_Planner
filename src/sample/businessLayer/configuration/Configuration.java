@@ -17,6 +17,8 @@ public class Configuration {
     @Getter private static String pdfPath;
     @Getter private static String mapPath;
     @Getter private static String mapQuestKey;
+    @Getter private static String exportFile;
+
 
 
     private static final Logger logger = LogManager.getLogger(Configuration.class);
@@ -35,6 +37,7 @@ public class Configuration {
             pdfPath = configData.getProperty("reportPath");
             mapPath = configData.getProperty("tourMap");
             mapQuestKey = configData.getProperty("MapQuestKey");
+            exportFile = configData.getProperty("export");
             confFile.close();
             logger.info("get DB Connection and File location");
         }catch (IOException e) {

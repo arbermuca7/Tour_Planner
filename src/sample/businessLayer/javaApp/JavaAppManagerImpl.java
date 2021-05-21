@@ -5,6 +5,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import sample.businessLayer.ExportFile.Export;
+import sample.businessLayer.ExportFile.IExport;
 import sample.businessLayer.mapQuest.IMapQuest;
 import sample.businessLayer.mapQuest.MapQuest;
 import sample.businessLayer.reporting.IReportGeneration;
@@ -28,6 +30,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
     IReportGeneration reportGeneration = new ReportGeneration();
     IMapQuest map = new MapQuest();
     IFileAccess fileAccess = new FileAccess();
+    IExport exportFile = new Export();
 
     private static final Logger logger = LogManager.getLogger(JavaAppManagerImpl.class);
 
@@ -52,6 +55,16 @@ public class JavaAppManagerImpl implements JavaAppManager{
     @Override
     public List<Tour> GetTourItems() {
         return daoTour.GetDataWithoutSave();
+    }
+
+    /**
+     * takes the tours + logs from the database but it doesn't saves them in a List
+     * @return the list which contains all the Tour in the database
+     * it is used for the searching method
+     * */
+    @Override
+    public List<Tour> GetToursWithLogs() {
+        return daoTour.GetTWithL();
     }
 
     /**
@@ -253,5 +266,10 @@ public class JavaAppManagerImpl implements JavaAppManager{
     @Override
     public boolean deleteImage(Tour tour){
         return fileAccess.deleteMapImage(tour);
+    }
+
+    @Override
+    public boolean exportToJSON(List<Tour> tourList, String ordner) {
+        return exportFile.export(tourList, ordner);
     }
 }

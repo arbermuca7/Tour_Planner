@@ -12,6 +12,7 @@ public interface IDataAccess {
 
     void GetTours(ObservableList<Tour> tourObservableList);
     List<Tour> GetToursWithoutSaving();
+    List<Tour> GetToursWithLogs();
 
     boolean checkIfTourExists(String id);
 

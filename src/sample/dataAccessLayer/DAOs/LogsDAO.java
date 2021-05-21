@@ -31,6 +31,11 @@ public class LogsDAO implements IDAO<Log>{
         return dataAccess.GetLogsWithoutSaving();
     }
 
+    @Override
+    public List<Log> GetTWithL() {
+        return null;
+    }
+
 
     /**
      * @param logObservableList as the observable list

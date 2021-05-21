@@ -120,6 +120,7 @@ public class MainWindowViewModel {
         if(manager.checkIfTourHasLog(logsTableObs,ident)){
             //remove the logs of this tour
             manager.deleteTheLogsOfTour(ident);
+            //manager.GetAllLogs(logsTableObs);
         }
         //delete the image of tour
         manager.deleteImage(selectedTour);

@@ -100,6 +100,38 @@ public class DatabaseAccess implements IDataAccess {
         return tourList;
     }
 
+    /**
+     * takes the tours from the database but it doesn't saves them in a ObservableList
+     * @return the list which contains all the Tour with their logs in the database
+     * */
+    @Override
+    public List<Tour> GetToursWithLogs() {
+        List<Tour> tourList = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tour ORDER BY tourID ASC");
+            ResultSet res = statement.executeQuery();
+            while(res.next()){
+                String ident = res.getString("identification");
+                String name = res.getString("bezeichnung");
+                String desc = res.getString("description");
+                double dist = res.getDouble("distance");
+                String start = res.getString("startpoint");
+                String dest = res.getString("destination");
+
+                Tour tour = new Tour(ident,name,desc,start,dest,dist,ReportGetLogs(ident));
+
+                //add the database tours to a List
+                tourList.add(tour);
+                logger.info("all tours selected and saved into a List");
+            }
+            statement.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+            logger.error("Error Message: "+e.getMessage());
+
+        }
+        return tourList;    }
+
     @Override
     public boolean checkIfTourExists(String id) {
         try (Connection connection = getConnection()){

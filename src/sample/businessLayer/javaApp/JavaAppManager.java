@@ -15,6 +15,7 @@ public interface JavaAppManager {
     //Tours methods
     void SetDataItems(Tour tour) throws SQLException;
     List<Tour> GetTourItems();
+    List<Tour> GetToursWithLogs();
     void GetData(ObservableList<Tour> tour) throws SQLException;
     boolean delData(String id) throws SQLException;
     boolean editData(Tour tour, String id);
@@ -40,4 +41,7 @@ public interface JavaAppManager {
     void getImageFromMap(Tour tour);
     Image showImage(Tour tour) throws IOException;
     boolean deleteImage(Tour tour);
+
+    //export tours to json file
+    boolean exportToJSON(List<Tour> tourList, String ordner);
 }

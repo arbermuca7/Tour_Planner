@@ -3,6 +3,8 @@ package sample.models;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 public class Tour {
     @Getter @Setter private String identification;
     @Getter @Setter private String t_Name;
@@ -10,7 +12,7 @@ public class Tour {
     @Getter @Setter private String startPoint;
     @Getter @Setter private String destination;
     @Getter @Setter private String description;
-
+    @Getter @Setter private List<Log> logsForTour;
     /**
      * The standard constructor takes
      * some random placeholders
@@ -37,5 +39,14 @@ public class Tour {
         startPoint = start;
         destination = dest;
         t_Distance = distance;
+    }
+    public Tour(String identification, String name, String desc, String start, String dest, double distance,List<Log>logs){
+        this.identification = identification;
+        t_Name = name;
+        description = desc;
+        startPoint = start;
+        destination = dest;
+        t_Distance = distance;
+        logsForTour = logs;
     }
 }

@@ -280,5 +280,12 @@ public class MainWindowController implements Initializable{
         logger.info("Report-Button clicked");
 
     }
+    @FXML
+    public void exportToFile(ActionEvent actionEvent) {
+        boolean isExported = manager.exportToJSON(manager.GetToursWithLogs(),Configuration.getExportFile());
+        if(isExported){
+            logger.info("Tours exported as a JSON File");
 
+        }
+    }
 }
