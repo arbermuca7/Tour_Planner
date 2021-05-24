@@ -8,12 +8,7 @@ import sample.dataAccessLayer.fileAccess.FileAccess;
 import sample.dataAccessLayer.fileAccess.IFileAccess;
 import sample.models.Tour;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class MapQuest implements IMapQuest{
     @Getter private final String key = Configuration.getMapQuestKey();

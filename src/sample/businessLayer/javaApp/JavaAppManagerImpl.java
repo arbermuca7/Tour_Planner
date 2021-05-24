@@ -274,7 +274,7 @@ public class JavaAppManagerImpl implements JavaAppManager{
 
     @Override
     public boolean exportToJSON(List<Tour> tourList, String ordner) {
-        return exportFile.Export(tourList, ordner);
+        return exportFile.ExportFile(tourList, ordner);
     }
 
     @Override

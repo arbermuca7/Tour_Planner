@@ -14,7 +14,7 @@ import java.util.List;
 public class Export{
     private static final Logger logger = LogManager.getLogger(Export.class);
 
-    public boolean Export(List<Tour> tourList, String ordner) {
+    public boolean ExportFile(List<Tour> tourList, String ordner) {
 
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);;
 
