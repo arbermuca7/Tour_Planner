@@ -44,4 +44,6 @@ public interface JavaAppManager {
 
     //export tours to json file
     boolean exportToJSON(List<Tour> tourList, String ordner);
+    List<Tour> importToJSON(String ordner);
+
 }

@@ -11,11 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class Export implements IExport{
+public class Export{
     private static final Logger logger = LogManager.getLogger(Export.class);
 
-    @Override
-    public boolean export(List<Tour> tourList, String ordner) {
+    public boolean Export(List<Tour> tourList, String ordner) {
 
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);;
 

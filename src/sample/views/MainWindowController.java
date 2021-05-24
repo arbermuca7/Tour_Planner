@@ -12,12 +12,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import sample.Main;
+import sample.businessLayer.ExportFile.Import;
 import sample.businessLayer.configuration.Configuration;
 import sample.businessLayer.javaApp.JavaAppManager;
 import sample.businessLayer.javaApp.JavaAppManagerFactory;
@@ -33,6 +35,7 @@ import sample.views.LogViews.EditLogController;
 import sample.views.TourViews.AddTourController;
 import sample.views.TourViews.EditTourController;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -285,7 +288,17 @@ public class MainWindowController implements Initializable{
         boolean isExported = manager.exportToJSON(manager.GetToursWithLogs(),Configuration.getExportFile());
         if(isExported){
             logger.info("Tours exported as a JSON File");
+        }
+    }
 
+    @FXML
+    public void importToFile(ActionEvent actionEvent) {
+        try {
+            mainWindowViewModel.ImportFile(manager,tourListItems,TourListView,LogTableView,logsTableItems);
+            logger.info("JSON-File imported successfully");
+        } catch (SQLException throwables) {
+            logger.error(throwables.getMessage());
+            throwables.printStackTrace();
         }
     }
 }

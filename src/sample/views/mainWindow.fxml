@@ -12,6 +12,7 @@
                 <Menu mnemonicParsing="false" text="File">
                     <items>
                   <MenuItem fx:id="ExportMenuItem" mnemonicParsing="false" onAction="#exportToFile" text="Export" />
+                  <MenuItem fx:id="ImportMenuItem" mnemonicParsing="false" onAction="#importToFile" text="Import" />
                         <MenuItem fx:id="CloseAppMenuItem" mnemonicParsing="false" onAction="#closeProgram" text="Close" />
                     </items>
                 </Menu>

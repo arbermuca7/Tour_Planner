@@ -14,6 +14,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.apache.log4j.LogManager;
@@ -24,6 +25,7 @@ import sample.models.Log;
 import sample.models.Tour;
 import sample.views.MainWindowController;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -305,7 +307,10 @@ public class MainWindowViewModel {
      * */
     public void clearSearchField(ChoiceBox<String> choice, JavaAppManager manager,ObservableList<Tour> tourItem
             ,ObservableList<Log> logItem) throws SQLException {
-        if(choice.getValue().equals("Tours")){
+
+        if(choice.getValue() == null){
+            logger.error("nothing selected to be searched, so you cannot clear the field");
+        }else if(choice.getValue().equals("Tours")){
             //clear the list with the searched Items
             tourItem.clear();
             //clear the input field
@@ -333,7 +338,9 @@ public class MainWindowViewModel {
      * */
     public void searchTheInput(ChoiceBox<String> choice, JavaAppManager manager,ObservableList<Tour> tourItem
             ,ObservableList<Log> logItem) throws SQLException {
-        if(choice.getValue().equals("Tours")){
+        if(choice.getValue() == null){
+            logger.error("nothing selected to be searched");
+        }else if(choice.getValue().equals("Tours")){
             //clear the list with the searched Items
             tourItem.clear();
             // add to a list all the searched tours
@@ -351,4 +358,60 @@ public class MainWindowViewModel {
         }
         logger.info("search for the inserted input executed");
     }
+
+    public void ImportFile(JavaAppManager manager,ObservableList<Tour> tourItem,ListView<Tour> tourListView,
+                           TableView<Log> logTableView,ObservableList<Log> logItem) throws SQLException {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if(selectedFile != null){
+            String filePath = selectedFile.getAbsolutePath();
+
+            List<Tour> tourList = manager.importToJSON(filePath);
+
+            for (Tour tour : tourList) {
+                //add tour
+                manager.SetDataItems(tour);
+                tourItem.add(tour);
+                //Save tour to listview
+                setToursToList(tourListView, tourItem);
+                //get the image from mapquest
+                manager.getImageFromMap(tour);
+
+                //add tourLogs
+                for (int x = 0; x < tour.getLogsForTour().size(); x++) {
+                    //save the log in the database
+                    manager.setLogItems(tour.getLogsForTour().get(x), tour.getIdentification());
+                    //insert the log into the observable list
+                    logItem.add(tour.getLogsForTour().get(x));
+                    // set the observable list into the table view
+                    setLogsToTable(logTableView, logItem);
+                }
+
+            }
+        }else{
+            logger.error("no file was selected to import!");
+        }
+
+
+    }
 }
+/*
+    System.out.println("Tour data to be add: "+tourList.get(i).getIdentification()+" , "
+    +tourList.get(i).getT_Name()+" , "+tourList.get(i).getT_Distance()+" , "+tourList.get(i).getStartPoint()
+    +" , "+tourList.get(i).getDestination()+" , "+tourList.get(i).getDescription());
+
+    for (int x=0; x<tourList.get(i).getLogsForTour().size(); x++){
+        System.out.println("Log of this tour to be added:"+tourList.get(i).getLogsForTour().get(x).getName()+" , "
+        +tourList.get(i).getLogsForTour().get(x).getDate()
+        +" , "+tourList.get(i).getLogsForTour().get(x).getDuration()
+        +" , "+tourList.get(i).getLogsForTour().get(x).getDistance()
+        +" , "+tourList.get(i).getLogsForTour().get(x).getAvg_speed()
+        +" , "+tourList.get(i).getLogsForTour().get(x).getFuel_cost()
+        +" , "+tourList.get(i).getLogsForTour().get(x).getRoute_type()
+        +" , "+tourList.get(i).getLogsForTour().get(x).getTravel_mode()
+        +" , "+tourList.get(i).getLogsForTour().get(x).getRating()
+        +" , "+tourList.get(i).getLogsForTour().get(x).isToll_roads()
+        +" , "+tourList.get(i).getLogsForTour().get(x).isResting_place()
+        );
+    }
+ */

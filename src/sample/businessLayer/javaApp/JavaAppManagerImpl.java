@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import sample.businessLayer.ExportFile.Export;
-import sample.businessLayer.ExportFile.IExport;
+import sample.businessLayer.ExportFile.Import;
 import sample.businessLayer.mapQuest.IMapQuest;
 import sample.businessLayer.mapQuest.MapQuest;
 import sample.businessLayer.reporting.IReportGeneration;
@@ -28,15 +28,19 @@ public class JavaAppManagerImpl implements JavaAppManager{
     IDAO<Log> daoLog = DAOFactory.getInstance("log");
 
     IReportGeneration reportGeneration = new ReportGeneration();
+
     IMapQuest map = new MapQuest();
+
     IFileAccess fileAccess = new FileAccess();
-    IExport exportFile = new Export();
+
+    Export exportFile = new Export();
+    Import importFile = new Import();
+
 
     private static final Logger logger = LogManager.getLogger(JavaAppManagerImpl.class);
 
-
-    //TourDAO tourDAO = new TourDAO();
     LogsDAO logsDAO = new LogsDAO();
+
     /**
      * @param tour takes a Tour as parameter
      * and saves that tour to the database
@@ -270,6 +274,11 @@ public class JavaAppManagerImpl implements JavaAppManager{
 
     @Override
     public boolean exportToJSON(List<Tour> tourList, String ordner) {
-        return exportFile.export(tourList, ordner);
+        return exportFile.Export(tourList, ordner);
+    }
+
+    @Override
+    public List<Tour> importToJSON(String ordner) {
+        return importFile.Import(ordner);
     }
 }
