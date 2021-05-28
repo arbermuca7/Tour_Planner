@@ -25,11 +25,12 @@ public class FileAccess implements IFileAccess{
     public void saveMapImage(String path, String tourName) {
 
         String imageName = tourName.replaceAll(" ","_");
+        String pathNew = path.replaceAll(" ","");
         BufferedImage image = null;
         URL url = null;
 
         try{
-            url = new URL(path);
+            url = new URL(pathNew);
             logger.info("URL to the mapquest created");
             image = ImageIO.read(url);
             logger.info("Request for the map sent");
